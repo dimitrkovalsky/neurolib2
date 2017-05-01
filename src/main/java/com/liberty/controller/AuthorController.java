@@ -1,7 +1,9 @@
 package com.liberty.controller;
 
-import com.liberty.model.AuthorEntity;
 import com.liberty.repository.AuthorRepository;
+import com.liberty.repository.BookRepository;
+import com.liberty.service.DataMinerService;
+import com.liberty.service.RecommendationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,8 +22,19 @@ public class AuthorController {
     @Autowired
     private AuthorRepository repository;
 
+    @Autowired
+    private RecommendationService recommendationService;
+
+    @Autowired
+    private DataMinerService dataMinerService;
+
+    @Autowired
+    private BookRepository bookRepository;
+
     @RequestMapping(path = "/{bookId}", method = RequestMethod.GET)
-    public AuthorEntity getOne(@PathVariable Long bookId) {
-        return repository.findOne(bookId);
+    public void getOne(@PathVariable Long bookId) {
+        dataMinerService.computeRecommendations();
+//        recommendationService.evaluate();
+//        return bookRepository.findOne(bookId);
     }
 }

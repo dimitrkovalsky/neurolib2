@@ -1,5 +1,7 @@
 package com.liberty.model;
 
+import lombok.ToString;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Arrays;
@@ -11,8 +13,9 @@ import java.util.Arrays;
  */
 @Entity
 @Table(name = "libbook", schema = "neurolib")
-public class LibbookEntity {
-    private int bookId;
+@ToString
+public class SimpleBookEntity {
+    private Long bookId;
     private int fileSize;
     private Timestamp time;
     private String title;
@@ -22,7 +25,7 @@ public class LibbookEntity {
     private String fileType;
     private String encoding;
     private short year;
-    private String deleted;
+    private Boolean deleted;
     private String ver;
     private String fileAuthor;
     private int n;
@@ -36,11 +39,11 @@ public class LibbookEntity {
 
     @Id
     @Column(name = "BookId")
-    public int getBookId() {
+    public Long getBookId() {
         return bookId;
     }
 
-    public void setBookId(int bookId) {
+    public void setBookId(Long bookId) {
         this.bookId = bookId;
     }
 
@@ -136,11 +139,11 @@ public class LibbookEntity {
 
     @Basic
     @Column(name = "Deleted")
-    public String getDeleted() {
+    public Boolean getDeleted() {
         return deleted;
     }
 
-    public void setDeleted(String deleted) {
+    public void setDeleted(Boolean deleted) {
         this.deleted = deleted;
     }
 
@@ -249,7 +252,7 @@ public class LibbookEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        LibbookEntity that = (LibbookEntity) o;
+        SimpleBookEntity that = (SimpleBookEntity) o;
 
         if (bookId != that.bookId) return false;
         if (fileSize != that.fileSize) return false;
@@ -276,29 +279,4 @@ public class LibbookEntity {
         return true;
     }
 
-    @Override
-    public int hashCode() {
-        int result = bookId;
-        result = 31 * result + fileSize;
-        result = 31 * result + (time != null ? time.hashCode() : 0);
-        result = 31 * result + (title != null ? title.hashCode() : 0);
-        result = 31 * result + (title1 != null ? title1.hashCode() : 0);
-        result = 31 * result + (lang != null ? lang.hashCode() : 0);
-        result = 31 * result + (srcLang != null ? srcLang.hashCode() : 0);
-        result = 31 * result + (fileType != null ? fileType.hashCode() : 0);
-        result = 31 * result + (encoding != null ? encoding.hashCode() : 0);
-        result = 31 * result + (int) year;
-        result = 31 * result + (deleted != null ? deleted.hashCode() : 0);
-        result = 31 * result + (ver != null ? ver.hashCode() : 0);
-        result = 31 * result + (fileAuthor != null ? fileAuthor.hashCode() : 0);
-        result = 31 * result + n;
-        result = 31 * result + (keywords != null ? keywords.hashCode() : 0);
-        result = 31 * result + Arrays.hashCode(md5);
-        result = 31 * result + (modified != null ? modified.hashCode() : 0);
-        result = 31 * result + (pmd5 != null ? pmd5.hashCode() : 0);
-        result = 31 * result + (int) errorCode;
-        result = 31 * result + pages;
-        result = 31 * result + chars;
-        return result;
-    }
 }

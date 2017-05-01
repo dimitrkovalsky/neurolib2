@@ -16,7 +16,7 @@ public class LibseqEntity {
     private int seqNumb;
     private byte level;
     private byte type;
-
+    
     @Id
     @Column(name = "BookId")
     public int getBookId() {
