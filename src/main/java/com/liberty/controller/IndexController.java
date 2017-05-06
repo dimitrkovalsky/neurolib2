@@ -1,5 +1,7 @@
 package com.liberty.controller;
 
+import com.liberty.facade.RecommendationFacade;
+import com.liberty.model.SimpleBookEntity;
 import com.liberty.service.DataMinerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,6 +21,9 @@ public class IndexController {
     @Autowired
     private DataMinerService dataMinerService;
 
+    @Autowired
+    private RecommendationFacade facade;
+
     @RequestMapping("/")
     public String greeting(@RequestParam(value = "name", required = false, defaultValue = "World") String name, Model model) {
         model.addAttribute("name", name);
@@ -27,6 +32,10 @@ public class IndexController {
 
     @RequestMapping("/book/{bookId}")
     public String book(@PathVariable Long bookId, Model model) {
-        return "index";
+        SimpleBookEntity book = facade.getBook(bookId);
+        model.addAttribute("book", book);
+        model.addAttribute("recommendations", facade.getRecommendations(bookId));
+        model.addAttribute("authors", facade.getAuthor(bookId));
+        return "book";
     }
 }

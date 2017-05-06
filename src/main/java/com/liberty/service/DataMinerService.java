@@ -1,5 +1,6 @@
 package com.liberty.service;
 
+import com.liberty.model.RecommendationEntity;
 import com.liberty.model.SimpleBookEntity;
 
 import java.util.List;
@@ -12,5 +13,7 @@ import java.util.List;
 public interface DataMinerService {
     void computeRecommendations();
 
-    List<Long> findRecommendations(SimpleBookEntity b);
+    List<RecommendationEntity> findRecommendations(SimpleBookEntity b);
+
+    List<RecommendationEntity> findRecommendations(Long bookId);
 }

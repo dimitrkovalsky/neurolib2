@@ -2,9 +2,23 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Getting Started: Serving Web Content</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 </head>
 <body>
-<p th:text="'Neurolib, ' + ${name} + '!'" />
+<h1 th:text="${book.title}"/>
+<th:block th:each="author : ${authors}">
+    <p th:text="${author.firstName}"/>
+    <p th:text="${author.LastName}"/>
+</th:block>
+
+<th:block th:each="reco : ${recommendations}">
+    <div>
+        <a th:href="@{/book/{id}(id = ${reco.bookId})}">
+            <p th:text="${reco.title}"/>
+        </a>
+
+    </div>
+</th:block>
+
 </body>
 </html>

@@ -3,7 +3,6 @@ package com.liberty.repository;
 import com.liberty.model.FullBookEntity;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -14,8 +13,7 @@ import java.util.List;
  * Time: 21:38
  */
 @Repository
-@RepositoryRestResource
-public interface BookRepository extends JpaRepository<FullBookEntity, Long> {
+public interface RecoBookRepository extends JpaRepository<FullBookEntity, Long> {
 
     List<FullBookEntity> findAllByAuthorIdOrderByRate(Long authorId, Pageable pageable);
 

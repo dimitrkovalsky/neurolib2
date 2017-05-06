@@ -1,7 +1,7 @@
 package com.liberty.controller;
 
-import com.liberty.repository.AuthorRepository;
-import com.liberty.repository.BookRepository;
+import com.liberty.repository.BookAuthorRepository;
+import com.liberty.repository.RecoBookRepository;
 import com.liberty.service.DataMinerService;
 import com.liberty.service.RecommendationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/api/author")
-public class AuthorController {
+public class BookController {
 
     @Autowired
-    private AuthorRepository repository;
+    private BookAuthorRepository repository;
 
     @Autowired
     private RecommendationService recommendationService;
@@ -29,7 +29,7 @@ public class AuthorController {
     private DataMinerService dataMinerService;
 
     @Autowired
-    private BookRepository bookRepository;
+    private RecoBookRepository recoBookRepository;
 
     @RequestMapping(path = "/{bookId}", method = RequestMethod.GET)
     public void getOne(@PathVariable Long bookId) {

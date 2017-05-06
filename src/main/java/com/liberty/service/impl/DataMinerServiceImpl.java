@@ -2,7 +2,7 @@ package com.liberty.service.impl;
 
 import com.liberty.model.SimpleBookEntity;
 import com.liberty.model.RecommendationEntity;
-import com.liberty.repository.LibBookRepository;
+import com.liberty.repository.SimpleBookRepository;
 import com.liberty.repository.RecommendationRepository;
 import com.liberty.service.DataMinerService;
 import com.liberty.service.RecommendationService;
@@ -13,6 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -30,7 +31,7 @@ public class DataMinerServiceImpl implements DataMinerService {
     private int size = 10;
 
     @Autowired
-    private LibBookRepository libBookRepository;
+    private SimpleBookRepository simpleBookRepository;
 
     @Autowired
     private RecommendationService recommendationService;
@@ -40,7 +41,7 @@ public class DataMinerServiceImpl implements DataMinerService {
 
     @Override
     public void computeRecommendations() {
-        long count = libBookRepository.count();
+        long count = simpleBookRepository.count();
         int totalPages = (int) (count / size);
         log.info("Found {} books for recommendations. Total Pages : {}", count, totalPages);
         AtomicInteger counter = new AtomicInteger(page);
@@ -50,12 +51,12 @@ public class DataMinerServiceImpl implements DataMinerService {
             if (CollectionUtils.isEmpty(singlePage)) {
                 log.info("Page # {} is empty", singlePage);
             }
-            log.info("Processed page #{}/{}. Total books {}/{}", counter.incrementAndGet(), totalPages, counter.get() * size, count);
+//            log.info("Processed page #{}/{}. Total books {}/{}", counter.incrementAndGet(), totalPages, counter.get() * size, count);
         });
     }
 
     private List<SimpleBookEntity> processPage(int currentPage) {
-        Page<SimpleBookEntity> all = libBookRepository.findAll(new PageRequest(currentPage, size));
+        Page<SimpleBookEntity> all = simpleBookRepository.findAll(new PageRequest(currentPage, size));
 
         List<SimpleBookEntity> singlePage = all.getContent().stream()
                 .filter(x -> !x.getDeleted())
@@ -67,20 +68,28 @@ public class DataMinerServiceImpl implements DataMinerService {
     }
 
     @Override
-    public List<Long> findRecommendations(SimpleBookEntity bookEntity) {
+    public List<RecommendationEntity> findRecommendations(SimpleBookEntity bookEntity) {
         List<Long> recommended = recommendationService.recommend(bookEntity.getBookId());
         if (!recommended.isEmpty())
-            saveRecommendations(bookEntity.getBookId(), recommended);
+            return saveRecommendations(bookEntity.getBookId(), recommended);
         else
             log.info("Found 0 recommendations for {}", bookEntity.getBookId());
-        return recommended;
+        return Collections.emptyList();
     }
 
-    private void saveRecommendations(Long bookId, List<Long> recommended) {
+    @Override
+    public List<RecommendationEntity> findRecommendations(Long bookId) {
+        SimpleBookEntity bookEntity = new SimpleBookEntity();
+        bookEntity.setBookId(bookId);
+        return findRecommendations(bookEntity);
+    }
+
+    private List<RecommendationEntity> saveRecommendations(Long bookId, List<Long> recommended) {
         List<RecommendationEntity> list = recommended.stream()
                 .map(r -> new RecommendationEntity(bookId, r))
                 .collect(Collectors.toList());
         recommendationRepository.save(list);
         log.info("Stored {} recommendations for : {}", recommended.size(), bookId);
+        return list;
     }
 }

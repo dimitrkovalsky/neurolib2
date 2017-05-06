@@ -2,8 +2,8 @@ package com.liberty.service.impl;
 
 import com.liberty.model.FullBookEntity;
 import com.liberty.repository.BookRateRepository;
-import com.liberty.repository.BookRepository;
-import com.liberty.repository.LibBookRepository;
+import com.liberty.repository.RecoBookRepository;
+import com.liberty.repository.SimpleBookRepository;
 import com.liberty.service.RecommendationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,13 +27,13 @@ public class RecommendationServiceImpl implements RecommendationService {
 
     public static final int LIMIT = 10;
     @Autowired
-    private BookRepository repository;
+    private RecoBookRepository repository;
 
     @Autowired
     private BookRateRepository rateRepository;
 
     @Autowired
-    private LibBookRepository libBookRepository;
+    private SimpleBookRepository simpleBookRepository;
 
     @Override
     public List<Long> recommend(Long bookId) {

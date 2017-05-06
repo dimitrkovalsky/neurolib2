@@ -1,8 +1,10 @@
 package com.liberty.repository;
 
-import com.liberty.model.AuthorEntity;
+import com.liberty.model.BookAuthorEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * User: Dimitr
@@ -10,5 +12,6 @@ import org.springframework.stereotype.Repository;
  * Time: 21:38
  */
 @Repository
-public interface AuthorRepository extends JpaRepository<AuthorEntity, Integer> {
+public interface BookAuthorRepository extends JpaRepository<BookAuthorEntity, Long> {
+    List<BookAuthorEntity> findAllByBookId(Long bookId);
 }

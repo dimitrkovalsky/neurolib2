@@ -13,6 +13,6 @@ import java.util.List;
  * Time: 21:38
  */
 @Repository
-public interface LibBookRepository extends JpaRepository<SimpleBookEntity, Long> {
+public interface SimpleBookRepository extends JpaRepository<SimpleBookEntity, Long> {
     List<SimpleBookEntity> findAllByDeletedFalse(Pageable pageable);
 }
