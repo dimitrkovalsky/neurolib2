@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog/1.7"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.7
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.7.xsd">
+
+    <changeSet author="maxim" id="1493987253_4">
+        <createTable tableName="UserConnection">
+            <column name="userId" type="varchar(255)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="providerId" type="varchar(255)" >
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="providerUserId" type="varchar(255)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="rank" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="displayName" type="varchar(255)"/>
+            <column name="profileUrl" type="varchar(512)"/>
+
+            <column name="imageUrl" type="varchar(512)"/>
+            <column name="accessToken" type="varchar(512)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="secret" type="varchar(512)"/>
+            <column name="refreshToken" type="varchar(512)"/>
+            <column name="expireTime" type="bigint"/>
+
+        </createTable>
+
+        <createIndex indexName="UserConnectionRank"
+                         tableName="UserConnection" >
+            <column name="userId"/>
+            <column name="providerId"/>
+            <column name="rank"/>
+        </createIndex>
+
+    </changeSet>
+
+
+</databaseChangeLog>
