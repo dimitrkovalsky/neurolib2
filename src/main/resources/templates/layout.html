@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:social="http://spring.io/springsocial"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+	<head>
+		<title>Neurolib site title</title>
+		<link rel="stylesheet" th:href="@{/page.css}" type="text/css" media="screen"></link>
+		<link rel="stylesheet" th:href="@{/form.css}" type="text/css" media="screen"></link>
+		<link rel="stylesheet" th:href="@{/messages/messages.css}" type="text/css" media="screen"></link>
+	</head>
+	<body>
+		<div id="header">
+			<h1><a th:href="@{/}">Neurolib</a></h1>
+		</div>
+		
+		<div id="leftNav">
+			<h4><a th:href="@{/profile}">Profile</a></h4>
+			<h4><a th:href="@{/admin}">Admin page</a></h4>
+		</div>
+		
+		<div id="content" layout:fragment="content">
+			Content goes here
+		</div>		
+	</body>
+</html>

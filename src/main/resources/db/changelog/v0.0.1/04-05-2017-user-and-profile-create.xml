@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog/1.7"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.7
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.7.xsd">
+
+    <changeSet author="maxim" id="1493894249_2">
+        <createTable tableName="user">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="createTime" type="long" >
+                <constraints nullable="false"/>
+            </column>
+            <column name="authority" type="int" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="login" type="varchar(100)"/>
+            <column name="vkontakteId" type="varchar(100)">
+                <constraints unique="true"/>
+            </column>
+            <column name="facebookId" type="varchar(100)">
+                <constraints unique="true"/>
+            </column>
+            <column name="linkedinId" type="varchar(100)">
+                <constraints unique="true"/>
+            </column>
+            <column name="twitterId" type="varchar(100)">
+                <constraints unique="true"/>
+            </column>
+        </createTable>
+
+    </changeSet>
+
+    <changeSet author="maxim" id="1493894668_3">
+        <createTable tableName="userLibertyProfile">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="userId" type="int" >
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="firstName" type="varchar(100)"/>
+            <column name="lastName" type="varchar(100)"/>
+            <column name="email" type="varchar(100)"/>
+            <column name="avatar" type="varchar(100)"/>
+            <column name="changeTime" type="long" >
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+    </changeSet>
+
+</databaseChangeLog>
