@@ -6,6 +6,8 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.7
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.7.xsd">
 
-<include file="db/changelog/v0.0.1/01-05-2017-spring-session-create.xml" />
+    <include file="db/changelog/v0.0.1/01-05-2017-spring-session-create.xml" />
+    <include file="db/changelog/v0.0.1/04-05-2017-user-and-profile-create.xml" />
+    <include file="db/changelog/v0.0.1/05-05-2017-user-social-connection-create.xml"/>
 
 </databaseChangeLog>
