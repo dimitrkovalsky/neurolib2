@@ -15,12 +15,8 @@
  */
 package com.liberty.social.sign;
 
-import com.liberty.model.UserEntity;
 import com.liberty.social.service.SignService;
-import com.liberty.social.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.WebAttributes;
 import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.security.web.savedrequest.SavedRequest;

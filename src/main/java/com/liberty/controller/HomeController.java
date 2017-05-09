@@ -28,13 +28,6 @@ import java.security.Principal;
 
 @Controller
 public class HomeController {
-	
-	private final Provider<ConnectionRepository> connectionRepositoryProvider;
-	
-	@Inject
-	public HomeController(Provider<ConnectionRepository> connectionRepositoryProvider) {
-		this.connectionRepositoryProvider = connectionRepositoryProvider;
-	}
 
 	@RequestMapping("/")
 	public String home(Principal currentUser, Model model) {
@@ -43,7 +36,5 @@ public class HomeController {
 		return "home";
 	}
 	
-	private ConnectionRepository getConnectionRepository() {
-		return connectionRepositoryProvider.get();
-	}
+
 }

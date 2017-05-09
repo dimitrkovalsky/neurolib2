@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Import;
 
 @SpringBootApplication
-@Import({SwaggerConfig.class, DbConfig.class, SecurityConfig.class, SocialConfig.class})
+@Import({SwaggerConfig.class, DbConfig.class, SecurityConfig.class, SocialConfig.class, HttpSessionConfig.class})
 public class NeurolibApplication {
 
     public static void main(String[] args) {
