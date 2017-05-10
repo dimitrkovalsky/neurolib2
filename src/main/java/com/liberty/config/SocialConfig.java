@@ -2,19 +2,18 @@ package com.liberty.config;
 
 import com.liberty.social.sign.ImplicitSignInAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.*;
+import org.springframework.core.env.Environment;
 import org.springframework.security.crypto.encrypt.Encryptors;
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
+import org.springframework.social.config.annotation.ConnectionFactoryConfigurer;
 import org.springframework.social.config.annotation.EnableSocial;
 import org.springframework.social.config.annotation.SocialConfigurerAdapter;
-import org.springframework.social.connect.ConnectionFactoryLocator;
-import org.springframework.social.connect.ConnectionSignUp;
-import org.springframework.social.connect.UsersConnectionRepository;
+import org.springframework.social.connect.*;
 import org.springframework.social.connect.jdbc.JdbcUsersConnectionRepository;
-import org.springframework.social.connect.web.ProviderSignInController;
 import org.springframework.social.connect.web.SignInAdapter;
+import org.springframework.social.vkontakte.api.VKontakte;
+import org.springframework.social.vkontakte.connect.VKontakteConnectionFactory;
 
 import javax.sql.DataSource;
 
@@ -29,8 +28,12 @@ public class SocialConfig extends SocialConfigurerAdapter {
 	@Autowired
 	private ConnectionSignUp signUp;
 
-	@Autowired
-	private ProviderSignInController providerSignInController;
+	@Override
+	public void addConnectionFactories(ConnectionFactoryConfigurer connectionFactoryConfigurer, Environment environment) {
+		connectionFactoryConfigurer.addConnectionFactory(new VKontakteConnectionFactory(
+				environment.getProperty("spring.social.vkontakte.appKey"),
+				environment.getProperty("spring.social.vkontakte.appSecret")));
+	}
 
 	@Override
 	public UsersConnectionRepository getUsersConnectionRepository(ConnectionFactoryLocator connectionFactoryLocator) {
@@ -43,6 +46,5 @@ public class SocialConfig extends SocialConfigurerAdapter {
 	public SignInAdapter signInAdapter() {
 		return new ImplicitSignInAdapter(new HttpSessionRequestCache());
 	}
-
 
 }

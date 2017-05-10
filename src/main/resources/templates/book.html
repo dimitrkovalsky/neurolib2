@@ -1,23 +1,23 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
-<div th:replace="../fragments/head::head"></div>
+<div th:replace="../fragments/head::head (${book.title})"></div>
 
 <body>
-<div th:replace="../fragments/navbar::navbar"></div>
-<div class="container content">
-    <h1 th:text="${book.title}"/>
-    <th:block th:each="author : ${authors}">
-        <p th:text="${author.firstName}"/>
-        <p th:text="${author.LastName}"/>
-    </th:block>
+    <div th:replace="../fragments/navbar::navbar"></div>
+    <div class="container content">
+        <h1 th:text="${book.title}"/>
+        <th:block th:each="author : ${authors}">
+            <p th:text="${author.firstName}"/>
+            <p th:text="${author.LastName}"/>
+        </th:block>
 
-    <th:block th:each="reco : ${recommendations}">
-        <div>
-            <a th:href="@{/book/{id}(id = ${reco.bookId})}">
-                <p th:text="${reco.title}"/>
-            </a>
-        </div>
-    </th:block>
-</div>
+        <th:block th:each="reco : ${recommendations}">
+            <div>
+                <a th:href="@{/book/{id}(id = ${reco.bookId})}">
+                    <p th:text="${reco.title}"/>
+                </a>
+            </div>
+        </th:block>
+    </div>
 </body>
 </html>

@@ -22,6 +22,9 @@
                 <li th:classappend="${module == 'tasks-ld' ? 'active' : ''}">
                     <a href="#" th:href="@{/task-ld}">Рейтинг</a>
                 </li>
+                <li th:classappend="${module == 'profile' ? 'active' : ''}">
+                    <a href="#" th:href="@{/profile}">Профиль</a>
+                </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <a href="/signin" th:href="@{/signin}">
