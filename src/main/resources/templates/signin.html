@@ -1,43 +1,37 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-	  xmlns:social="http://spring.io/springsocial"
-	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	  layout:decorator="layout">
-	<head>
-		<title>Neurolib site title</title>
-		<link rel="stylesheet" th:href="@{/page.css}" type="text/css" media="screen"></link>
-		<link rel="stylesheet" th:href="@{/form.css}" type="text/css" media="screen"></link>
-		<link rel="stylesheet" th:href="@{/messages/messages.css}" type="text/css" media="screen"></link>
-	</head>
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:replace="../fragments/head::head ('Вход')"></div>
+
 	<body>
-		<div id="header">
-			<h1><a th:href="@{/}">Spring Social Showcase</a></h1>
-		</div>
-		
-		<div id="leftNav">
-			Left nav menu
-		</div>
-		
-		<div id="content" layout:fragment="content">
+	<div th:replace="../fragments/navbar::navbar"></div>
+		<div class="container content">
+			<br/>
+			<p >Вход с помощью социальных сетей:</p>
 			<br/>
 			<!-- FACEBOOK SIGNIN -->
 			<form name="fb_signin" id="fb_signin" th:action="@{/signin/facebook}" method="POST">
 				<input type="hidden" name="_csrf" th:value="${_csrf.token}"></input>
 				<input type="hidden" name="scope" value="user_photos"></input>
-				<button type="submit"><img th:src="@{/social/facebook/sign-in-with-facebook.png}"></img></button>
+				<button type="submit"><img th:src="@{/social/signin/facebook_en.png}"></img></button>
 			</form>
 			<br/>
-			<!-- FACEBOOK SIGNIN -->
-			<form name="fb_signin" id="ld_signin" th:action="@{/signin/linkedin}" method="POST">
+			<!-- LINKEDIN SIGNIN -->
+			<form name="ld_signin" id="ld_signin" th:action="@{/signin/linkedin}" method="POST">
 				<input type="hidden" name="_csrf" th:value="${_csrf.token}"></input>
-				<button type="submit"><img th:src="@{/social/linkedin/connect_with_linkedin-logo-150x150.jpg}"></img></button>
+				<button type="submit"><img th:src="@{/social/signin/linkedin_en.png}"></img></button>
 			</form>
 			<br/>
-			<!-- FACEBOOK SIGNIN -->
-			<form name="fb_signin" id="tw_signin" th:action="@{/signin/twitter}" method="POST">
+			<!-- TWITTER SIGNIN -->
+			<form name="tw_signin" id="tw_signin" th:action="@{/signin/twitter}" method="POST">
 				<input type="hidden" name="_csrf" th:value="${_csrf.token}"></input>
-				<button type="submit"><img th:src="@{/social/twitter/sign-in-with-twitter-d.png}"></img></button>
+				<button type="submit"><img th:src="@{/social/signin/twitter_en.png}"></img></button>
 			</form>
-		</div>		
+			<br/>
+			<!-- VKONTAKTE SIGNIN -->
+			<form name="vk_signin" id="vk_signin" th:action="@{/signin/vkontakte}" method="POST">
+				<input type="hidden" name="_csrf" th:value="${_csrf.token}"></input>
+				<button type="submit"><img th:src="@{/social/signin/vkontakte_en.png}"></img></button>
+			</form>
+		</div>
 	</body>
 </html>

@@ -1,24 +1,11 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-	  xmlns:social="http://spring.io/springsocial"
-	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	  layout:decorator="layout">
-	<head>
-		<title>Neurolib site title</title>
-		<link rel="stylesheet" th:href="@{/page.css}" type="text/css" media="screen"></link>
-		<link rel="stylesheet" th:href="@{/form.css}" type="text/css" media="screen"></link>
-		<link rel="stylesheet" th:href="@{/messages/messages.css}" type="text/css" media="screen"></link>
-	</head>
-	<body>
-		<div id="header">
-			<h1><a th:href="@{/}">Spring Social Showcase</a></h1>
-		</div>
-		
-		<div id="leftNav">
-			Left nav menu
-		</div>
-		
-		<div id="content" layout:fragment="content">
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:replace="../fragments/head::head (${profile.firstName})"></div>
+
+<body>
+<div th:replace="../fragments/navbar::navbar"></div>
+	<div class="container content">
+		<br/>
 			<h3>Your Profile</h3>
 			<p>Hello, <span th:text="${profile.firstName}">first name</span>!</p>
 			<img th:src="${profile.avatar}" />
@@ -31,6 +18,6 @@
 				<dd th:text="${profile.email}"></dd>
 			</dl>
 
-		</div>
-	</body>
+	</div>
+</body>
 </html>

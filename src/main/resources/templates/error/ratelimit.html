@@ -1,0 +1,13 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:replace="../fragments/head::head ('Warning')"></div>
+
+	<body>
+		<div th:replace="../fragments/navbar::navbar"></div>
+		<div class="container content">
+			<br/>
+			<h2>Rate limit exceeded</h2>
+			<p>Sorry, but the rate limit for accessing <span th:text="${providerId}"/> has been exceeded. Please try again later.</p>
+		</div>		
+	</body>
+</html>
