@@ -1,12 +1,10 @@
 package com.liberty.controller;
 
-import org.springframework.http.HttpStatus;
+import com.liberty.error.NotFoundException;
 import org.springframework.social.RateLimitExceededException;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.servlet.NoHandlerFoundException;
 
 @ControllerAdvice
 public class ExceptionHandlingController {
@@ -17,10 +15,9 @@ public class ExceptionHandlingController {
 		return "error/ratelimit";
 	}
 
-	/*@ExceptionHandler(NoHandlerFoundException.class)
-	@ResponseStatus(HttpStatus.NOT_FOUND)
-	public String pageNotFound(NoHandlerFoundException ex, Model model) {
-		model.addAttribute("url", ex.getRequestURL());
+	@ExceptionHandler(NotFoundException.class)
+	public String pageNotFound(NotFoundException ex, Model model) {
+		model.addAttribute("message", ex.getMessage());
 		return "error/pagenotfound";
-	}*/
+	}
 }
