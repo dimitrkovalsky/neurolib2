@@ -1,4 +1,4 @@
-package com.liberty.social.handler;
+package com.liberty.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.social.RateLimitExceededException;
@@ -17,10 +17,10 @@ public class ExceptionHandlingController {
 		return "error/ratelimit";
 	}
 
-	@ExceptionHandler(NoHandlerFoundException.class)
+	/*@ExceptionHandler(NoHandlerFoundException.class)
 	@ResponseStatus(HttpStatus.NOT_FOUND)
 	public String pageNotFound(NoHandlerFoundException ex, Model model) {
 		model.addAttribute("url", ex.getRequestURL());
 		return "error/pagenotfound";
-	}
+	}*/
 }
