@@ -12,25 +12,33 @@
 			<form name="fb_signin" id="fb_signin" th:action="@{/signin/facebook}" method="POST">
 				<input type="hidden" name="_csrf" th:value="${_csrf.token}"></input>
 				<input type="hidden" name="scope" value="user_photos"></input>
-				<button type="submit"><img th:src="@{/social/signin/facebook_en.png}"></img></button>
+				<a class="btn btn-block btn-social btn-facebook" name="sign" href="#" onclick="document.getElementById('fb_signin').submit();">
+					<span class="fa fa-facebook"></span> Sign in with Facebook
+				</a>
 			</form>
 			<br/>
 			<!-- LINKEDIN SIGNIN -->
 			<form name="ld_signin" id="ld_signin" th:action="@{/signin/linkedin}" method="POST">
 				<input type="hidden" name="_csrf" th:value="${_csrf.token}"></input>
-				<button type="submit"><img th:src="@{/social/signin/linkedin_en.png}"></img></button>
+				<a class="btn btn-block btn-social btn-linkedin" name="sign" href="#" onclick="document.getElementById('ld_signin').submit();">
+					<span class="fa fa-linkedin"></span> Sign in with LinkedIn
+				</a>
 			</form>
 			<br/>
 			<!-- TWITTER SIGNIN -->
 			<form name="tw_signin" id="tw_signin" th:action="@{/signin/twitter}" method="POST">
 				<input type="hidden" name="_csrf" th:value="${_csrf.token}"></input>
-				<button type="submit"><img th:src="@{/social/signin/twitter_en.png}"></img></button>
+				<a class="btn btn-block btn-social btn-twitter" name="sign" href="#" onclick="document.getElementById('tw_signin').submit();">
+					<span class="fa fa-twitter"></span> Sign in with Twitter
+				</a>
 			</form>
 			<br/>
 			<!-- VKONTAKTE SIGNIN -->
 			<form name="vk_signin" id="vk_signin" th:action="@{/signin/vkontakte}" method="POST">
 				<input type="hidden" name="_csrf" th:value="${_csrf.token}"></input>
-				<button type="submit"><img th:src="@{/social/signin/vkontakte_en.png}"></img></button>
+				<a class="btn btn-block btn-social btn-vk" name="sign" href="#" onclick="document.getElementById('vk_signin').submit();">
+					<span class="fa fa-vk"></span> Sign in with Vkontakte
+				</a>
 			</form>
 		</div>
 	</body>

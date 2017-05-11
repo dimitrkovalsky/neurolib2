@@ -30,9 +30,7 @@ import java.security.Principal;
 public class HomeController {
 
 	@RequestMapping("/")
-	public String home(Principal currentUser, Model model) {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		model.addAttribute("credentials",authentication.getCredentials());
+	public String home(Model model) {
 		return "home";
 	}
 	

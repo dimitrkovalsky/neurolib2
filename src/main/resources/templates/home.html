@@ -1,17 +1,12 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
-<div th:replace="../fragments/head::head (${'Welcome, '+ credentials.firstName})"></div>
+<div th:replace="../fragments/head::head (${'Neuro Home'})"></div>
 
 <body>
 	<div th:replace="../fragments/navbar::navbar"></div>
 	<div class="container content">
 		<br/>
-		<p>Welcome, <span th:text="${credentials.firstName}">first-name</span>!</p>
-
-		<form method="POST" th:action="@{/signout}">
-			<input type="hidden" name="_csrf" th:value="${_csrf.token}" />
-			<button>Sign Out</button>
-		</form>
+		<h1>Neurolib home page</h1>
 	</div>
 </body>
 </html>
