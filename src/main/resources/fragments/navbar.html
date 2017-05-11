@@ -1,5 +1,8 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+
 <body>
 <nav class="navbar navbar-inverse navbar-fixed-top" th:fragment="navbar">
     <div class="container">
@@ -27,9 +30,30 @@
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <a href="/signin" th:href="@{/signin}">
-                    <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>&nbsp;Sign in
-                </a>
+                <li sec:authorize="isAuthenticated()">
+                    <img th:src="${#authentication.credentials.avatar}" width="50px"/>
+                </li>
+                <li sec:authorize="isAuthenticated()">
+                    <a th:href="@{/profile}">
+                        <span sec:authentication="credentials.firstName">User Name</span>
+                    </a>
+                </li>
+                <li sec:authorize="isAuthenticated()">
+                    <a href="#" onclick="document.getElementById('signout').submit();">
+                        <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>&nbsp;Sign Out
+                    </a>
+                    <form method="POST" th:action="@{/signout}" id="signout">
+                        <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+                    </form>
+                </li>
+
+                <li sec:authorize="isAnonymous()">
+                    <a href="/signin" th:href="@{/signin}">
+                        <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>&nbsp;Sign in
+                    </a>
+                </li>
+                <li>&nbsp;</li>
+
             </ul>
         </div>
         <!--/.nav-collapse -->
