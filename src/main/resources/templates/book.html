@@ -12,14 +12,30 @@
             <h1 th:text="${book.title}"/>
             <th:block th:each="author : ${authors}">
                 <div th:inline="text">
-                    <span th:text="${author.firstName}"></span>
-                    <span th:text="${author.LastName}"></span>
+                    <a th:href="@{/author/{authorId}/book(authorId = ${author.authorId})}">
+                        <span th:text="${author.firstName}"></span>
+                        <span th:text="${author.LastName}"></span>
+                    </a>
                 </div>
+            </th:block>
+            <th:block th:each="genre : ${genres}">
+                <a th:href="@{/genre/{genreId}(genreId = ${genre.genreId})}">
+                    <span th:text="${genre.genreDesc}"></span>
+                </a>
             </th:block>
         </div>
         <div style="margin-top: 115px" th:utext="${description}"></div>
+        <a th:href="@{http://flibusta.is/b/{bookId}/fb2(bookId = ${book.bookId})}" rel="noreferrer" target="_blank" >
+            <span>fb2</span>
+        </a>
+        <a th:href="@{http://flibusta.is/b/{bookId}/epub(bookId = ${book.bookId})}" rel="noreferrer" target="_blank" >
+            <span>epub</span>
+        </a>
+        <a th:href="@{http://flibusta.is/b/{bookId}/mobi(bookId = ${book.bookId})}" rel="noreferrer" target="_blank" >
+            <span>mobi</span>
+        </a>
     </div>
- 
+
     <div class="col-md-12 panel panel-success" style="margin-top: 30px">
         <div class="panel-heading">Рекомендации</div>
         <div class="panel-body">

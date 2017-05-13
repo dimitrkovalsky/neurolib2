@@ -29,6 +29,7 @@ public class BooksController {
         model.addAttribute("description", description);
         model.addAttribute("recommendations", facade.getRecommendations(bookId));
         model.addAttribute("authors", facade.getAuthor(bookId));
+        model.addAttribute("genres", facade.getGenres(bookId));
         return "book";
     }
 
@@ -36,7 +37,23 @@ public class BooksController {
     public String randomBooks(Model model) {
         List<SimpleBookEntity> books = facade.getRandomBooks(10);
         model.addAttribute("books", books);
-      
+
+        return "book-list";
+    }
+
+    @RequestMapping("/author/{authorId}/book")
+    public String authorBooks(@PathVariable(name = "authorId") Long authorId, Model model) {
+        List<SimpleBookEntity> books = facade.getByAuthor(authorId);
+        model.addAttribute("books", books);
+
+        return "book-list";
+    }
+
+    @RequestMapping("/genre/{genreId}")
+    public String GenreBooks(@PathVariable Integer genreId, Model model) {
+        List<SimpleBookEntity> books = facade.getByGenre(genreId);
+        model.addAttribute("books", books);
+
         return "book-list";
     }
 }

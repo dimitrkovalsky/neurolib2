@@ -27,6 +27,9 @@ public class RecommendationFacade {
     private SimpleBookRepository simpleBookRepository;
 
     @Autowired
+    private GenreRepository genreRepository;
+
+    @Autowired
     private BookAuthorRepository bookAuthorRepository;
 
     @Autowired
@@ -78,5 +81,20 @@ public class RecommendationFacade {
     // TODO: replace to more optimal method
     public List<SimpleBookEntity> getRandomBooks(int size) {
         return simpleBookRepository.findAllRandom();
+    }
+
+    public List<SimpleBookEntity> getByAuthor(Long authorId) {
+        List<SimpleBookEntity> byAuthor = simpleBookRepository.findAllByAuthor(authorId);
+        if (CollectionUtils.isEmpty(byAuthor))
+            return emptyList();
+        return byAuthor;
+    }
+
+    public List<GenreEntity> getGenres(Long bookId) {
+       return genreRepository.getAllGenres(bookId);
+    }
+
+    public List<SimpleBookEntity> getByGenre(Integer genreId) {
+        return simpleBookRepository.findAllByGenre(genreId, 10);
     }
 }
