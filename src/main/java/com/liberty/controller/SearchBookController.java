@@ -1,6 +1,6 @@
 package com.liberty.controller;
 
-import com.liberty.dao.SearchBookDAO;
+import com.liberty.dto.SearchBookDTO;
 import com.liberty.service.impl.SearchServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +20,7 @@ public class SearchBookController {
     private SearchServiceImpl searchServiceImpl;
 
     @RequestMapping(value = "/searchbook", method = RequestMethod.GET)
-    public List<SearchBookDAO> searchBook(@RequestParam(value = "size", required = false,defaultValue = "5") Integer size, @RequestParam (value = "q") String query){
+    public List<SearchBookDTO> searchBook(@RequestParam(value = "size", required = false,defaultValue = "5") Integer size, @RequestParam (value = "q") String query){
         return searchServiceImpl.searchBook(size,query);
     }
 }
