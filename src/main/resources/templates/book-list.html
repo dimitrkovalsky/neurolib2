@@ -1,0 +1,21 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:replace="../fragments/head::head (Случайные)"></div>
+
+<body>
+<div th:replace="../fragments/navbar::navbar"></div>
+<div class="container content" style="margin-top: 130px">
+
+    <div class="col-md-10">
+        <th:block th:each="book : ${books}">
+            <div class="col-md-4">
+                <img class="col-md-3" th:src="@{/api/images/book/{id}(id = ${book.bookId})}"/>
+                <a th:href="@{/book/{id}(id = ${book.bookId})}">
+                    <p class="media-heading" th:text=" ${book.title}"></p>
+                </a>
+            </div>
+        </th:block>
+    </div>
+</div>
+</body>
+</html>

@@ -3,21 +3,38 @@
 <div th:replace="../fragments/head::head (${book.title})"></div>
 
 <body>
-    <div th:replace="../fragments/navbar::navbar"></div>
-    <div class="container content">
-        <h1 th:text="${book.title}"/>
-        <th:block th:each="author : ${authors}">
-            <p th:text="${author.firstName}"/>
-            <p th:text="${author.LastName}"/>
-        </th:block>
+<div th:replace="../fragments/navbar::navbar"></div>
+<div class="container content" style="margin-top: 65px">
 
-        <th:block th:each="reco : ${recommendations}">
-            <div>
-                <a th:href="@{/book/{id}(id = ${reco.bookId})}">
-                    <p th:text="${reco.title}"/>
-                </a>
-            </div>
-        </th:block>
+    <div class="col-md-12">
+        <img class="col-md-3" th:src="@{/api/images/book/{id}(id = ${book.bookId})}"/>
+        <div class="col-md-9">
+            <h1 th:text="${book.title}"/>
+            <th:block th:each="author : ${authors}">
+                <div th:inline="text">
+                    <span th:text="${author.firstName}"></span>
+                    <span th:text="${author.LastName}"></span>
+                </div>
+            </th:block>
+        </div>
+        <div style="margin-top: 115px" th:utext="${description}"></div>
     </div>
+ 
+    <div class="col-md-12 panel panel-success" style="margin-top: 30px">
+        <div class="panel-heading">Рекомендации</div>
+        <div class="panel-body">
+            <th:block th:each="reco : ${recommendations}">
+                <div class="col-md-3">
+                    <div class="media-left">
+                        <img style="width: 50px" th:src="@{/api/images/book/{id}(id = ${reco.bookId})}"/>
+                    </div>
+                    <a th:href="@{/book/{id}(id = ${reco.bookId})}">
+                        <h4 class="media-heading" th:text=" ${reco.title}"></h4>
+                    </a>
+                </div>
+            </th:block>
+        </div>
+    </div>
+</div>
 </body>
 </html>

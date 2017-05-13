@@ -4,7 +4,7 @@
 
 
 <body>
-<nav class="navbar navbar-inverse navbar-fixed-top" th:fragment="navbar">
+<nav class="navbar navbar-default navbar-fixed-top" th:fragment="navbar">
     <div class="container">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
@@ -16,14 +16,14 @@
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <li th:classappend="${module == 'home' ? 'active' : ''}">
-                    <a href="#" th:href="@{/}">Книги</a>
+                <li th:classappend="${module == 'books' ? 'active' : ''}">
+                    <a href="#" th:href="@{/book/random}">Книги</a>
                 </li>
-                <li th:classappend="${module == 'tasks' ? 'active' : ''}">
-                    <a href="#" th:href="@{/task}">Рекомендации</a>
+                <li th:classappend="${module == 'reco' ? 'active' : ''}">
+                    <a href="#" th:href="@{/reco}">Рекомендации</a>
                 </li>
-                <li th:classappend="${module == 'tasks-ld' ? 'active' : ''}">
-                    <a href="#" th:href="@{/task-ld}">Рейтинг</a>
+                <li th:classappend="${module == 'rating' ? 'active' : ''}">
+                    <a href="#" th:href="@{/rate}">Рейтинг</a>
                 </li>
                 <li th:classappend="${module == 'profile' ? 'active' : ''}">
                     <a href="#" th:href="@{/profile}">Профиль</a>

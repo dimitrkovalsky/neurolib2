@@ -28,7 +28,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/connect/**").denyAll()
-                .antMatchers( "/favicon.ico", "/resources/**",  "/signin/**", "/book/*").permitAll()
+                .antMatchers( "/favicon.ico", "/resources/**", "api/**", "/signin/**", "/book/**", "author/**").permitAll()
                 .antMatchers("/**").authenticated();
 
     }
@@ -38,7 +38,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) throws Exception {
         web
                 .ignoring().antMatchers("seured/")
-                .antMatchers("/**/*.css", "/**/*.png", "/**/*.gif", "/**/*.jpg", "/**/*.js");
+                .antMatchers("/**/*.css", "/**/*.png ", "/**/*.gif ", "/**/*.jpg", "/**/*.js");
     }
 
 }

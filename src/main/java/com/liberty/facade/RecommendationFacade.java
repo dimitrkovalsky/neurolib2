@@ -1,13 +1,7 @@
 package com.liberty.facade;
 
-import com.liberty.model.AuthorEntity;
-import com.liberty.model.BookAuthorEntity;
-import com.liberty.model.RecommendationEntity;
-import com.liberty.model.SimpleBookEntity;
-import com.liberty.repository.AuthorRepository;
-import com.liberty.repository.BookAuthorRepository;
-import com.liberty.repository.RecommendationRepository;
-import com.liberty.repository.SimpleBookRepository;
+import com.liberty.model.*;
+import com.liberty.repository.*;
 import com.liberty.service.DataMinerService;
 import com.liberty.service.RecommendationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +11,7 @@ import org.springframework.util.CollectionUtils;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static java.util.Collections.*;
+import static java.util.Collections.emptyList;
 
 /**
  * User: Dimitr
@@ -36,6 +30,9 @@ public class RecommendationFacade {
     private BookAuthorRepository bookAuthorRepository;
 
     @Autowired
+    private BookDescriptionRepository bookDescriptionRepository;
+
+    @Autowired
     private AuthorRepository authorRepository;
 
     @Autowired
@@ -51,6 +48,10 @@ public class RecommendationFacade {
         }
 
         return toSimpleBooks(recommendations);
+    }
+
+    public BookDescriptionEntity getBookDescription(Long bookId) {
+        return bookDescriptionRepository.findOne(bookId);
     }
 
     private List<SimpleBookEntity> toSimpleBooks(List<RecommendationEntity> recommendations) {
@@ -72,5 +73,10 @@ public class RecommendationFacade {
         List<BookAuthorEntity> authors = bookAuthorRepository.findAllByBookId(bookId);
         List<Integer> authorIds = authors.stream().map(BookAuthorEntity::getAuthorId).collect(Collectors.toList());
         return authorRepository.findAll(authorIds);
+    }
+
+    // TODO: replace to more optimal method
+    public List<SimpleBookEntity> getRandomBooks(int size) {
+        return simpleBookRepository.findAllRandom();
     }
 }

@@ -3,6 +3,7 @@ package com.liberty.repository;
 import com.liberty.model.SimpleBookEntity;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -15,4 +16,7 @@ import java.util.List;
 @Repository
 public interface SimpleBookRepository extends JpaRepository<SimpleBookEntity, Long> {
     List<SimpleBookEntity> findAllByDeletedFalse(Pageable pageable);
+
+    @Query(nativeQuery=true, value="SELECT *  FROM libbook ORDER BY RAND() LIMIT 10")
+    List<SimpleBookEntity> findAllRandom();
 }
