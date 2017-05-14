@@ -22,6 +22,5 @@ public interface FullBookRepository extends JpaRepository<FullBookEntity, Long> 
     List<FullBookEntity> findAllByGenreIdOrderByRate(Integer genreId, Pageable pageable);
 
     List<FullBookEntity> findAllByAuthorIdAndGenreIdAndTagIdOrderByRate(Long authorId, Integer genreId, Integer tagId, Pageable pageable);
-
-    List<FullBookEntity> findAllByDeletedFalseAndTitleContainingOrderByRateDesc(String title, Pageable pageable);
+    
 }

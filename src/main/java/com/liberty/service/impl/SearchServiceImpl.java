@@ -1,11 +1,9 @@
 package com.liberty.service.impl;
 
-import com.liberty.dto.SearchBookDTO;
+import com.liberty.dto.SearchBookTypeaheadDTO;
 import com.liberty.dto.SearchBookPageResultDTO;
 import com.liberty.facade.RecommendationFacade;
-import com.liberty.model.FullBookEntity;
 import com.liberty.model.SimpleBookEntity;
-import com.liberty.repository.FullBookRepository;
 import com.liberty.repository.SimpleBookRepository;
 import com.liberty.service.SearchService;
 import lombok.extern.slf4j.Slf4j;
@@ -27,37 +25,24 @@ import java.util.stream.Collectors;
 public class SearchServiceImpl implements SearchService{
 
     @Autowired
-    private FullBookRepository repository;
-
-    @Autowired
     private RecommendationFacade facade;
 
     @Autowired
     private SimpleBookRepository simpleBookRepository;
 
-    public List<SearchBookDTO> searchBookTypeAhead(Integer size, String query){
+    public List<SearchBookTypeaheadDTO> searchBookTypeahead(Integer size, String query){
         log.info("Search books in title like '{}' with maximum response size {} ",query,size);
         if(size>100||size<1){
             log.info("Size is out of range 1-100. Set maximum size to 100");
             size=100;
         }
-        List<FullBookEntity> books = searchBook(0,size,query);
+        List<SimpleBookEntity> books = searchBooks(new PageRequest(0,size), query);
 
-        return books.stream().map(fullBookEntity -> new SearchBookDTO(fullBookEntity)).distinct().collect(Collectors.toList());
-    }
-
-    private List<SimpleBookEntity> searchBooksId(Pageable pageRequest, String query){
-        return simpleBookRepository.findAllByTitleContaining(query, pageRequest).getContent();
-    }
-
-    private List<FullBookEntity> searchBook(Integer page, Integer size, String query){
-        List<FullBookEntity> books = recoBookRepository.findAllByDeletedFalseAndTitleContainingOrderByRateDesc(query,  new PageRequest(page, size));
-        log.info("Find {} books in base",books.size());
-        return books;
+        return books.stream().map(fullBookEntity -> new SearchBookTypeaheadDTO(fullBookEntity)).collect(Collectors.toList());
     }
 
     public Page<SearchBookPageResultDTO> searchBookAll(Pageable pageRequest, String query){
-        List<SimpleBookEntity> books = searchBooksId(pageRequest,query);
+        List<SimpleBookEntity> books = searchBooks(pageRequest,query);
         List<SearchBookPageResultDTO> booksDTO =  books.stream().map(book -> {
             SearchBookPageResultDTO searchBookFullDTO = new SearchBookPageResultDTO();
             searchBookFullDTO.setAuthors(facade.getAuthor(book.getBookId()));
@@ -66,6 +51,12 @@ public class SearchServiceImpl implements SearchService{
             return searchBookFullDTO;
         }).collect(Collectors.toList());
         return new PageImpl<SearchBookPageResultDTO>(booksDTO,pageRequest,booksDTO.size());
+    }
+
+    private List<SimpleBookEntity> searchBooks(Pageable pageRequest, String query){
+        Page<SimpleBookEntity> pages = simpleBookRepository.findAllByTitleContaining(query, pageRequest);
+        log.info("{} books finded ",pages.getNumberOfElements());
+        return pages.getContent();
     }
 
 }

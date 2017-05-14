@@ -1,7 +1,7 @@
 package com.liberty.controller;
 
-import com.liberty.dto.SearchBookDTO;
-import com.liberty.service.impl.SearchServiceImpl;
+import com.liberty.dto.SearchBookTypeaheadDTO;
+import com.liberty.service.SearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -14,13 +14,13 @@ import java.util.List;
  * Created by user on 12.05.2017.
  */
 @RestController
-public class SearchBookController {
+public class SearchBookTypeaheadController {
 
     @Autowired
-    private SearchServiceImpl searchServiceImpl;
+    private SearchService searchServiceImpl;
 
     @RequestMapping(value = "/searchbook", method = RequestMethod.GET)
-    public List<SearchBookDTO> searchBook(@RequestParam(value = "size", required = false,defaultValue = "5") Integer size, @RequestParam (value = "q") String query){
-        return searchServiceImpl.searchBook(size,query);
+    public List<SearchBookTypeaheadDTO> searchBookTypeahead(@RequestParam(value = "size", required = false,defaultValue = "5") Integer size, @RequestParam (value = "q") String query){
+        return searchServiceImpl.searchBookTypeahead(size,query);
     }
 }

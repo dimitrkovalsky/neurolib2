@@ -1,6 +1,6 @@
 package com.liberty.controller;
 
-import com.liberty.service.impl.SearchServiceImpl;
+import com.liberty.service.SearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class SearchBookPageController {
 
     @Autowired
-    private SearchServiceImpl searchServiceImpl;
+    private SearchService searchServiceImpl;
 
     @RequestMapping(value = "/searchbookfull", method = RequestMethod.GET)
     public String searchBook(Pageable pageable, @RequestParam(value = "query") String query, Model model){

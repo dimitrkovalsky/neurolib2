@@ -1,6 +1,6 @@
 package com.liberty.service;
 
-import com.liberty.dto.SearchBookDTO;
+import com.liberty.dto.SearchBookTypeaheadDTO;
 import com.liberty.dto.SearchBookPageResultDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,7 +12,7 @@ import java.util.List;
  */
 public interface SearchService {
 
-    List<SearchBookDTO> searchBookTypeAhead(Integer size, String query);
+    List<SearchBookTypeaheadDTO> searchBookTypeahead(Integer size, String query);
 
     Page<SearchBookPageResultDTO> searchBookAll(Pageable pageRequest, String query);
 
