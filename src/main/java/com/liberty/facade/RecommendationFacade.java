@@ -30,6 +30,9 @@ public class RecommendationFacade {
     private GenreRepository genreRepository;
 
     @Autowired
+    private FlibustaCommentRepository flibustaCommentRepository;
+
+    @Autowired
     private BookAuthorRepository bookAuthorRepository;
 
     @Autowired
@@ -71,9 +74,10 @@ public class RecommendationFacade {
         return simpleBookRepository.findOne(bookId);
     }
 
-    // TODO: process if no author
     public List<AuthorEntity> getAuthor(Long bookId) {
         List<BookAuthorEntity> authors = bookAuthorRepository.findAllByBookId(bookId);
+        if (CollectionUtils.isEmpty(authors))
+            return emptyList();
         List<Integer> authorIds = authors.stream().map(BookAuthorEntity::getAuthorId).collect(Collectors.toList());
         return authorRepository.findAll(authorIds);
     }
@@ -83,7 +87,7 @@ public class RecommendationFacade {
         return simpleBookRepository.findAllRandom();
     }
 
-    public List<SimpleBookEntity> getByAuthor(Long authorId) {
+    public List<SimpleBookEntity> getByAuthor(Integer authorId) {
         List<SimpleBookEntity> byAuthor = simpleBookRepository.findAllByAuthor(authorId);
         if (CollectionUtils.isEmpty(byAuthor))
             return emptyList();
@@ -91,10 +95,17 @@ public class RecommendationFacade {
     }
 
     public List<GenreEntity> getGenres(Long bookId) {
-       return genreRepository.getAllGenres(bookId);
+        return genreRepository.getAllGenres(bookId);
     }
 
     public List<SimpleBookEntity> getByGenre(Integer genreId) {
         return simpleBookRepository.findAllByGenre(genreId, 10);
+    }
+
+    public List<FlibustaCommentEntity> getComments(Long bookId) {
+        List<FlibustaCommentEntity> commentEntities = flibustaCommentRepository.findAllByBookIdOrderByTime(bookId);
+        if (commentEntities == null)
+            return emptyList();
+        return commentEntities;
     }
 }
