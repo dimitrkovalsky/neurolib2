@@ -13,7 +13,7 @@ import java.util.List;
  * Time: 21:38
  */
 @Repository
-public interface RecoBookRepository extends JpaRepository<FullBookEntity, Long> {
+public interface FullBookRepository extends JpaRepository<FullBookEntity, Long> {
 
     List<FullBookEntity> findAllByAuthorIdOrderByRate(Long authorId, Pageable pageable);
 

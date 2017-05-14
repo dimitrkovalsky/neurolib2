@@ -1,7 +1,7 @@
 package com.liberty.controller;
 
 import com.liberty.repository.BookAuthorRepository;
-import com.liberty.repository.RecoBookRepository;
+import com.liberty.repository.FullBookRepository;
 import com.liberty.service.DataMinerService;
 import com.liberty.service.RecommendationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ public class BookController {
     private DataMinerService dataMinerService;
 
     @Autowired
-    private RecoBookRepository recoBookRepository;
+    private FullBookRepository fullBookRepository;
 
     @RequestMapping(path = "/{bookId}", method = RequestMethod.GET)
     public void getOne(@PathVariable Long bookId) {

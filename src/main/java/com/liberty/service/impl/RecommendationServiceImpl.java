@@ -1,20 +1,20 @@
 package com.liberty.service.impl;
 
-import com.liberty.model.FullBookEntity;
-import com.liberty.repository.BookRateRepository;
-import com.liberty.repository.RecoBookRepository;
-import com.liberty.repository.SimpleBookRepository;
+import com.liberty.model.*;
+import com.liberty.repository.*;
 import com.liberty.service.RecommendationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static java.util.Collections.emptyList;
 
 /**
  * User: Dimitr
@@ -27,25 +27,34 @@ public class RecommendationServiceImpl implements RecommendationService {
 
     public static final int LIMIT = 10;
     @Autowired
-    private RecoBookRepository repository;
+    private FullBookRepository fullBookRepository;
 
     @Autowired
     private BookRateRepository rateRepository;
 
     @Autowired
+    private TagRepository tagRepository;
+
+    @Autowired
     private SimpleBookRepository simpleBookRepository;
+
+    @Autowired
+    private BookAuthorRepository bookAuthorRepository;
+
+    @Autowired
+    private GenreRepository genreRepository;
 
     @Override
     public List<Long> recommend(Long bookId) {
-        FullBookEntity book = repository.findOne(bookId);
-        if(book == null){
+        FullBookEntity book = fullBookRepository.findOne(bookId);
+        if (book == null) {
             log.info("Can not find full book for {}", bookId);
-            return Collections.emptyList();
+            return getRecommendations(bookId);
         }
         List<FullBookEntity> identical = getIdentical(book);
-        List<FullBookEntity> sameAuthor = repository.findAllByAuthorIdOrderByRate(book.getAuthorId(), top(2));
-        List<FullBookEntity> sameGenre = repository.findAllByGenreIdOrderByRate(book.getGenreId(), top(3));
-        List<FullBookEntity> sameTags = repository.findAllByTagIdOrderByRate(book.getTagId(), top(3));
+        List<FullBookEntity> sameAuthor = fullBookRepository.findAllByAuthorIdOrderByRate(book.getAuthorId(), top(2));
+        List<FullBookEntity> sameGenre = fullBookRepository.findAllByGenreIdOrderByRate(book.getGenreId(), top(3));
+        List<FullBookEntity> sameTags = fullBookRepository.findAllByTagIdOrderByRate(book.getTagId(), top(3));
 
         log.info("Book : {}", book);
         log.info("Identical : {}", identical.size());
@@ -60,14 +69,80 @@ public class RecommendationServiceImpl implements RecommendationService {
         all.addAll(sameTags);
 
         List<Long> ids = all.stream().map(FullBookEntity::getBookId).collect(Collectors.toList());
-//        log.info("Recommended for {}", book);
-//        libBookRepository.findAll(ids).forEach(b -> log.info("Rec # {}", b));
         ids.remove(bookId);
         return ids;
     }
 
+    private List<Long> getRecommendations(Long bookId) {
+        SimpleBookEntity bookEntity = simpleBookRepository.findOne(bookId);
+        if (bookEntity == null) {
+            log.error("Can not find book for {}", bookId);
+            return emptyList();
+        }
+        List<BookAuthorEntity> authors = bookAuthorRepository.findAllByBookId(bookId);
+        List<GenreEntity> genres = genreRepository.getAllGenres(bookId);
+        List<TagEntity> tags = tagRepository.findAllByBookId(bookId);
+        List<Long> ids = new ArrayList<>();
+        ids.addAll(sameAuthorRecommendations(authors));
+        ids.addAll(sameGenreRecommendations(genres));
+        ids.addAll(sameTagRecommendations(tags));
+        log.info("Found {} recommendations for : {}", ids.size(), bookId);
+        return ids;
+    }
+
+    private List<Long> sameTagRecommendations(List<TagEntity> tags) {
+        if (CollectionUtils.isEmpty(tags))
+            return emptyList();
+        if (tags.size() == 1) {
+            List<SimpleBookEntity> byGenres = simpleBookRepository.findAllByTag(tags.get(0).getTagId(), 4);
+            return safeMapToIds(byGenres);
+        }
+        List<SimpleBookEntity> bookEntities = tags.stream()
+                .flatMap(t -> simpleBookRepository.findAllByGenre(t.getTagId(), 2).stream())
+                .collect(Collectors.toList());
+
+        return safeMapToIds(bookEntities);
+    }
+
+    // TODO: refactor use single method with function references
+    private List<Long> sameGenreRecommendations(List<GenreEntity> genres) {
+        if (CollectionUtils.isEmpty(genres))
+            return emptyList();
+        if (genres.size() == 1) {
+            List<SimpleBookEntity> byGenres = simpleBookRepository.findAllByGenre(genres.get(0).getGenreId(), 4);
+            return safeMapToIds(byGenres);
+        }
+        List<SimpleBookEntity> bookEntities = genres.stream()
+                .flatMap(g -> simpleBookRepository.findAllByGenre(g.getGenreId(), 2).stream())
+                .collect(Collectors.toList());
+
+        return safeMapToIds(bookEntities);
+    }
+
+    private List<Long> sameAuthorRecommendations(List<BookAuthorEntity> authors) {
+        if (CollectionUtils.isEmpty(authors))
+            return emptyList();
+        if (authors.size() == 1) {
+            List<SimpleBookEntity> byAuthor = simpleBookRepository.findAllByAuthor(authors.get(0).getAuthorId(), 4);
+            return safeMapToIds(byAuthor);
+        }
+        List<SimpleBookEntity> bookEntities = authors.stream()
+                .flatMap(a -> simpleBookRepository.findAllByAuthor(a.getAuthorId(), 2).stream())
+                .collect(Collectors.toList());
+        return safeMapToIds(bookEntities);
+    }
+
+    private List<Long> safeMapToIds(List<SimpleBookEntity> books) {
+        if (books != null) {
+            return books.stream()
+                    .map(SimpleBookEntity::getBookId)
+                    .collect(Collectors.toList());
+        }
+        return emptyList();
+    }
+
     private List<FullBookEntity> getIdentical(FullBookEntity book) {
-        return repository.findAllByAuthorIdAndGenreIdAndTagIdOrderByRate(book.getAuthorId(),
+        return fullBookRepository.findAllByAuthorIdAndGenreIdAndTagIdOrderByRate(book.getAuthorId(),
                 book.getGenreId(), book.getTagId(), top(5));
     }
 
@@ -77,7 +152,7 @@ public class RecommendationServiceImpl implements RecommendationService {
 
     @Override
     public void evaluate() {
-        repository.findAll(new PageRequest(0, 10))
+        fullBookRepository.findAll(new PageRequest(0, 10))
                 .forEach(x -> recommend(x.getBookId()));
     }
 }

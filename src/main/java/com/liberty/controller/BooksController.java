@@ -30,6 +30,7 @@ public class BooksController {
         model.addAttribute("recommendations", facade.getRecommendations(bookId));
         model.addAttribute("authors", facade.getAuthor(bookId));
         model.addAttribute("genres", facade.getGenres(bookId));
+        model.addAttribute("flibustaComments", facade.getComments(bookId));
         return "book";
     }
 
@@ -42,7 +43,7 @@ public class BooksController {
     }
 
     @RequestMapping("/author/{authorId}/book")
-    public String authorBooks(@PathVariable(name = "authorId") Long authorId, Model model) {
+    public String authorBooks(@PathVariable(name = "authorId") Integer authorId, Model model) {
         List<SimpleBookEntity> books = facade.getByAuthor(authorId);
         model.addAttribute("books", books);
 

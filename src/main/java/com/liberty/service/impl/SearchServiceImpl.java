@@ -2,7 +2,7 @@ package com.liberty.service.impl;
 
 import com.liberty.dto.SearchBookDTO;
 import com.liberty.model.FullBookEntity;
-import com.liberty.repository.RecoBookRepository;
+import com.liberty.repository.FullBookRepository;
 import com.liberty.service.SearchService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 public class SearchServiceImpl implements SearchService{
 
     @Autowired
-    private RecoBookRepository repository;
+    private FullBookRepository repository;
 
     public List<SearchBookDTO> searchBook(Integer size, String query){
         log.info("Search books in title like '{}' with maximum response size {} ",query,size);
