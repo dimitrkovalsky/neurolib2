@@ -28,6 +28,9 @@
                 <li th:classappend="${module == 'profile' ? 'active' : ''}">
                     <a href="#" th:href="@{/profile}">Профиль</a>
                 </li>
+                <li id="remote">
+                    <input class="typeahead form-control" type="text" placeholder="Search Book"/>
+                </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li sec:authorize="isAuthenticated()">

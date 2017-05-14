@@ -1,3 +1,23 @@
 .content {
     margin-top: 40px;
+
+}
+#remote span{
+    margin: 9px 0;
+}
+
+#remote .tt-menu{
+    background: white;
+    border: 1px solid #ccc;
+    width: 200%;
+}
+
+#remote .tt-menu .tt-suggestion:hover{
+    background: #aeb9cc;
+    color: white;
+    cursor: pointer;
+}
+
+#remote .tt-menu .tt-suggestion{
+    margin: 0 10px;
 }
