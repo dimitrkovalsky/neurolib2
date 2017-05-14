@@ -32,6 +32,9 @@ public class FullBookEntity {
     @Column(name = "Lang")
     private String lang;
 
+    @Column(name = "Title")
+    private String title;
+
     @Column(name = "Deleted")
     private Boolean deleted;
 
