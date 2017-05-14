@@ -1,6 +1,7 @@
 package com.liberty.repository;
 
 import com.liberty.model.SimpleBookEntity;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -32,4 +33,10 @@ public interface SimpleBookRepository extends JpaRepository<SimpleBookEntity, Lo
 
     @Query(nativeQuery = true, value = "SELECT * FROM libbook WHERE BookId IN (SELECT BookId FROM libseq WHERE SeqId = :tagId) ORDER BY RAND() LIMIT :size ")
     List<SimpleBookEntity> findAllByTag(@Param("tagId") Integer tagId, @Param("size") Integer size);
+
+    @Query(nativeQuery = true,
+            value = "SELECT * FROM libbook b INNER JOIN rate_view r on b.BookId = r.BookId WHERE b.Title LIKE %:title% AND b.Deleted = false  \n#pageable\n",
+            countQuery = "SELECT COUNT(*) FROM libbook b  WHERE b.Title LIKE %:title% AND b.Deleted = false")
+    Page<SimpleBookEntity> findAllByTitleContaining(@Param("title") String title, Pageable pageable);
+
 }
