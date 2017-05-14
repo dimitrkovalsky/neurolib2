@@ -18,7 +18,7 @@ public class SearchBookPageController {
     @Autowired
     private SearchService searchServiceImpl;
 
-    @RequestMapping(value = "/searchbookfull", method = RequestMethod.GET)
+    @RequestMapping(value = "/searchbook", method = RequestMethod.GET)
     public String searchBook(Pageable pageable, @RequestParam(value = "query") String query, Model model){
         model.addAttribute("books",searchServiceImpl.searchBookAll(pageable,query));
         model.addAttribute("query", query);

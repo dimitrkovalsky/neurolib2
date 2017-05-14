@@ -19,7 +19,7 @@ public class SearchBookTypeaheadController {
     @Autowired
     private SearchService searchServiceImpl;
 
-    @RequestMapping(value = "/searchbook", method = RequestMethod.GET)
+    @RequestMapping(value = "/searchbooktypeahead", method = RequestMethod.GET)
     public List<SearchBookTypeaheadDTO> searchBookTypeahead(@RequestParam(value = "size", required = false,defaultValue = "5") Integer size, @RequestParam (value = "q") String query){
         return searchServiceImpl.searchBookTypeahead(size,query);
     }

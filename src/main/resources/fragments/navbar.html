@@ -29,12 +29,18 @@
                     <a href="#" th:href="@{/profile}">Профиль</a>
                 </li>
                 <li id="remote">
-                    <input class="typeahead form-control" type="text" placeholder="Search Book"/>
+                    <form th:action="@{/searchbook}">
+                        <input class="typeahead form-control" type="text" name="query" placeholder="Search Book" autocomplete="off"/>
+                        <input type="hidden" name="size" value="10"/>
+                        <input type="hidden" name="page" value="0"/>
+                        <input type="hidden" name="sort" value="r.Rate,DESC"/>
+                        <button type="submit" class="btn btn-primary" style="display: none"/>
+                    </form>
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li sec:authorize="isAuthenticated()">
-                    <img th:src="${#authentication.credentials.avatar}" width="50px"/>
+                    <img th:src="${#authentication.credentials.avatar}" width="50px" class="round"/>
                 </li>
                 <li sec:authorize="isAuthenticated()">
                     <a th:href="@{/profile}">
@@ -46,7 +52,6 @@
                         <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>&nbsp;Sign Out
                     </a>
                     <form method="POST" th:action="@{/signout}" id="signout">
-                        <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
                     </form>
                 </li>
 

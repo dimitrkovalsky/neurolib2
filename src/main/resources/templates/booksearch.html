@@ -6,7 +6,7 @@
 <div th:replace="../fragments/navbar::navbar"></div>
 <div class="container content" style="margin-top: 65px">
     <div class="col-md-12">
-        <form th:action="@{/searchbookfull}">
+        <form th:action="@{/searchbook}">
             <div class="form-group col-md-11">
                 <input type="search" class="form-control" id="search-form" placeholder="Поиск по названию" name="query" th:value="${query}"/>
                 <input type="hidden" name="size" value="10"/>
