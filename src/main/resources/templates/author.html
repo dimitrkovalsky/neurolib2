@@ -1,0 +1,49 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:replace="../fragments/head::head (${book.title})"></div>
+
+<body>
+<div th:replace="../fragments/navbar::navbar"></div>
+<div class="container content" style="margin-top: 65px">
+
+    <div class="col-md-12">
+        <img class="col-md-3" th:src="@{/api/images/author/{id}(id = ${author.authorId})}"/>
+        <div class="col-md-9">
+            <h1 th:text="${author.lastName}"/>
+            
+        </div>
+        
+    </div>
+
+    <div class="col-md-12 panel panel-success" style="margin-top: 30px">
+        <div class="panel-heading">Похожие</div>
+        <div class="panel-body">
+           
+        </div>
+    </div>
+    <div class="col-md-12" style="margin-top: 30px">
+        <th:block th:each="comment : ${flibustaComments}">
+            <div class="row">
+                <div class="col-md-1">
+                    <div class="thumbnail">
+                        <img class="img-responsive user-photo" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png"/>
+                    </div>
+                </div>
+
+                <div class="col-md-11">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <strong th:text="${comment.name}"></strong>
+                            <span class="text-muted" th:text="${comment.time}"></span>
+                        </div>
+                        <div class="panel-body">
+                            <span th:text="${comment.text}"> </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </th:block>
+    </div>
+</div>
+</body>
+</html>

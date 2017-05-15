@@ -28,9 +28,9 @@
                 <li th:classappend="${module == 'profile' ? 'active' : ''}">
                     <a href="#" th:href="@{/profile}">Профиль</a>
                 </li>
-                <li id="remote">
-                    <form th:action="@{/searchbook}">
-                        <input class="typeahead form-control" type="text" name="query" placeholder="Search Book" autocomplete="off"/>
+                <li id="remote" >
+                    <form th:action="@{/searchbook}"  class="col-md-3" >
+                        <input class="typeahead form-control col-md-3" style="width: 400px" type="text" name="query" placeholder="Поиск" autocomplete="on"/>
                         <input type="hidden" name="size" value="10"/>
                         <input type="hidden" name="page" value="0"/>
                         <input type="hidden" name="sort" value="r.Rate,DESC"/>
