@@ -8,7 +8,7 @@ $(document).ready(function() {
         datumTokenizer: Bloodhound.tokenizers.obj.whitespace('title'),
         queryTokenizer: Bloodhound.tokenizers.whitespace,
         remote: {
-            url: '/searchbook?q=%QUERY&size=20',
+            url: '/searchbooktypeahead?q=%QUERY&size=5',
             wildcard: '%QUERY'
         }
     });
