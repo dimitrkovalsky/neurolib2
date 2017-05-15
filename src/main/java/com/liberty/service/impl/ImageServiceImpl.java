@@ -66,4 +66,9 @@ public class ImageServiceImpl implements ImageService {
 
         return getImageFile(path);
     }
+
+    @Override
+    public Optional<File> getBookImage(String rootDir, String dir, String file) {
+        return Optional.empty();
+    }
 }

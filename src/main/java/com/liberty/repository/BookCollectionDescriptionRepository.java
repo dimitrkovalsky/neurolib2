@@ -1,10 +1,8 @@
 package com.liberty.repository;
 
-import com.liberty.model.TagEntity;
+import com.liberty.model.BookCollectionDescriptionEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
 
 /**
  * User: Dimitr
@@ -12,7 +10,6 @@ import java.util.List;
  * Time: 21:38
  */
 @Repository
-public interface TagRepository extends JpaRepository<TagEntity, Long> {
+public interface BookCollectionDescriptionRepository extends JpaRepository<BookCollectionDescriptionEntity, Integer> {
 
-    List<TagEntity> findAllByBookId(Long bookId);
 }

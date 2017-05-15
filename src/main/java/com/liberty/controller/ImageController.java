@@ -21,23 +21,29 @@ import java.util.Optional;
  * Time: 21:48
  */
 @RestController
-@RequestMapping("/api/images")
+@RequestMapping
 @Slf4j
 public class ImageController {
 
     @Autowired
     private ImageService imageService;
 
-    @RequestMapping(value = "/author/{id}", method = RequestMethod.GET, produces = MediaType
+    @RequestMapping(value = "/api/images/author/{id}", method = RequestMethod.GET, produces = MediaType
             .IMAGE_JPEG_VALUE)
     public ResponseEntity<?> getAuthor(@PathVariable Long id) {
         Optional<File> image = imageService.getAuthorImage(id);
         return sendImage(image);
     }
 
-    @RequestMapping(value = "/book/{id}", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
+    @RequestMapping(value = "/api/images/book/{id}", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
     public ResponseEntity<?> getBookImage(@PathVariable Long id) {
         Optional<File> image = imageService.getBookImage(id);
+        return sendImage(image);
+    }
+    //TODO: crawl images
+    @RequestMapping(value = "/i/{rootDir}/{dir}/{file}", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
+    public ResponseEntity<?> getBookImage(@PathVariable String rootDir, @PathVariable String dir, @PathVariable String file) {
+        Optional<File> image = imageService.getBookImage(rootDir, dir, file);
         return sendImage(image);
     }
 

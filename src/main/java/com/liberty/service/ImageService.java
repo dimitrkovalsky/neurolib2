@@ -12,4 +12,6 @@ public interface ImageService {
     Optional<File> getAuthorImage(Long id);
 
     Optional<File> getBookImage(Long id);
+
+    Optional<File> getBookImage(String rootDir, String dir, String file);
 }

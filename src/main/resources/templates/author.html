@@ -1,6 +1,6 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
-<div th:replace="../fragments/head::head (${book.title})"></div>
+<div th:replace="../fragments/head::head (${author.lastName})"></div>
 
 <body>
 <div th:replace="../fragments/navbar::navbar"></div>
@@ -9,16 +9,24 @@
     <div class="col-md-12">
         <img class="col-md-3" th:src="@{/api/images/author/{id}(id = ${author.authorId})}"/>
         <div class="col-md-9">
-            <h1 th:text="${author.lastName}"/>
-            
+            <h1 th:text="${author.firstName} + ' ' +${author.middleName} + ' ' + ${author.lastName}"/>
         </div>
-        
+        <div style="margin-top: 115px" th:utext="${biography}"></div>
+
+        <div th:each="col : ${collections}">
+            <h3 th:text="${col.key.seqName}">Collection name</h3>
+            <div th:each="book : ${col.value}">
+                <a th:href="@{/book/{bookId}(bookId = ${book.bookId})}">
+                    <span th:text="${book.title}"></span>
+                </a>
+            </div>
+        </div>
     </div>
 
     <div class="col-md-12 panel panel-success" style="margin-top: 30px">
         <div class="panel-heading">Похожие</div>
         <div class="panel-body">
-           
+
         </div>
     </div>
     <div class="col-md-12" style="margin-top: 30px">

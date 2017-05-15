@@ -33,7 +33,7 @@ public class RecommendationServiceImpl implements RecommendationService {
     private BookRateRepository rateRepository;
 
     @Autowired
-    private TagRepository tagRepository;
+    private BookCollectionRepository bookCollectionRepository;
 
     @Autowired
     private SimpleBookRepository simpleBookRepository;
@@ -81,7 +81,7 @@ public class RecommendationServiceImpl implements RecommendationService {
         }
         List<BookAuthorEntity> authors = bookAuthorRepository.findAllByBookId(bookId);
         List<GenreEntity> genres = genreRepository.getAllGenres(bookId);
-        List<TagEntity> tags = tagRepository.findAllByBookId(bookId);
+        List<BookCollectionEntity> tags = bookCollectionRepository.findAllByBookId(bookId);
         List<Long> ids = new ArrayList<>();
         ids.addAll(sameAuthorRecommendations(authors));
         ids.addAll(sameGenreRecommendations(genres));
@@ -90,7 +90,7 @@ public class RecommendationServiceImpl implements RecommendationService {
         return ids;
     }
 
-    private List<Long> sameTagRecommendations(List<TagEntity> tags) {
+    private List<Long> sameTagRecommendations(List<BookCollectionEntity> tags) {
         if (CollectionUtils.isEmpty(tags))
             return emptyList();
         if (tags.size() == 1) {

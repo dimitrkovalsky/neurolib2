@@ -10,8 +10,8 @@
         <th:block th:each="author : ${authors}">
             <div class="col-md-4">
                 <img class="col-md-3" th:src="@{/api/images/author/{id}(id = ${author.authorId})}"/>
-                <a th:href="@{/authro/{id}(id = ${author.authorId})}">
-                    <p class="media-heading" th:text=" ${author.lastName}"></p>
+                <a th:href="@{/author/{id}(id = ${author.authorId})}">
+                    <span class="media-heading" th:text="${author.firstName} + ' ' +${author.middleName} + ' ' + ${author.lastName}"></span>
                 </a>
             </div>
         </th:block>
