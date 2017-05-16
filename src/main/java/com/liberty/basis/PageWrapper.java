@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 /**
  * Created by user on 16.05.2017.
  */
+//Before using pagination bar you must create new instance of PageWrapper class from Page<T> and put it to model
 public class PageWrapper<T> {
     public static final int MAX_PAGE_ITEM_DISPLAY = 5;
     private Page<T> page;
@@ -30,6 +31,7 @@ public class PageWrapper<T> {
 
     public PageWrapper(Page<T> page, HttpServletRequest request){
         this(page, "");
+        //Clear all request parameters that relate to paging (also i clear csrf).
         LinkedHashMap<String,List<String>> paramsWithoutPagingMap = new LinkedHashMap<>();
 
         for(Map.Entry<String,String[]> parameter:request.getParameterMap().entrySet()){
@@ -43,7 +45,6 @@ public class PageWrapper<T> {
             }
 
         }
-
 
         MultiValueMap<String,String> paramsWithoutPagingMultiMap = new LinkedMultiValueMap<>(paramsWithoutPagingMap);
         UriComponents uriComponents = UriComponentsBuilder.fromPath(request.getRequestURI()).queryParams(paramsWithoutPagingMultiMap).build();
