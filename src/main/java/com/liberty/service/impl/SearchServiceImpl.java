@@ -36,27 +36,27 @@ public class SearchServiceImpl implements SearchService{
             log.info("Size is out of range 1-100. Set maximum size to 100");
             size=100;
         }
-        List<SimpleBookEntity> books = searchBooks(new PageRequest(0,size), query);
+        List<SimpleBookEntity> books = searchBooks(new PageRequest(0,size), query).getContent();
 
         return books.stream().map(fullBookEntity -> new SearchBookTypeaheadDTO(fullBookEntity)).collect(Collectors.toList());
     }
 
-    public Page<SearchBookPageResultDTO> searchBookAll(Pageable pageRequest, String query){
-        List<SimpleBookEntity> books = searchBooks(pageRequest,query);
-        List<SearchBookPageResultDTO> booksDTO =  books.stream().map(book -> {
-            SearchBookPageResultDTO searchBookFullDTO = new SearchBookPageResultDTO();
-            searchBookFullDTO.setAuthors(facade.getAuthor(book.getBookId()));
-            searchBookFullDTO.setBook(book);
-            searchBookFullDTO.setGenres(facade.getGenres(book.getBookId()));
-            return searchBookFullDTO;
+    public Page<SearchBookPageResultDTO> searchBookAll(Pageable paginationRequest, String query){
+        Page<SimpleBookEntity> books = searchBooks(paginationRequest,query);
+        List<SearchBookPageResultDTO> booksDTOList =  books.getContent().stream().map(book -> {
+            SearchBookPageResultDTO searchBookPageResultDTO = new SearchBookPageResultDTO();
+            searchBookPageResultDTO.setAuthors(facade.getAuthor(book.getBookId()));
+            searchBookPageResultDTO.setBook(book);
+            searchBookPageResultDTO.setGenres(facade.getGenres(book.getBookId()));
+            return searchBookPageResultDTO;
         }).collect(Collectors.toList());
-        return new PageImpl<SearchBookPageResultDTO>(booksDTO,pageRequest,booksDTO.size());
+        return new PageImpl<SearchBookPageResultDTO>(booksDTOList,paginationRequest,books.getTotalElements());
     }
 
-    private List<SimpleBookEntity> searchBooks(Pageable pageRequest, String query){
-        Page<SimpleBookEntity> pages = simpleBookRepository.findAllByTitleContaining(query, pageRequest);
+    private Page<SimpleBookEntity> searchBooks(Pageable paginationRequest, String query){
+        Page<SimpleBookEntity> pages = simpleBookRepository.findAllByTitleContaining(query, paginationRequest);
         log.info("{} books finded ",pages.getNumberOfElements());
-        return pages.getContent();
+        return pages;
     }
 
 }
