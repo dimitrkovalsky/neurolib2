@@ -1,0 +1,20 @@
+<div class="col s12 m7" xmlns:th="http://www.w3.org/1999/xhtml" th:fragment="card">
+    <a th:href="@{/book/{id}(id = ${book.bookId})}">
+        <h4 class="header" th:text=" ${book.title}">Book name</h4>
+    </a>
+    <div class="card horizontal">
+        <div class="card-image">
+            <img th:src="@{/api/images/book/{id}(id = ${book.bookId})}"/>
+        </div>
+        <div class="card-stacked">
+            <div class="card-content">
+                <p>Author</p>
+            </div>
+            <div class="card-action">
+                <a th:href="@{/book/{id}(id = ${book.bookId})}">
+                    Подробние
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

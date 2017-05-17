@@ -1,0 +1,21 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:replace="../fragments/head::head (Случайные)"></div>
+
+<body>
+<div th:replace="../fragments/navbar::navbar"></div>
+<div class="container content" style="margin-top: 130px">
+
+    <div class="col-md-6">
+        <th:block th:each="book : ${left}">
+            <div th:replace="../fragments/book-card :: card">...</div>
+        </th:block>
+    </div>
+    <div class="col-md-6">
+        <th:block th:each="book : ${right}">
+            <div th:replace="../fragments/book-card :: card">...</div>
+        </th:block>
+    </div>
+</div>
+</body>
+</html>

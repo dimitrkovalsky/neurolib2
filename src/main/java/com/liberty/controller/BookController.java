@@ -1,5 +1,7 @@
 package com.liberty.controller;
 
+import com.liberty.common.CollectionDivider;
+import com.liberty.dto.TwoColumnDto;
 import com.liberty.facade.RecommendationFacade;
 import com.liberty.model.BookDescriptionEntity;
 import com.liberty.model.SimpleBookEntity;
@@ -37,9 +39,11 @@ public class BookController {
     @RequestMapping("/book/random")
     public String randomBooks(Model model) {
         List<SimpleBookEntity> books = facade.getRandomBooks(10);
-        model.addAttribute("books", books);
+        TwoColumnDto<SimpleBookEntity> divided = CollectionDivider.divide(books);
+        model.addAttribute("left", divided.getLeftColumn());
+        model.addAttribute("right", divided.getRightColumn());
 
-        return "book-list";
+        return "book-cards";
     }
 
     @RequestMapping("/author/{authorId}/book")

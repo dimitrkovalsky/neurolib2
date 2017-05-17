@@ -4,78 +4,56 @@
 
 
 <body>
-<nav class="navbar navbar-default navbar-fixed-top" th:fragment="navbar">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="#">Neurolib</a>
-        </div>
-        <div class="navbar-collapse collapse">
-            <ul class="nav navbar-nav">
-                <li th:classappend="${module == 'books' ? 'active' : ''}">
-                    <a href="#" th:href="@{/book/random}">Книги</a>
-                </li>
-                <li th:classappend="${module == 'genres' ? 'active' : ''}">
-                    <a href="#" th:href="@{/genres}">Жанры</a>
-                </li>
-                <li th:classappend="${module == 'authors' ? 'active' : ''}">
-                    <a href="#" th:href="@{/author/random}">Авторы</a>
-                </li>
-                <!--<li th:classappend="${module == 'quotes' ? 'active' : ''}">-->
-                    <!--<a href="#" th:href="@{/quotes}">Цитаты</a>-->
-                <!--</li>-->
-                <li th:classappend="${module == 'reco' ? 'active' : ''}">
-                    <a href="#" th:href="@{/reco}">Рекомендации</a>
-                </li>
-                <!--<li th:classappend="${module == 'rating' ? 'active' : ''}">-->
-                    <!--<a href="#" th:href="@{/rate}">Рейтинг</a>-->
-                <!--</li>-->
-                <li th:classappend="${module == 'profile' ? 'active' : ''}">
-                    <a href="#" th:href="@{/profile}">Профиль</a>
-                </li>
-                <li id="remote">
-                    <form th:action="@{/searchbook}" class="col-md-2">
-                        <input class="typeahead form-control col-md-2" style="width: 250px" type="text" name="query"
-                               placeholder="Поиск" autocomplete="on"/>
-                        <input type="hidden" name="size" value="10"/>
-                        <input type="hidden" name="page" value="0"/>
-                        <input type="hidden" name="sort" value="r.Rate,DESC"/>
-                        <button type="submit" class="btn btn-primary" style="display: none"/>
-                    </form>
-                </li>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <li sec:authorize="isAuthenticated()">
-                    <img th:src="${#authentication.credentials.avatar}" width="50px" class="round"/>
-                </li>
-                <li sec:authorize="isAuthenticated()">
-                    <a th:href="@{/profile}">
-                        <span sec:authentication="credentials.firstName">User Name</span>
-                    </a>
-                </li>
-                <li sec:authorize="isAuthenticated()">
-                    <a href="#" onclick="document.getElementById('signout').submit();">
-                        <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>&nbsp;Sign Out
-                    </a>
-                    <form method="POST" th:action="@{/signout}" id="signout">
-                    </form>
-                </li>
+<nav class="nav-wrapper navbar-fixed" th:fragment="navbar">
+    <a href="#" class="brand-logo">Neurolib</a>
+    <ul class="right hide-on-med-and-down">
+        <li th:classappend="${module == 'books' ? 'active' : ''}">
+            <a href="#" th:href="@{/book/random}">Книги</a>
+        </li>
+        <li th:classappend="${module == 'genres' ? 'active' : ''}">
+            <a href="#" th:href="@{/genres}">Жанры</a>
+        </li>
+        <li th:classappend="${module == 'authors' ? 'active' : ''}">
+            <a href="#" th:href="@{/author/random}">Авторы</a>
+        </li>
+        <li th:classappend="${module == 'reco' ? 'active' : ''}">
+            <a href="#" th:href="@{/reco}">Рекомендации</a>
+        </li>
+        <li th:classappend="${module == 'profile' ? 'active' : ''}">
+            <a href="#" th:href="@{/profile}">Профиль</a>
+        </li>
+        <li id="remote">
+            <form th:action="@{/searchbook}" class="col-md-2">
+                <input class="typeahead form-control col-md-2" style="width: 250px" type="text" name="query"
+                       placeholder="Поиск" autocomplete="on"/>
+                <input type="hidden" name="size" value="10"/>
+                <input type="hidden" name="page" value="0"/>
+                <input type="hidden" name="sort" value="r.Rate,DESC"/>
+                <button type="submit" class="btn btn-primary" style="display: none"/>
+            </form>
+        </li>
+        <li sec:authorize="isAuthenticated()">
+            <img th:src="${#authentication.credentials.avatar}" width="50px" class="round"/>
+        </li>
+        <li sec:authorize="isAuthenticated()">
+            <a th:href="@{/profile}">
+                <span sec:authentication="credentials.firstName">User Name</span>
+            </a>
+        </li>
+        <li sec:authorize="isAuthenticated()">
+            <a href="#" onclick="document.getElementById('signout').submit();">
+                <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>&nbsp;Sign Out
+            </a>
+            <form method="POST" th:action="@{/signout}" id="signout">
+            </form>
+        </li>
 
-                <li sec:authorize="isAnonymous()">
-                    <a href="/signin" th:href="@{/signin}">
-                        <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>&nbsp;Sign in
-                    </a>
-                </li>
-                <li>&nbsp;</li>
-
-            </ul>
-        </div>
-        <!--/.nav-collapse -->
-    </div>
+        <li sec:authorize="isAnonymous()">
+            <a href="/signin" th:href="@{/signin}">
+                <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>&nbsp;Sign in
+            </a>
+        </li>
+    </ul>
 </nav>
 </body>
 </html>
