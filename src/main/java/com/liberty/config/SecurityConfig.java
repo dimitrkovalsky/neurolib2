@@ -28,7 +28,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/connect/**").denyAll()
-                .antMatchers( "/favicon.ico", "/resources/**", "api/images/**", "/signin/**", "/book/**", "author/**","/searchbook").permitAll()
+                .antMatchers( "/favicon.ico", "/resources/**", "/api/images/**", "/signin/**", "/book/**", "author/**","/searchbook").permitAll()
                 .antMatchers("/**").authenticated();
 
     }
