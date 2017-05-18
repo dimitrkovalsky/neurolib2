@@ -19,16 +19,16 @@
         </form>
     </div>
     <br/>
-    <th:block th:each="book : ${books.content}">
+    <th:block th:each="bookInfo : ${page.content}">
         <div class="col-md-12">
-            <a th:href="@{/book/{id}(id = ${book.book.bookId})}" >
-                <img class="col-md-1" th:src="@{/api/images/book/{id}(id = ${book.book.bookId})}"/>
+            <a th:href="@{/book/{id}(id = ${bookInfo.book.bookId})}" >
+                <img class="col-md-1" th:src="@{/api/images/book/{id}(id = ${bookInfo.book.bookId})}"/>
             </a>
             <div class="col-md-11">
-                <a th:href="@{/book/{id}(id = ${book.book.bookId})}" >
-                    <h3 th:text="${book.book.title}"/>
+                <a th:href="@{/book/{id}(id = ${bookInfo.book.bookId})}" >
+                    <h3 th:text="${bookInfo.book.title}"/>
                 </a>
-                <th:block th:each="author : ${book.authors}">
+                <th:block th:each="author : ${bookInfo.authors}">
                     <div th:inline="text">
                         <a th:href="@{/author/{authorId}/book(authorId = ${author.authorId})}">
                             <span th:text="${author.firstName}"></span>
@@ -36,7 +36,7 @@
                         </a>
                     </div>
                 </th:block>
-                <th:block th:each="genre : ${book.genres}">
+                <th:block th:each="genre : ${bookInfo.genres}">
                     <a th:href="@{/genre/{genreId}(genreId = ${genre.genreId})}">
                         <span th:text="${genre.genreDesc}"></span>
                     </a>
@@ -45,6 +45,7 @@
         </div>
         <br/>
     </th:block>
+    <div  th:replace="../fragments/paginationbar::paginationbar"></div>
 </div>
 </body>
 </html>
