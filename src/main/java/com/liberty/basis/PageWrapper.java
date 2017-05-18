@@ -1,5 +1,6 @@
 package com.liberty.basis;
 
+import lombok.Data;
 import org.springframework.data.domain.Page;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -14,6 +15,7 @@ import java.util.stream.Collectors;
  * Created by user on 16.05.2017.
  */
 //Before using pagination bar you must create new instance of PageWrapper class from Page<T> and put it to model
+    @Data
 public class PageWrapper<T> {
     public static final int MAX_PAGE_ITEM_DISPLAY = 5;
     private Page<T> page;
@@ -31,6 +33,21 @@ public class PageWrapper<T> {
 
     public PageWrapper(Page<T> page, HttpServletRequest request){
         this(page, "");
+        setUrl(clearPaginationParametersFromRequest(request));
+    }
+
+    public PageWrapper(Page<T> page, String url){
+        this.page = page;
+        this.url = url;
+        items = new ArrayList<PageItem>();
+
+        currentNumber = page.getNumber() + 1; //start from 1 to match page.page
+
+        init(page);
+
+    }
+
+    private String clearPaginationParametersFromRequest(HttpServletRequest request){
         //Clear all request parameters that relate to paging (also i clear csrf).
         LinkedHashMap<String,List<String>> paramsWithoutPagingMap = new LinkedHashMap<>();
 
@@ -49,16 +66,10 @@ public class PageWrapper<T> {
         MultiValueMap<String,String> paramsWithoutPagingMultiMap = new LinkedMultiValueMap<>(paramsWithoutPagingMap);
         UriComponents uriComponents = UriComponentsBuilder.fromPath(request.getRequestURI()).queryParams(paramsWithoutPagingMultiMap).build();
 
-        setUrl(uriComponents.toString());
+        return uriComponents.toString();
     }
 
-    public PageWrapper(Page<T> page, String url){
-        this.page = page;
-        this.url = url;
-        items = new ArrayList<PageItem>();
-
-        currentNumber = page.getNumber() + 1; //start from 1 to match page.page
-
+    private void init(Page<T> page){
         int start, size;
         if (page.getTotalPages() <= MAX_PAGE_ITEM_DISPLAY){
             start = 1;
@@ -79,14 +90,6 @@ public class PageWrapper<T> {
         for (int i = 0; i<size; i++){
             items.add(new PageItem(start+i, (start+i)==currentNumber));
         }
-    }
-
-    public List<PageItem> getItems(){
-        return items;
-    }
-
-    public int getNumber(){
-        return currentNumber;
     }
 
     public int getRealNumber(){
@@ -135,6 +138,7 @@ public class PageWrapper<T> {
                 '}';
     }
 
+    @Data
     public class PageItem {
         private int number;
         private boolean current;
@@ -143,16 +147,9 @@ public class PageWrapper<T> {
             this.current = current;
         }
 
-        public int getNumber(){
-            return this.number;
-        }
-
         public int getRealNumber(){
             return this.number-1;
         }
 
-        public boolean isCurrent(){
-            return this.current;
-        }
     }
 }
