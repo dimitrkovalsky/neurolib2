@@ -1,6 +1,6 @@
 package com.liberty.controller;
 
-import com.liberty.basis.PageWrapper;
+import com.liberty.common.PageWrapper;
 import com.liberty.dto.SearchBookPageResultDTO;
 import com.liberty.service.SearchService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package com.liberty.basis;
+package com.liberty.common;
 
 import lombok.Data;
 import org.springframework.data.domain.Page;

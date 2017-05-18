@@ -1,4 +1,4 @@
-package com.liberty.basis.enumeration;
+package com.liberty.common.enumeration;
 
 /**
  * Created by user on 06.05.2017.

@@ -1,0 +1,48 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:replace="../fragments/head::head ('Книжная полка')"></div>
+
+<body>
+<div th:replace="../fragments/navbar::navbar"></div>
+<div class="container content" style="margin-top: 65px">
+
+    <form th:action="@{/shelf}"  method="post">
+        <div class="form-group col-md-11">
+            <input class="form-control" id="search-form" placeholder="id книги" name="bookId"/>
+        </div>
+        <div class="form-group col-md-1">
+            <button type="submit" class="btn btn-primary">Добавить</button>
+        </div>
+    </form>
+
+    <th:block th:each="bookInfo : ${booksInShelf}">
+        <div class="col-md-12">
+            <a th:href="@{/book/{id}(id = ${bookInfo.book.bookId})}" >
+                <img class="col-md-1" th:src="@{/api/images/book/{id}(id = ${bookInfo.book.bookId})}"/>
+            </a>
+            <div class="col-md-11">
+                <a th:href="@{/book/{id}(id = ${bookInfo.book.bookId})}" >
+                    <h3 th:text="${bookInfo.book.title}"/>
+                </a>
+                <th:block th:each="author : ${bookInfo.authors}">
+                    <div th:inline="text">
+                        <a th:href="@{/author/{authorId}/book(authorId = ${author.authorId})}">
+                            <span th:text="${author.firstName}"></span>
+                            <span th:text="${author.LastName}"></span>
+                        </a>
+                    </div>
+                </th:block>
+                <th:block th:each="genre : ${bookInfo.genres}">
+                    <a th:href="@{/genre/{genreId}(genreId = ${genre.genreId})}">
+                        <span th:text="${genre.genreDesc}"></span>
+                    </a>
+                </th:block>
+                <span th:text="${(bookInfo.userBookRate==null)?'Вы еще не голосовали':bookInfo.userBookRate}"></span>
+
+            </div>
+        </div>
+        <br/>
+    </th:block>
+</div>
+</body>
+</html>
