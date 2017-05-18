@@ -3,6 +3,7 @@ package com.liberty.controller;
 import com.liberty.common.CollectionDivider;
 import com.liberty.dto.TwoColumnDto;
 import com.liberty.facade.RecommendationFacade;
+import com.liberty.model.BookCardEntity;
 import com.liberty.model.BookDescriptionEntity;
 import com.liberty.model.SimpleBookEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,8 +39,8 @@ public class BookController {
 
     @RequestMapping("/book/random")
     public String randomBooks(Model model) {
-        List<SimpleBookEntity> books = facade.getRandomBooks(10);
-        TwoColumnDto<SimpleBookEntity> divided = CollectionDivider.divide(books);
+        List<BookCardEntity> books = facade.getRandomBooks(10);
+        TwoColumnDto<BookCardEntity> divided = CollectionDivider.divide(books);
         model.addAttribute("left", divided.getLeftColumn());
         model.addAttribute("right", divided.getRightColumn());
 

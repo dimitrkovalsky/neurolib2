@@ -19,8 +19,8 @@ import java.util.List;
 public interface SimpleBookRepository extends JpaRepository<SimpleBookEntity, Long> {
     List<SimpleBookEntity> findAllByDeletedFalse(Pageable pageable);
 
-    @Query(nativeQuery = true, value = "SELECT *  FROM libbook ORDER BY RAND() LIMIT 10")
-    List<SimpleBookEntity> findAllRandom();
+    @Query(nativeQuery = true, value = "SELECT *  FROM libbook WHERE Deleted=False ORDER BY RAND() LIMIT :size ")
+    List<SimpleBookEntity> findAllRandom(@Param("size") int size);
 
     @Query(nativeQuery = true, value = "SELECT * FROM libbook WHERE BookId IN ( SELECT BookId FROM neurolib.libavtor WHERE AvtorId = :id)")
     List<SimpleBookEntity> findAllByAuthor(@Param("id") Integer authorId);
@@ -35,8 +35,8 @@ public interface SimpleBookRepository extends JpaRepository<SimpleBookEntity, Lo
     List<SimpleBookEntity> findAllByTag(@Param("tagId") Integer tagId, @Param("size") Integer size);
 
     @Query(nativeQuery = true,
-            value = "SELECT * FROM libbook b INNER JOIN rate_view r on b.BookId = r.BookId WHERE b.Title LIKE %:title% AND b.Deleted = false  \n#pageable\n",
-            countQuery = "SELECT COUNT(*) FROM libbook b  WHERE b.Title LIKE %:title% AND b.Deleted = false")
+            value = "SELECT * FROM libbook b INNER JOIN rate_view r ON b.BookId = r.BookId WHERE b.Title LIKE %:title% AND b.Deleted = FALSE  \n#pageable\n",
+            countQuery = "SELECT COUNT(*) FROM libbook b  WHERE b.Title LIKE %:title% AND b.Deleted = FALSE")
     Page<SimpleBookEntity> findAllByTitleContaining(@Param("title") String title, Pageable pageable);
 
 }

@@ -11,15 +11,19 @@
         <div class="col-md-9">
             <h1 th:text="${author.firstName} + ' ' +${author.middleName} + ' ' + ${author.lastName}"/>
         </div>
-        <div style="margin-top: 115px" th:utext="${biography}"></div>
+        <div style="margin-top: 115px; text-align: justify;" th:utext="${biography}"></div>
 
         <div th:each="col : ${collections}">
             <h3 th:text="${col.key.seqName}">Collection name</h3>
-            <div th:each="book : ${col.value}">
-                <a th:href="@{/book/{bookId}(bookId = ${book.bookId})}">
-                    <span th:text="${book.title}"></span>
-                </a>
-            </div>
+            <ol>
+                <div th:each="book : ${col.value}">
+                    <li>
+                        <a th:href="@{/book/{bookId}(bookId = ${book.bookId})}">
+                            <span th:text="${book.title}"></span>
+                        </a>
+                    </li>
+                </div>
+            </ol>
         </div>
     </div>
 

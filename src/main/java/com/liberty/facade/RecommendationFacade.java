@@ -1,9 +1,11 @@
 package com.liberty.facade;
 
+import com.liberty.common.RandomPicker;
 import com.liberty.model.*;
 import com.liberty.repository.*;
 import com.liberty.service.DataMinerService;
 import com.liberty.service.RecommendationService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
@@ -19,12 +21,16 @@ import static java.util.Collections.emptyList;
  * Time: 10:45
  */
 @Component
+@Slf4j
 public class RecommendationFacade {
     @Autowired
     private RecommendationService recommendationService;
 
     @Autowired
     private SimpleBookRepository simpleBookRepository;
+
+    @Autowired
+    private BookCardRepository bookCardRepository;
 
     @Autowired
     private GenreRepository genreRepository;
@@ -46,6 +52,8 @@ public class RecommendationFacade {
 
     @Autowired
     private DataMinerService dataMinerService;
+
+    List<Long> cachedBookIds;
 
     public List<SimpleBookEntity> getRecommendations(Long bookId) {
         List<RecommendationEntity> recommendations = recommendationRepository.findAllByBookId(bookId);
@@ -83,8 +91,17 @@ public class RecommendationFacade {
     }
 
     // TODO: replace to more optimal method
-    public List<SimpleBookEntity> getRandomBooks(int size) {
-        return simpleBookRepository.findAllRandom();
+    public List<BookCardEntity> getRandomBooks(int size) {
+        if (cachedBookIds == null)
+            initCache();
+        List<Long> ids = RandomPicker.pickNRandomElements(cachedBookIds, size);
+        return bookCardRepository.findAllByIds(ids);
+    }
+
+    private void initCache() {
+        log.info("Initializing cache");
+        cachedBookIds = bookCardRepository.findAllIds();
+        log.info("Cache initialized");
     }
 
     public List<SimpleBookEntity> getByAuthor(Integer authorId) {

@@ -1,4 +1,4 @@
-<div class="col s12 m7" xmlns:th="http://www.w3.org/1999/xhtml" th:fragment="card">
+<div class="col s12 m7" xmlns:th="http://www.w3.org/1999/xhtml" th:fragment="card" style="height:300px">
     <a th:href="@{/book/{id}(id = ${book.bookId})}">
         <h4 class="header" th:text=" ${book.title}">Book name</h4>
     </a>
@@ -8,12 +8,19 @@
         </div>
         <div class="card-stacked">
             <div class="card-content">
-                <p>Author</p>
+                <div class="chip" th:text="${book.genreMetadata}"></div>
+                <div class="chips"></div>
+                <div th:text="'Язык: ' + ${book.lang}"/>
+                <a th:href="@{/author/{id}(id = ${book.authorId})}">
+                    <span th:text="${book.authorLastName} + ' ' + ${book.authorFirstName}"/>
+                </a>
+
             </div>
             <div class="card-action">
                 <a th:href="@{/book/{id}(id = ${book.bookId})}">
                     Подробние
                 </a>
+
             </div>
         </div>
     </div>
