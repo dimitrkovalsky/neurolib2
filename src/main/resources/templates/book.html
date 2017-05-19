@@ -12,7 +12,7 @@
             <h1 th:text="${book.title}"/>
             <th:block th:each="author : ${authors}">
                 <div th:inline="text">
-                    <a th:href="@{/author/{authorId}/book(authorId = ${author.authorId})}">
+                    <a th:href="@{/author/{authorId}/(authorId = ${author.authorId})}">
                         <span th:text="${author.firstName}"></span>
                         <span th:text="${author.LastName}"></span>
                     </a>

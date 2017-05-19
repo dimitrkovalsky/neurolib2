@@ -14,12 +14,32 @@
         <div style="margin-top: 115px; text-align: justify;" th:utext="${biography}"></div>
 
         <div th:each="col : ${collections}">
-            <h3 th:text="${col.key.seqName}">Collection name</h3>
+            <div>
+                <span class="collection-name" th:text="${col.key.seqName}">Collection name</span>
+                <span th:each="g : ${col.key.genres}">
+                 <a th:href="@{genre/{genreId}/(genreId = ${g.genreId})}">
+                            <span th:text="${g.genreDesc}"> - </span>
+                        </a>
+                </span>
+            </div>
             <ol>
                 <div th:each="book : ${col.value}">
                     <li>
-                        <a th:href="@{/book/{bookId}(bookId = ${book.bookId})}">
+                        <a th:href="@{/book/{bookId}(bookId = ${book.bookId})}" th:if="${book != null}">
                             <span th:text="${book.title}"></span>
+                        </a>
+                        <span th:text="${book.chars/1000} +'k, '+ ${book.pages} + ' с. Скачать : '"></span>
+                        <a th:href="@{http://flibusta.is/b/{bookId}/fb2(bookId = ${book.bookId})}" rel="noreferrer"
+                           target="_blank">
+                            <span>(fb2) - </span>
+                        </a>
+                        <a th:href="@{http://flibusta.is/b/{bookId}/epub(bookId = ${book.bookId})}" rel="noreferrer"
+                           target="_blank">
+                            <span>(epub) - </span>
+                        </a>
+                        <a th:href="@{http://flibusta.is/b/{bookId}/mobi(bookId = ${book.bookId})}" rel="noreferrer"
+                           target="_blank">
+                            <span>(mobi)</span>
                         </a>
                     </li>
                 </div>

@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * User: Dimitr
@@ -22,6 +24,8 @@ public class BookCollectionDescriptionEntity {
     private Integer seqId;
     @Column(name = "SeqName")
     private String seqName;
+    @Transient
+    private List<GenreEntity> genres = new ArrayList<>();
 
     public BookCollectionDescriptionEntity(Integer seqId) {
         this.seqId = seqId;
@@ -43,5 +47,11 @@ public class BookCollectionDescriptionEntity {
         int result = super.hashCode();
         result = 31 * result + (seqId != null ? seqId.hashCode() : 0);
         return result;
+    }
+
+    @Data
+    public static class GenreLink {
+        private Integer genreId;
+        private Integer genreName;
     }
 }

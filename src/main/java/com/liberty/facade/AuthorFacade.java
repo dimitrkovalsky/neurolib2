@@ -3,6 +3,7 @@ package com.liberty.facade;
 import com.liberty.error.NotFoundException;
 import com.liberty.model.*;
 import com.liberty.repository.*;
+import com.liberty.service.GenreService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.core.util.Function;
@@ -30,6 +31,8 @@ public class AuthorFacade {
     private BookCollectionRepository bookCollectionRepository;
     @Autowired
     private AuthorBiographyRepository authorBiographyRepository;
+    @Autowired
+    private GenreService genreService;
 
     public AuthorEntity getAuthor(Integer authorId) {
         AuthorEntity one = authorRepository.findOne(authorId);
@@ -71,7 +74,15 @@ public class AuthorFacade {
         collections.forEach(c -> {
             BookCollectionDescriptionEntity key = collectionDescriptions.get(c.getTagId());
             Collection<SimpleBookEntity> byCollection = map.computeIfAbsent(key, k -> new HashSet<>());
-            byCollection.add(books.get(c.getBookId()));
+            SimpleBookEntity book = books.get(c.getBookId());
+            byCollection.add(book);
+        });
+        // TODO: precompute genres
+        map.forEach((k, v) -> {
+            if (!v.isEmpty()) {
+                List<GenreEntity> genres = genreService.getGenre(v.iterator().next().getBookId());
+                k.setGenres(genres);
+            }
         });
         return map;
     }
