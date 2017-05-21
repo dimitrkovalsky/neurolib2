@@ -7,5 +7,7 @@ import lombok.Data;
  */
 @Data
 public class SearchBookPageResultDTO extends BaseBookDto {
+    private Boolean isInShelf;
 
+    private Float commonRate;
 }

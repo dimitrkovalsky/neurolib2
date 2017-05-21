@@ -23,12 +23,46 @@
     margin: 0 10px;
 }
 
-.round {
-    -moz-border-radius: 50%;
-    -webkit-border-radius: 50%;
-    -khtml-border-radius: 50%;
-    border-radius: 50%;
-    behavior: url(border-radius.htc);
+.rating {
+    unicode-bidi: bidi-override;
+    direction: rtl;
+    text-align: center;
+    font-size: 0;
+    position: relative;
+}
+
+.rating i {
+    font-size: 24px;
+    display: inline-block;
+    width: 1.1em;
+}
+
+.rating i:hover {
+    cursor: pointer;
+}
+
+.rating input {
+    opacity: 0;
+    visibility: hidden;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.rating i:before {
+    content: 'star';
+    font-family: 'Material Icons';
+    transition: color 0.15s;
+    color: #d3d3d3;
+}
+
+.rating input:checked ~  i:before {
+    color: gold;
+}
+
+.rating i:hover:before,
+.rating i:hover ~ i:before {
+    color: #e8c022 !important;
 }
 
 .collection-name {

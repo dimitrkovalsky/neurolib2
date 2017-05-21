@@ -19,8 +19,8 @@
         <li th:classappend="${module == 'reco' ? 'active' : ''}">
             <a href="#" th:href="@{/reco}">Рекомендации</a>
         </li>
-        <li th:classappend="${module == 'profile' ? 'active' : ''}">
-            <a href="#" th:href="@{/profile}">Профиль</a>
+        <li th:classappend="${module == 'shelf' ? 'active' : ''}">
+            <a href="#" th:href="@{/shelf}">Книжная полка</a>
         </li>
         <li id="remote">
             <form th:action="@{/searchbook}" class="col-md-2">
@@ -33,7 +33,7 @@
             </form>
         </li>
         <li sec:authorize="isAuthenticated()">
-            <img th:src="${#authentication.credentials.avatar}" width="50px" class="round"/>
+            <img th:src="${#authentication.credentials.avatar}" width="50px" class="circle"/>
         </li>
         <li sec:authorize="isAuthenticated()">
             <a th:href="@{/profile}">

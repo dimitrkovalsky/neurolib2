@@ -8,10 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -32,9 +29,22 @@ public class BookShelfController {
     }
 
     @RequestMapping(path = "/shelf", method = RequestMethod.POST)
-    public String showShelf(Authentication authentication, @RequestParam("bookId") Long bookId) {
+    public void addBookToShelf(Authentication authentication, @RequestParam("bookId") Long bookId) {
         bookShelfService.addBookToShelf((Long)authentication.getPrincipal(),bookId);
-        return "redirect:/shelf";
+        // return "redirect:/shelf";
+    }
+
+    @RequestMapping(value = "/shelf/{bookId}", method = RequestMethod.DELETE)
+    @ResponseBody
+    public String deleteBookFromShelf(Authentication authentication, @PathVariable  Long bookId) {
+        bookShelfService.deleteBookFromShelf((Long)authentication.getPrincipal(),bookId);
+        return "ok";
+    }
+    @ResponseBody
+    @RequestMapping(path = "/rate", method = RequestMethod.POST)
+    public String rateBook(Authentication authentication, @RequestParam("bookId") Long bookId, Integer rate) {
+        bookShelfService.rateBook((Long)authentication.getPrincipal(),bookId,rate);
+        return "ok";
     }
 
 }

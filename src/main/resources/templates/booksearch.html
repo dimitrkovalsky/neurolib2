@@ -1,5 +1,6 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <div th:replace="../fragments/head::head (${'Поиск '+query})"></div>
 
 <body>
@@ -44,6 +45,16 @@
             </div>
         </div>
         <br/>
+        <div sec:authorize="isAuthenticated()" th:id="'shelf-control-'+${bookInfo.book.bookId}">
+            <a th:if="${bookInfo.isInShelf==false}" class="btn-floating btn-large waves-effect waves-light red book-operation-link"  th:onclick="'book.add('+${bookInfo.book.bookId}+');'" >
+                <i class="material-icons">add</i>
+            </a>
+            <a th:if="${bookInfo.isInShelf==true}" class="btn-floating btn-large waves-effect waves-light green book-operation-link"  th:onclick="'book.delete('+${bookInfo.book.bookId}+');'" >
+                <i class="material-icons">delete</i>
+            </a>
+
+        </div>
+
     </th:block>
     <div  th:replace="../fragments/paginationbar::paginationbar"></div>
 </div>
