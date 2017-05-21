@@ -46,11 +46,11 @@
         </div>
         <br/>
         <div sec:authorize="isAuthenticated()" th:id="'shelf-control-'+${bookInfo.book.bookId}">
-            <a th:if="${bookInfo.isInShelf==false}" class="btn-floating btn-large waves-effect waves-light red book-operation-link"  th:onclick="'book.add('+${bookInfo.book.bookId}+');'" >
-                <i class="material-icons">add</i>
+            <a th:if="${bookInfo.isInShelf==false}" class="waves-effect waves-light btn green book-operation-link"  th:onclick="'book.add('+${bookInfo.book.bookId}+');'" >
+                <i class="material-icons left">add</i>Добавить
             </a>
-            <a th:if="${bookInfo.isInShelf==true}" class="btn-floating btn-large waves-effect waves-light green book-operation-link"  th:onclick="'book.delete('+${bookInfo.book.bookId}+');'" >
-                <i class="material-icons">delete</i>
+            <a th:if="${bookInfo.isInShelf==true}" class="waves-effect waves-light btn red book-operation-link"  th:onclick="'book.delete('+${bookInfo.book.bookId}+');'" >
+                <i class="material-icons left">delete</i>Удалить
             </a>
 
         </div>
