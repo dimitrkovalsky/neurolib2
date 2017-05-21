@@ -6,29 +6,34 @@
 <body>
 <div th:replace="../fragments/navbar::navbar"></div>
 <div class="container content" style="margin-top: 65px">
-    <div class="col-md-12">
+    <div class="row">
         <form th:action="@{/searchbook}">
-            <div class="form-group col-md-11">
-                <input type="search" class="form-control" id="search-form" placeholder="Поиск по названию" name="query" th:value="${query}"/>
+            <div class="col s10 input-field  valign-wrapper">
+                <i class="material-icons prefix medium">search</i>
+                <input type="text" id="icon_prefix" placeholder="Поиск по названию" name="query" th:value="${query}"/>
                 <input type="hidden" name="size" value="10"/>
                 <input type="hidden" name="page" value="0"/>
                 <input type="hidden" name="sort" value="r.Rate,DESC"/>
             </div>
-            <div class="form-group col-md-1">
-                <button type="submit" class="btn btn-primary">Найти!</button>
+            <div class="col s2 input-field valign-wrapper">
+                <button type="submit" class="waves-effect waves-light btn">Найти!</button>
             </div>
         </form>
     </div>
     <br/>
     <th:block th:each="bookInfo : ${page.content}">
-        <div class="col-md-12">
-            <a th:href="@{/book/{id}(id = ${bookInfo.book.bookId})}" >
-                <img class="col-md-1" th:src="@{/api/images/book/{id}(id = ${bookInfo.book.bookId})}"/>
-            </a>
-            <div class="col-md-11">
+        <div class="divider"></div>
+        <div class="row section">
+            <div class="col s2">
                 <a th:href="@{/book/{id}(id = ${bookInfo.book.bookId})}" >
-                    <h3 th:text="${bookInfo.book.title}"/>
+                    <img class="responsive-img" th:src="@{/api/images/book/{id}(id = ${bookInfo.book.bookId})}"/>
                 </a>
+            </div>
+            <div class="col s7">
+                <a th:href="@{/book/{id}(id = ${bookInfo.book.bookId})}" >
+                    <h5 th:text="${bookInfo.book.title}"/>
+                </a>
+                <div class="col">Авторы:</div>
                 <th:block th:each="author : ${bookInfo.authors}">
                     <div th:inline="text">
                         <a th:href="@{/author/{authorId}/book(authorId = ${author.authorId})}">
@@ -37,24 +42,28 @@
                         </a>
                     </div>
                 </th:block>
-                <th:block th:each="genre : ${bookInfo.genres}">
-                    <a th:href="@{/genre/{genreId}(genreId = ${genre.genreId})}">
-                        <span th:text="${genre.genreDesc}"></span>
+                <div class="col">Жанр:</div>
+                <div class="col">
+                    <th:block th:each="genre : ${bookInfo.genres}">
+                        <a th:href="@{/genre/{genreId}(genreId = ${genre.genreId})}">
+                            <span th:text="${genre.genreDesc}"></span>
+                        </a>
+                    </th:block>
+                </div>
+                <br/>
+            </div>
+            <div  class=" col s3">
+                <div sec:authorize="isAuthenticated()" th:id="'shelf-control-'+${bookInfo.book.bookId}"  class="center-align">
+                    <a th:if="${bookInfo.isInShelf==false}" class="waves-effect waves-light btn green book-operation-link"  th:onclick="'book.add('+${bookInfo.book.bookId}+');'" >
+                        <i class="material-icons left">add</i>Добавить
                     </a>
-                </th:block>
+                    <a th:if="${bookInfo.isInShelf==true}" class="waves-effect waves-light btn red book-operation-link"  th:onclick="'book.delete('+${bookInfo.book.bookId}+');'" >
+                        <i class="material-icons left">delete</i>Удалить
+                    </a>
+                </div>
             </div>
         </div>
         <br/>
-        <div sec:authorize="isAuthenticated()" th:id="'shelf-control-'+${bookInfo.book.bookId}">
-            <a th:if="${bookInfo.isInShelf==false}" class="waves-effect waves-light btn green book-operation-link"  th:onclick="'book.add('+${bookInfo.book.bookId}+');'" >
-                <i class="material-icons left">add</i>Добавить
-            </a>
-            <a th:if="${bookInfo.isInShelf==true}" class="waves-effect waves-light btn red book-operation-link"  th:onclick="'book.delete('+${bookInfo.book.bookId}+');'" >
-                <i class="material-icons left">delete</i>Удалить
-            </a>
-
-        </div>
-
     </th:block>
     <div  th:replace="../fragments/paginationbar::paginationbar"></div>
 </div>

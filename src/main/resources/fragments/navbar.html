@@ -23,9 +23,9 @@
             <a href="#" th:href="@{/shelf}">Книжная полка</a>
         </li>
         <li id="remote">
-            <form th:action="@{/searchbook}" class="col-md-2">
-                <input class="typeahead form-control col-md-2" style="width: 250px" type="text" name="query"
-                       placeholder="Поиск" autocomplete="on"/>
+            <form th:action="@{/searchbook}">
+                <input class="typeahead input-field" style="width: 250px" type="text" name="query"
+                       placeholder="Поиск" autocomplete="off"/>
                 <input type="hidden" name="size" value="10"/>
                 <input type="hidden" name="page" value="0"/>
                 <input type="hidden" name="sort" value="r.Rate,DESC"/>

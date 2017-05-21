@@ -10,12 +10,12 @@
     <th:block th:each="bookInfo : ${booksInShelf}">
         <div class="divider"></div>
         <div class="row section">
-            <div class="col s3">
+            <div class="col s2">
                 <a th:href="@{/book/{id}(id = ${bookInfo.book.bookId})}" >
                     <img class="responsive-img" th:src="@{/api/images/book/{id}(id = ${bookInfo.book.bookId})}"/>
                 </a>
             </div>
-            <div class="col s6">
+            <div class="col s7">
                 <a th:href="@{/book/{id}(id = ${bookInfo.book.bookId})}" >
                     <h5 th:text="${bookInfo.book.title}"/>
                 </a>
@@ -40,21 +40,13 @@
             </div>
             <div  class=" col s3">
                 <div th:id="'reviewStars-'+${bookInfo.book.bookId}" class="rating">
-                    <input type="radio" th:name="'reviewStars'+${bookInfo.book.bookId}" value="5" th:checked="${bookInfo.userBookRate}==5"/>
-                    <i title="Очень хорошо" class="material-icons small" ></i>
-
-                    <input type="radio" th:name="'reviewStars'+${bookInfo.book.bookId}" value="4" th:checked="${bookInfo.userBookRate}==4"/>
-                    <i title="Хорошо" class="material-icons small"></i>
-
-                    <input type="radio" th:name="'reviewStars'+${bookInfo.book.bookId}" value="3" th:checked="${bookInfo.userBookRate}==3"/>
-                    <i title="Нормально" class="material-icons small"></i>
-
-                    <input type="radio" th:name="'reviewStars'+${bookInfo.book.bookId}" value="2" th:checked="${bookInfo.userBookRate}==2"/>
-                    <i title="Плохо" class="material-icons small"></i>
-
-                    <input type="radio" th:name="'reviewStars'+${bookInfo.book.bookId}" value="1" th:checked="${bookInfo.userBookRate}==1"/>
-                    <i title="Очень плохо" class="material-icons small"></i>
+                   <th:block th:each="i : ${#numbers.sequence( 0, bookInfo.maxRate-1/1)}">
+                        <input type="radio" th:name="'reviewStars'+${bookInfo.book.bookId}" th:value="${bookInfo.maxRate}-${i}" th:checked="${bookInfo.userBookRate}==${bookInfo.maxRate}-${i}"/>
+                        <i th:title="${bookInfo.maxRate}-${i}" class="material-icons small" ></i>
+                   </th:block>
                 </div>
+
+
                 <div sec:authorize="isAuthenticated()" th:id="'shelf-control-'+${bookInfo.book.bookId}"  class="center-align">
                     <a class="waves-effect waves-light btn red book-operation-link"  th:onclick="'book.delete('+${bookInfo.book.bookId}+');'" >
                         <i class="material-icons left">delete</i>Удалить

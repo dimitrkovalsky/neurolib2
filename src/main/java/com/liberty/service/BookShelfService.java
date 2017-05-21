@@ -16,4 +16,6 @@ public interface BookShelfService {
 
     void rateBook(Long userId,Long bookId, Integer rate);
 
+    Integer getMaxRate();
+
 }

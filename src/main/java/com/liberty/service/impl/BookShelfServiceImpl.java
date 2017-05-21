@@ -43,6 +43,7 @@ public class BookShelfServiceImpl implements BookShelfService {
             bookShelfEntryDto.setGenres(facade.getGenres(book.getBookId()));
             bookShelfEntryDto.setBook(book);
             bookShelfEntryDto.setUserBookRate(userBookshelfEntity.getRate());
+            bookShelfEntryDto.setMaxRate(getMaxRate());
             return bookShelfEntryDto;
         }).collect(Collectors.toList());
     }
@@ -79,6 +80,10 @@ public class BookShelfServiceImpl implements BookShelfService {
             bookshelf.save(userBookshelfEntity);
         }
 
+    }
+
+    public Integer getMaxRate(){
+        return MAX_RATE;
     }
 
     private void validateUserAndBook(Long userId, Long bookId){

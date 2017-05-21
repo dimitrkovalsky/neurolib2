@@ -10,4 +10,6 @@ public class BookShelfEntryDto extends BaseBookDto{
 
     private Integer userBookRate;
 
+    private Integer maxRate;
+
 }
