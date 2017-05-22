@@ -7,28 +7,79 @@
     margin: 9px 0;
 }
 
-#remote .tt-menu {
+#remote .tt-menu{
     background: white;
     border: 1px solid #ccc;
     width: 200%;
 }
+#remote .tt-dataset-books{
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
 
-#remote .tt-menu .tt-suggestion:hover {
-    background: #aeb9cc;
+#remote .tt-menu .tt-suggestion{
+    padding-left: 3px;
+    line-height: 1.6;
+    font-size: 16px;
+}
+
+#remote .tt-menu .tt-suggestion:hover{
+    background: rgba(0,0,0,0.1);
     color: white;
+    cursor: pointer;
+    padding-left: 3px;
+}
+
+#remote .tt-open{
+    background: #ee6e73;
+    color: #fefffd;
     cursor: pointer;
 }
 
-#remote .tt-menu .tt-suggestion {
+#remote .tt-menu .tt-suggestion{
     margin: 0 10px;
 }
 
-.round {
-    -moz-border-radius: 50%;
-    -webkit-border-radius: 50%;
-    -khtml-border-radius: 50%;
-    border-radius: 50%;
-    behavior: url(border-radius.htc);
+.rating {
+    unicode-bidi: bidi-override;
+    direction: rtl;
+    text-align: center;
+    font-size: 0;
+    position: relative;
+}
+
+.rating i {
+    font-size: 24px;
+    display: inline-block;
+    width: 1.1em;
+}
+
+.rating i:hover {
+    cursor: pointer;
+}
+
+.rating input {
+    opacity: 0;
+    visibility: hidden;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.rating i:before {
+    content: 'star';
+    font-family: 'Material Icons';
+    transition: color 0.15s;
+    color: #d3d3d3;
+}
+
+.rating input:checked ~  i:before {
+    color: gold;
+}
+
+.rating i:hover:before,
+.rating i:hover ~ i:before {
+    color: #e8c022 !important;
 }
 
 .collection-name {

@@ -1,11 +1,12 @@
 package com.liberty.controller;
 
-import com.liberty.basis.PageWrapper;
+import com.liberty.common.PageWrapper;
 import com.liberty.dto.SearchBookPageResultDTO;
 import com.liberty.service.SearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,8 +25,8 @@ public class SearchBookPageController {
     private SearchService searchServiceImpl;
 
     @RequestMapping(value = "/searchbook", method = RequestMethod.GET)
-    public String searchBook(Pageable pageable, @RequestParam(value = "query") String query, Model model,HttpServletRequest request){
-        Page<SearchBookPageResultDTO> searchPage = searchServiceImpl.searchBookAll(pageable,query);
+    public String searchBook(Pageable pageable, @RequestParam(value = "query") String query, Model model, HttpServletRequest request, Authentication auth){
+        Page<SearchBookPageResultDTO> searchPage = searchServiceImpl.searchBookAll(pageable,query,auth);
         PageWrapper pageWrapper = new PageWrapper<>(searchPage,request);
 
         model.addAttribute("page",pageWrapper);

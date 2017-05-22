@@ -1,6 +1,6 @@
 package com.liberty.social.service;
 
-import com.liberty.basis.enumeration.UserAuthority;
+import com.liberty.common.enumeration.UserAuthority;
 import com.liberty.model.UserEntity;
 import com.liberty.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

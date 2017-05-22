@@ -1,6 +1,6 @@
 package com.liberty.model;
 
-import com.liberty.basis.enumeration.UserAuthority;
+import com.liberty.common.enumeration.UserAuthority;
 import lombok.Data;
 
 import javax.persistence.*;

@@ -5,6 +5,7 @@ import com.liberty.dto.SearchBookPageResultDTO;
 import com.liberty.facade.RecommendationFacade;
 import com.liberty.model.SimpleBookEntity;
 import com.liberty.repository.SimpleBookRepository;
+import com.liberty.repository.UserBookshelfRepository;
 import com.liberty.service.SearchService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,6 +32,9 @@ public class SearchServiceImpl implements SearchService{
     @Autowired
     private SimpleBookRepository simpleBookRepository;
 
+    @Autowired
+    private UserBookshelfRepository bookshelfRepository;
+
     public List<SearchBookTypeaheadDTO> searchBookTypeahead(Integer size, String query){
         log.info("Search books in title like '{}' with maximum response size {} ",query,size);
         if(size>100||size<1){
@@ -41,13 +46,16 @@ public class SearchServiceImpl implements SearchService{
         return books.stream().map(fullBookEntity -> new SearchBookTypeaheadDTO(fullBookEntity)).collect(Collectors.toList());
     }
 
-    public Page<SearchBookPageResultDTO> searchBookAll(Pageable paginationRequest, String query){
+    public Page<SearchBookPageResultDTO> searchBookAll(Pageable paginationRequest, String query, Authentication auth){
         Page<SimpleBookEntity> books = searchBooks(paginationRequest,query);
         List<SearchBookPageResultDTO> booksDTOList =  books.getContent().stream().map(book -> {
             SearchBookPageResultDTO searchBookPageResultDTO = new SearchBookPageResultDTO();
             searchBookPageResultDTO.setAuthors(facade.getAuthor(book.getBookId()));
             searchBookPageResultDTO.setBook(book);
             searchBookPageResultDTO.setGenres(facade.getGenres(book.getBookId()));
+            if(auth!=null) {
+                searchBookPageResultDTO.setIsInShelf(bookshelfRepository.getOneByBookIdAndUserId(book.getBookId(), (Long)auth.getPrincipal()) != null);
+            }
             return searchBookPageResultDTO;
         }).collect(Collectors.toList());
         return new PageImpl<SearchBookPageResultDTO>(booksDTOList,paginationRequest,books.getTotalElements());

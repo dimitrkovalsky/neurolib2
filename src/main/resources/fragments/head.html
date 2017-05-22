@@ -27,4 +27,9 @@
     <!-- Compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/js/materialize.min.js"></script>
 
+    <script th:inline="javascript" type="text/javascript" >
+        var _csrf = [[${_csrf.token}]];
+        var _csrf_header = [[${_csrf.headerName}]];
+    </script>
+
 </head>

@@ -19,13 +19,13 @@
         <li th:classappend="${module == 'reco' ? 'active' : ''}">
             <a href="#" th:href="@{/reco}">Рекомендации</a>
         </li>
-        <li th:classappend="${module == 'profile' ? 'active' : ''}">
-            <a href="#" th:href="@{/profile}">Профиль</a>
+        <li th:classappend="${module == 'shelf' ? 'active' : ''}">
+            <a href="#" th:href="@{/shelf}">Книжная полка</a>
         </li>
         <li id="remote">
-            <form th:action="@{/searchbook}" class="col-md-2">
-                <input class="typeahead form-control col-md-2" style="width: 250px" type="text" name="query"
-                       placeholder="Поиск" autocomplete="on"/>
+            <form th:action="@{/searchbook}">
+                <input class="typeahead input-field" style="width: 250px" type="text" name="query"
+                       placeholder="Поиск" autocomplete="off"/>
                 <input type="hidden" name="size" value="10"/>
                 <input type="hidden" name="page" value="0"/>
                 <input type="hidden" name="sort" value="r.Rate,DESC"/>
@@ -33,7 +33,7 @@
             </form>
         </li>
         <li sec:authorize="isAuthenticated()">
-            <img th:src="${#authentication.credentials.avatar}" width="50px" class="round"/>
+            <img th:src="${#authentication.credentials.avatar}" width="50px" class="circle"/>
         </li>
         <li sec:authorize="isAuthenticated()">
             <a th:href="@{/profile}">
