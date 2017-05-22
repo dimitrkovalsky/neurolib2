@@ -278,5 +278,4 @@ public class SimpleBookEntity {
 
         return true;
     }
-
 }

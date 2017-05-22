@@ -55,11 +55,5 @@ public class BookController {
         return "book-list";
     }
 
-    @RequestMapping("/genre/{genreId}")
-    public String GenreBooks(@PathVariable Integer genreId, Model model) {
-        List<SimpleBookEntity> books = facade.getByGenre(genreId);
-        model.addAttribute("books", books);
 
-        return "book-list";
-    }
 }

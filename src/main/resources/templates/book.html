@@ -9,7 +9,7 @@
     <div class="col-md-12">
         <img class="col-md-3" th:src="@{/api/images/book/{id}(id = ${book.bookId})}"/>
         <div class="col-md-9">
-            <h1 th:text="${book.title}"/>
+            <h1 th:text="${book.title}" style="margin: 0px;"/>
             <th:block th:each="author : ${authors}">
                 <div th:inline="text">
                     <a th:href="@{/author/{authorId}/(authorId = ${author.authorId})}">
@@ -36,21 +36,7 @@
         </a>
     </div>
 
-    <div class="col-md-12 panel panel-success" style="margin-top: 30px">
-        <div class="panel-heading">Рекомендации</div>
-        <div class="panel-body">
-            <th:block th:each="reco : ${recommendations}">
-                <div class="col-md-3">
-                    <div class="media-left">
-                        <img style="width: 50px" th:src="@{/api/images/book/{id}(id = ${reco.bookId})}"/>
-                    </div>
-                    <a th:href="@{/book/{id}(id = ${reco.bookId})}">
-                        <h4 class="media-heading" th:text=" ${reco.title}"></h4>
-                    </a>
-                </div>
-            </th:block>
-        </div>
-    </div>
+    <div th:replace="../fragments/recommendations :: reco">...</div>
     <div class="col-md-12" style="margin-top: 30px">
         <th:block th:each="comment : ${flibustaComments}">
             <div class="row">

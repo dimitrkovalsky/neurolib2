@@ -1,0 +1,47 @@
+<div class="col-md-12 panel panel-success" style="margin-top: 30px" xmlns:th="http://www.w3.org/1999/xhtml"
+     th:fragment="reco">
+    <div class="panel-heading">Рекомендации</div>
+    <div class="panel-body">
+        <th:block th:each="reco : ${recommendations}">
+            <div class="card small col-md-3" style="height: 180px">
+                <table>
+                    <tr>
+                        <th style="padding-bottom: 0px; text-align: center;" colspan="2">
+                            <b th:text="${reco.title}"></b>
+                        </th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <a th:href="@{/book/{id}(id = ${reco.bookId})}">
+                                <img style="width: 50px" th:src="@{/api/images/book/{id}(id = ${reco.bookId})}"/>
+                            </a>
+                        </td>
+                        <td style="padding: 0px">
+                            <table>
+                                <tr>
+                                    <td><span th:text="${reco.author.firstName} + ' '+${reco.author.lastName}"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <a th:if="${not #lists.isEmpty(reco.genre)}"
+                                           th:href="@{/genre/{genreId}(genreId = ${reco.genre[0].genreId})}">
+                                            <span th:text="${reco.genre[0].genreMeta}"></span>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+
+                <div class="card-action">
+                    <a th:href="@{/book/{id}(id = ${reco.bookId})}">
+                        Подробнее
+                    </a>
+                </div>
+
+            </div>
+        </th:block>
+    </div>
+</div>

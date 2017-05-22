@@ -32,7 +32,7 @@ public interface BookCardRepository extends JpaRepository<BookCardEntity, Long> 
 //    @Query(nativeQuery = true, value = "SELECT * FROM libbook WHERE BookId IN ( SELECT BookId FROM neurolib.libavtor WHERE AvtorId = :id) ORDER BY RAND() LIMIT :size")
 //    List<BookCardEntity> findAllByAuthor(@Param("id") Integer authorId, @Param("size") Integer size);
 //
-//    @Query(nativeQuery = true, value = "SELECT * FROM libbook WHERE BookId IN (SELECT BookId FROM libgenre WHERE GenreId = :genreId) ORDER BY RAND() LIMIT :size ")
-//    List<BookCardEntity> findAllByGenre(@Param("genreId") Integer genreId, @Param("size") Integer size);
+    @Query(nativeQuery = true, value = "SELECT * FROM book_card WHERE BookId IN (SELECT BookId FROM libgenre WHERE GenreId = :genreId) ORDER BY RAND() LIMIT :size ")
+    List<BookCardEntity> findAllByGenre(@Param("genreId") Integer genreId, @Param("size") Integer size);
 
 }

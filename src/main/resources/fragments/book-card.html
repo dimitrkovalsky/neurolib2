@@ -1,15 +1,22 @@
-<div class="col s12 m7" xmlns:th="http://www.w3.org/1999/xhtml" th:fragment="card" style="height:300px">
-    <a th:href="@{/book/{id}(id = ${book.bookId})}">
-        <h4 class="header" th:text=" ${book.title}">Book name</h4>
-    </a>
-    <div class="card horizontal">
+<div xmlns:th="http://www.w3.org/1999/xhtml" th:fragment="card">
+
+    <div class="card horizontal small">
         <div class="card-image">
             <img class="book-image" th:src="@{/api/images/book/{id}(id = ${book.bookId})}"/>
         </div>
+
         <div class="card-stacked">
             <div class="card-content">
-                <div class="chip" th:text="${book.genreMetadata}"></div>
-                <div class="chips"></div>
+                <div>
+                    <a th:href="@{/book/{id}(id = ${book.bookId})}">
+                        <h6 class="header" th:text=" ${book.title}" style="font-size: 18px; font-weight: bold;">Book
+                            name</h6>
+                    </a>
+                </div>
+                <a th:href="@{/genre/{genreId}(genreId = ${book.genreId})}">
+                    <div class="chip" th:text="${book.genreDescription}"></div>
+                </a>
+
                 <div th:text="'Язык: ' + ${book.lang}"/>
                 <a th:href="@{/author/{id}(id = ${book.authorId})}">
                     <span th:text="${book.authorLastName} + ' ' + ${book.authorFirstName}"/>

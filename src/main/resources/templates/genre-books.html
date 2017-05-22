@@ -5,7 +5,10 @@
 <body>
 <div th:replace="../fragments/navbar::navbar"></div>
 <div class="container content">
-
+    <h1>
+        <div th:text="${genre.genreMeta}"></div>
+        <small th:text="${genre.genreDesc}"></small>
+    </h1>
     <div class="col-md-6">
         <th:block th:each="book : ${left}">
             <div th:replace="../fragments/book-card :: card">...</div>

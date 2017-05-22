@@ -1,6 +1,7 @@
 package com.liberty.facade;
 
 import com.liberty.common.RandomPicker;
+import com.liberty.dto.RecommendationDto;
 import com.liberty.model.*;
 import com.liberty.repository.*;
 import com.liberty.service.DataMinerService;
@@ -55,27 +56,41 @@ public class RecommendationFacade {
 
     List<Long> cachedBookIds;
 
-    public List<SimpleBookEntity> getRecommendations(Long bookId) {
+    public List<RecommendationDto> getRecommendations(Long bookId) {
         List<RecommendationEntity> recommendations = recommendationRepository.findAllByBookId(bookId);
         if (CollectionUtils.isEmpty(recommendations)) {
             recommendations = dataMinerService.findRecommendations(bookId);
         }
 
-        return toSimpleBooks(recommendations);
+        return toRecoBooks(recommendations);
     }
 
     public BookDescriptionEntity getBookDescription(Long bookId) {
         return bookDescriptionRepository.findOne(bookId);
     }
 
-    private List<SimpleBookEntity> toSimpleBooks(List<RecommendationEntity> recommendations) {
+    // todo: optimize, too much queries
+    private List<RecommendationDto> toRecoBooks(List<RecommendationEntity> recommendations) {
         if (CollectionUtils.isEmpty(recommendations)) {
             return emptyList();
         }
         List<Long> ids = recommendations.stream()
                 .map(RecommendationEntity::getRecommendationId)
                 .collect(Collectors.toList());
-        return simpleBookRepository.findAll(ids);
+
+        return simpleBookRepository.findAll(ids).stream().map(b -> {
+            List<AuthorEntity> authors = getAuthor(b.getBookId());
+            List<GenreEntity> genres = getGenres(b.getBookId());
+            RecommendationDto dto = new RecommendationDto();
+            dto.setBookId(b.getBookId());
+            dto.setTitle(b.getTitle());
+            if (!authors.isEmpty())
+                dto.setAuthor(authors.get(0));
+            if (!genres.isEmpty()) {
+                dto.setGenre(genres);
+            }
+            return dto;
+        }).collect(Collectors.toList());
     }
 
     public SimpleBookEntity getBook(Long bookId) {
@@ -115,9 +130,6 @@ public class RecommendationFacade {
         return genreRepository.getAllGenres(bookId);
     }
 
-    public List<SimpleBookEntity> getByGenre(Integer genreId) {
-        return simpleBookRepository.findAllByGenre(genreId, 10);
-    }
 
     public List<FlibustaCommentEntity> getComments(Long bookId) {
         List<FlibustaCommentEntity> commentEntities = flibustaCommentRepository.findAllByBookIdOrderByTime(bookId);
