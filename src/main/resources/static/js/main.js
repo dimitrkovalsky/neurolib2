@@ -13,6 +13,15 @@ $(document).ready(function() {
         }
     });
 
+    var authors = new Bloodhound({
+        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('authorName'),
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        remote: {
+            url: '/searchauthortypeahead?q=%QUERY&size=5',
+            wildcard: '%QUERY'
+        }
+    });
+
     $('#remote .typeahead').typeahead(
         {
             hint: true,
@@ -20,13 +29,28 @@ $(document).ready(function() {
             minLength: 2
         }, {
             name: 'books',
-            limit:10,
             display: 'title',
             source: books,
+            templates: {
+                header: '<h6 class="books-titles">Книги</h6>'
+            }
+        },
+        {
+            name: 'authors',
+            display: 'authorName',
+            source: authors,
+            templates: {
+                header: '<h6 class="authors-names">Авторы</h6>'
+            }
         });
 
     $('#remote .typeahead').bind('typeahead:select', function(ev, suggestion) {
-        document.location = "/book/"+suggestion.bookId;
+        if (typeof suggestion.bookId != 'undefined'){
+            document.location = "/book/"+suggestion.bookId;
+        }else
+        if (typeof suggestion.authorId != 'undefined'){
+            document.location = "/author/"+suggestion.authorId;
+        }
     });
 
 
@@ -47,9 +71,7 @@ var book = {
                 book.changeState(bookId,'delete');
             },
             error: function(xhr, ajaxOptions, thrownError) {
-                //alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
                 book.changeState(bookId,'error');
-
             }
         });
     },
@@ -63,12 +85,9 @@ var book = {
             },
             success: function(json) {
                 book.changeState(bookId,'add');
-
             },
             error: function(xhr, ajaxOptions, thrownError) {
-                //alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
                 book.changeState(bookId,'error');
-
             }
         });
     },
@@ -83,7 +102,6 @@ var book = {
             dataType: 'html',
             success: function(json) {
                 book.changeState(bookId,"delete")
-                alert('ok');
             },
             error: function(xhr, ajaxOptions, thrownError) {
                 alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);

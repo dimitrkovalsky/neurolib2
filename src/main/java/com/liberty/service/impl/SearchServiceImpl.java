@@ -1,9 +1,13 @@
 package com.liberty.service.impl;
 
-import com.liberty.dto.SearchBookTypeaheadDTO;
-import com.liberty.dto.SearchBookPageResultDTO;
+import com.liberty.dto.SearchAuthorPageResultDto;
+import com.liberty.dto.SearchAuthorTypeaheadDto;
+import com.liberty.dto.SearchBookTypeaheadDto;
+import com.liberty.dto.SearchBookPageResultDto;
 import com.liberty.facade.RecommendationFacade;
+import com.liberty.model.AuthorEntity;
 import com.liberty.model.SimpleBookEntity;
+import com.liberty.repository.AuthorRepository;
 import com.liberty.repository.SimpleBookRepository;
 import com.liberty.repository.UserBookshelfRepository;
 import com.liberty.service.SearchService;
@@ -35,7 +39,10 @@ public class SearchServiceImpl implements SearchService{
     @Autowired
     private UserBookshelfRepository bookshelfRepository;
 
-    public List<SearchBookTypeaheadDTO> searchBookTypeahead(Integer size, String query){
+    @Autowired
+    private AuthorRepository authorRepository;
+
+    public List<SearchBookTypeaheadDto> searchBookTypeahead(Integer size, String query){
         log.info("Search books in title like '{}' with maximum response size {} ",query,size);
         if(size>100||size<1){
             log.info("Size is out of range 1-100. Set maximum size to 100");
@@ -43,13 +50,13 @@ public class SearchServiceImpl implements SearchService{
         }
         List<SimpleBookEntity> books = searchBooks(new PageRequest(0,size), query).getContent();
 
-        return books.stream().map(fullBookEntity -> new SearchBookTypeaheadDTO(fullBookEntity)).collect(Collectors.toList());
+        return books.stream().map(fullBookEntity -> new SearchBookTypeaheadDto(fullBookEntity)).collect(Collectors.toList());
     }
 
-    public Page<SearchBookPageResultDTO> searchBookAll(Pageable paginationRequest, String query, Authentication auth){
+    public Page<SearchBookPageResultDto> searchBookAll(Pageable paginationRequest, String query, Authentication auth){
         Page<SimpleBookEntity> books = searchBooks(paginationRequest,query);
-        List<SearchBookPageResultDTO> booksDTOList =  books.getContent().stream().map(book -> {
-            SearchBookPageResultDTO searchBookPageResultDTO = new SearchBookPageResultDTO();
+        List<SearchBookPageResultDto> booksDTOList =  books.getContent().stream().map(book -> {
+            SearchBookPageResultDto searchBookPageResultDTO = new SearchBookPageResultDto();
             searchBookPageResultDTO.setAuthors(facade.getAuthor(book.getBookId()));
             searchBookPageResultDTO.setBook(book);
             searchBookPageResultDTO.setGenres(facade.getGenres(book.getBookId()));
@@ -58,13 +65,54 @@ public class SearchServiceImpl implements SearchService{
             }
             return searchBookPageResultDTO;
         }).collect(Collectors.toList());
-        return new PageImpl<SearchBookPageResultDTO>(booksDTOList,paginationRequest,books.getTotalElements());
+        return new PageImpl<SearchBookPageResultDto>(booksDTOList,paginationRequest,books.getTotalElements());
+    }
+
+    public List<SearchAuthorTypeaheadDto> searchAuthorTypeahead(Integer size,String query){
+        log.info("Search authors like '{}' with maximum response size {} ",query,size);
+        if(size>100||size<1){
+            log.info("Size is out of range 1-100. Set maximum size to 100");
+            size=100;
+        }
+        List<AuthorEntity> authorEntities = searchAuthors(new PageRequest(0,size),query).getContent();
+
+        return authorEntities.stream().map(authorEntity -> {
+            SearchAuthorTypeaheadDto authors = new SearchAuthorTypeaheadDto();
+            authors.setAuthorId(authorEntity.getAuthorId());
+            authors.setAuthorName(generateFullName(authorEntity));
+            return authors;
+        }).collect(Collectors.toList());
+    }
+
+    public Page<SearchAuthorPageResultDto> searchAuthorAll(Pageable paginationRequest, String query){
+        Page<AuthorEntity> authorEntities = searchAuthors(paginationRequest,query);
+
+        List<SearchAuthorPageResultDto> authorsDtoList = authorEntities.getContent().stream().map(authorEntity -> {
+            SearchAuthorPageResultDto authors = new SearchAuthorPageResultDto();
+            authors.setAuthorId(authorEntity.getAuthorId());
+            authors.setAuthorName(generateFullName(authorEntity));
+            return authors;
+        }).collect(Collectors.toList());
+
+        return new PageImpl<SearchAuthorPageResultDto>(authorsDtoList,paginationRequest,authorEntities.getTotalElements());
     }
 
     private Page<SimpleBookEntity> searchBooks(Pageable paginationRequest, String query){
         Page<SimpleBookEntity> pages = simpleBookRepository.findAllByTitleContaining(query, paginationRequest);
         log.info("{} books finded ",pages.getNumberOfElements());
         return pages;
+    }
+
+
+    private Page<AuthorEntity> searchAuthors(Pageable paginationRequest, String query){
+        Page<AuthorEntity> pages = authorRepository.getAllByFirstNameOrMiddleNameOrLastNameContainingOrderByLastName(paginationRequest,query,query,query);
+        log.info("{} authors finded ",pages.getNumberOfElements());
+        return pages;
+    }
+
+    private String generateFullName(AuthorEntity authorEntity){
+        String s = String.format("%s %s %s",authorEntity.getLastName(),authorEntity.getFirstName(),authorEntity.getMiddleName());
+        return s.replace("  ", " ");
     }
 
 }

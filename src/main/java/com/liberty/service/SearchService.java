@@ -1,7 +1,9 @@
 package com.liberty.service;
 
-import com.liberty.dto.SearchBookTypeaheadDTO;
-import com.liberty.dto.SearchBookPageResultDTO;
+import com.liberty.dto.SearchAuthorPageResultDto;
+import com.liberty.dto.SearchAuthorTypeaheadDto;
+import com.liberty.dto.SearchBookTypeaheadDto;
+import com.liberty.dto.SearchBookPageResultDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
@@ -13,8 +15,13 @@ import java.util.List;
  */
 public interface SearchService {
 
-    List<SearchBookTypeaheadDTO> searchBookTypeahead(Integer size, String query);
+    List<SearchBookTypeaheadDto> searchBookTypeahead(Integer size, String query);
 
-    Page<SearchBookPageResultDTO> searchBookAll(Pageable pageRequest, String query, Authentication auth);
+    Page<SearchBookPageResultDto> searchBookAll(Pageable pageRequest, String query, Authentication auth);
 
-}
+    List<SearchAuthorTypeaheadDto> searchAuthorTypeahead(Integer size, String query);
+
+    public Page<SearchAuthorPageResultDto> searchAuthorAll(Pageable paginationRequest, String query);
+
+
+    }
