@@ -96,6 +96,10 @@ public class PageWrapper<T> {
         return currentNumber-1;
     }
 
+    public Page<T> getPageObject(){
+        return this.page;
+    }
+
     public List<T> getContent(){
         return page.getContent();
     }

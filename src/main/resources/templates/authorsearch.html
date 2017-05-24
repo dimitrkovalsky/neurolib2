@@ -22,6 +22,10 @@
     </div>
     <br/>
 
+    <h5 th:text="'Найдено '+${page.pageObject.totalElements}+' авторов.'"/>
+    <a th:href="@{/searchbook (query = ${query},size=10,page=0,sort=r.Rate)}" >
+        <h5 > Поиск по названию книги</h5>
+    </a>
     <th:block th:each="author : ${page.content}">
         <div class="divider"></div>
         <div class="row section">
