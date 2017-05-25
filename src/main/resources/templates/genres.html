@@ -1,0 +1,27 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:replace="../fragments/head::head (${currentGenre.genreMeta})"></div>
+<body>
+<div th:replace="../fragments/navbar::navbar"></div>
+<div class="container-fluid content col-md-12">
+    <h2 style="margin-top: -50px;">
+        <div><span th:text="${currentGenre.genreMeta}"> </span>
+            <small th:text="${currentGenre.genreDesc}"></small>
+        </div>
+    </h2>
+    <div class="col-md-5">
+        <th:block th:each="book : ${left}">
+            <div th:replace="../fragments/book-card :: card">...</div>
+        </th:block>
+    </div>
+    <div class="col-md-5">
+        <th:block th:each="book : ${right}">
+            <div th:replace="../fragments/book-card :: card">...</div>
+        </th:block>
+    </div>
+    <div class="col-md-2">
+        <div th:replace="../fragments/right-bar :: right-bar">...</div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,19 @@
+<div xmlns:th="http://www.w3.org/1999/xhtml"  th:fragment="right-bar">
+    <ul class="collapsible" data-collapsible="accordion">
+        <th:block th:each="genre : ${genres}">
+            <li>
+                <div class="collapsible-header" th:text="${genre.key}"><i class="material-icons">filter_drama</i>First
+                </div>
+                <div class="collapsible-body">
+                    <ul class="collection" style="margin: -25px">
+                        <th:block th:each="g : ${genre.value}">
+                            <a class="collection-item" th:href="@{/genre/{genreId}(genreId = ${g.genreId})}">
+                                <li th:text="${g.genreDesc}"></li>
+                            </a>
+                        </th:block>
+                    </ul>
+                </div>
+            </li>
+        </th:block>
+    </ul>
+</div>

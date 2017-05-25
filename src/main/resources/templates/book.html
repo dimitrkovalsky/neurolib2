@@ -9,7 +9,7 @@
     <div class="col-md-12">
         <img class="col-md-3" th:src="@{/api/images/book/{id}(id = ${book.bookId})}"/>
         <div class="col-md-9">
-            <h1 th:text="${book.title}" style="margin: 0px;"/>
+            <h2 th:text="${book.title}" style="margin: 0px;"/>
             <th:block th:each="author : ${authors}">
                 <div th:inline="text">
                     <a th:href="@{/author/{authorId}/(authorId = ${author.authorId})}">

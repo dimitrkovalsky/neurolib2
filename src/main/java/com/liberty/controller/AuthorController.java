@@ -1,7 +1,9 @@
 package com.liberty.controller;
 
 import com.liberty.facade.AuthorFacade;
+import com.liberty.facade.GenreFacade;
 import com.liberty.model.AuthorEntity;
+import com.liberty.model.GenreEntity;
 import com.liberty.repository.BookAuthorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * User: Dimitr
@@ -26,11 +29,15 @@ public class AuthorController {
     @Autowired
     private AuthorFacade authorFacade;
 
+    @Autowired
+    private GenreFacade genreFacade;
+
     @RequestMapping(path = "/author/{authorId}", method = RequestMethod.GET)
     public String getOne(@PathVariable Integer authorId, Model model) {
         model.addAttribute("author", authorFacade.getAuthor(authorId));
         model.addAttribute("biography", authorFacade.getBiography(authorId));
         model.addAttribute("collections", authorFacade.getAllBooksGrouped(authorId));
+        setGenreSideBar(model);
         return "author";
     }
 
@@ -38,7 +45,12 @@ public class AuthorController {
     public String randomAuthors(Model model) {
         List<AuthorEntity> authors = authorFacade.getRandomAuthors();
         model.addAttribute("authors", authors);
-
+        setGenreSideBar(model);
         return "author-list";
+    }
+
+    private void setGenreSideBar(Model model) {
+        Map<String, List<GenreEntity>> genresMap = genreFacade.getAllGenresGrouped();
+        model.addAttribute("genres", genresMap);
     }
 }

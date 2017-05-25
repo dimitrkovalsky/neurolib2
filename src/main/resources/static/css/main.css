@@ -91,3 +91,7 @@
     width: 200px;
     height: 300px;
 }
+
+.card.smaller {
+    height: 200px;
+}
