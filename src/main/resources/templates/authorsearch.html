@@ -1,0 +1,48 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<div th:replace="../fragments/head::head (${'Поиск '+query})"></div>
+
+<body>
+<div th:replace="../fragments/navbar::navbar"></div>
+<div class="container content" style="margin-top: 65px">
+    <div class="row">
+        <form th:action="@{/searchauthor}">
+            <div class="col s10 input-field  valign-wrapper">
+                <i class="material-icons prefix medium">search</i>
+                <input type="text" id="icon_prefix" placeholder="Поиск по имени" name="query" th:value="${query}"/>
+                <input type="hidden" name="size" value="10"/>
+                <input type="hidden" name="page" value="0"/>
+                <input type="hidden" name="sort" value="firstName,DESC"/>
+            </div>
+            <div class="col s2 input-field valign-wrapper">
+                <button type="submit" class="waves-effect waves-light btn">Найти!</button>
+            </div>
+        </form>
+    </div>
+    <br/>
+
+    <h5 th:text="'Найдено '+${page.pageObject.totalElements}+' авторов.'"/>
+    <a th:href="@{/searchbook (query = ${query},size=10,page=0,sort=r.Rate)}" >
+        <h5 > Поиск по названию книги</h5>
+    </a>
+    <th:block th:each="author : ${page.content}">
+        <div class="divider"></div>
+        <div class="row section">
+            <div class="col s1">
+                <a th:href="@{/author/{id}(id = ${author.authorId})}" >
+                    <img class="responsive-img" th:src="@{/api/images/author/{id}(id = ${author.authorId})}"/>
+                </a>
+            </div>
+            <div class="col s11">
+                <a th:href="@{/author/{id}(id = ${author.authorId})}" >
+                    <h4 th:text="${author.authorName}"/>
+                </a>
+            </div>
+        </div>
+        <br/>
+    </th:block>
+    <div  th:replace="../fragments/paginationbar::paginationbar"></div>
+</div>
+</body>
+</html>
