@@ -4,15 +4,12 @@
 
 <body>
 <div th:replace="../fragments/navbar::navbar"></div>
-<div class="container-fluid content" style="margin-top: 130px">
+<div class="container-fluid content">
 
     <div class="col-md-10">
         <th:block th:each="author : ${authors}">
             <div class="col-md-4">
-                <img class="col-md-3" th:src="@{/api/images/author/{id}(id = ${author.authorId})}"/>
-                <a th:href="@{/author/{id}(id = ${author.authorId})}">
-                    <span class="media-heading" th:text="${author.firstName} + ' ' +${author.middleName} + ' ' + ${author.lastName}"></span>
-                </a>
+                <div th:replace="../fragments/author-card :: card">...</div>
             </div>
         </th:block>
     </div>

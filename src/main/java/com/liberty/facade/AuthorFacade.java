@@ -43,7 +43,7 @@ public class AuthorFacade {
     }
 
     public List<AuthorEntity> getRandomAuthors() {
-        return authorRepository.getRandomAuthors(10);
+        return authorRepository.getRandomAuthors(20);
     }
 
     public String getBiography(Integer authorId) {

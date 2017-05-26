@@ -1,0 +1,25 @@
+<div xmlns:th="http://www.w3.org/1999/xhtml" th:fragment="card">
+
+    <div class="card horizontal small" style="height: 200px !important;">
+        <div class="card-image">
+            <img class="col-md-3" th:src="@{/api/images/author/{id}(id = ${author.authorId})}"/>
+        </div>
+
+
+        <div class="card-stacked">
+            <div class="card-content">
+                <div>
+                    <a th:href="@{/author/{id}(id = ${author.authorId})}" style="font-size: larger">
+                        <span class="media-heading" th:text="${author.firstName} + ' ' +${author.middleName} + ' ' + ${author.lastName}"></span>
+                    </a>
+                </div>
+            </div>
+            <div class="card-action">
+                <a th:href="@{/author/{id}(id = ${author.authorId})}">
+                    Подробние
+                </a>
+
+            </div>
+        </div>
+    </div>
+</div>
