@@ -24,8 +24,9 @@
             </div>
             <ol>
                 <div th:each="book : ${col.value}">
-                    <li>
-                        <a th:href="@{/book/{bookId}(bookId = ${book.bookId})}" th:if="${book != null}">
+                    <li th:attr="data-book-li=${book.bookId}">
+                        <a th:href="@{/book/{bookId}(bookId = ${book.bookId})}" th:if="${book != null}"
+                           th:attr="data-book-tooltip=${book.bookId},data-book-title=${book.title}" >
                             <span th:text="${book.title}"></span>
                         </a>
                         <span th:text="${book.chars/1000} +'k, '+ ${book.pages} + ' с. Скачать : '"></span>
