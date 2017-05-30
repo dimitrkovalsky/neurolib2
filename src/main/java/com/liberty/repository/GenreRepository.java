@@ -13,4 +13,7 @@ import java.util.List;
 public interface GenreRepository extends JpaRepository<GenreEntity, Integer> {
     @Query(nativeQuery = true, value = "SELECT * FROM libgenrelist WHERE GenreId IN (SELECT GenreId FROM libgenre WHERE BookId = :id)")
     List<GenreEntity> getAllGenres(@Param("id") Long bookId);
+
+    @Query(nativeQuery = true, value = "SELECT * FROM libgenrelist WHERE GenreId IN (SELECT GenreId FROM libgenre WHERE BookId IN (:ids))")
+    List<GenreEntity> getAllGenres(@Param("ids") List<Long> bookIds);
 }

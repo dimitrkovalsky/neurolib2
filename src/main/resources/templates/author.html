@@ -4,78 +4,80 @@
 
 <body>
 <div th:replace="../fragments/navbar::navbar"></div>
-<div class="container content" style="margin-top: 65px">
+<div class="container-fluid content" style="margin-top: 65px">
+    <div class="col-md-10">
+        <div class="col-md-12">
+            <img class="col-md-3" th:src="@{/api/images/author/{id}(id = ${author.authorId})}"/>
+            <div class="col-md-9">
+                <h1 th:text="${author.firstName} + ' ' +${author.middleName} + ' ' + ${author.lastName}"/>
+            </div>
+            <div style="margin-top: 115px; text-align: justify;" th:utext="${biography}"></div>
 
-    <div class="col-md-12">
-        <img class="col-md-3" th:src="@{/api/images/author/{id}(id = ${author.authorId})}"/>
-        <div class="col-md-9">
-            <h1 th:text="${author.firstName} + ' ' +${author.middleName} + ' ' + ${author.lastName}"/>
-        </div>
-        <div style="margin-top: 115px; text-align: justify;" th:utext="${biography}"></div>
-
-        <div th:each="col : ${collections}">
-            <div>
-                <span class="collection-name" th:text="${col.key.seqName}">Collection name</span>
-                <span th:each="g : ${col.key.genres}">
+            <div th:each="col : ${collections}">
+                <div>
+                    <span class="collection-name" th:text="${col.key.seqName}">Collection name</span>
+                    <span th:each="g : ${col.key.genres}">
                  <a th:href="@{genre/{genreId}/(genreId = ${g.genreId})}">
                             <span th:text="${g.genreDesc}"> - </span>
                         </a>
                 </span>
-            </div>
-            <ol>
-                <div th:each="book : ${col.value}">
-                    <li th:attr="data-book-li=${book.bookId}">
-                        <a th:href="@{/book/{bookId}(bookId = ${book.bookId})}" th:if="${book != null}"
-                           th:attr="data-book-tooltip=${book.bookId},data-book-title=${book.title}" >
-                            <span th:text="${book.title}"></span>
-                        </a>
-                        <span th:text="${book.chars/1000} +'k, '+ ${book.pages} + ' с. Скачать : '"></span>
-                        <a th:href="@{http://flibusta.is/b/{bookId}/fb2(bookId = ${book.bookId})}" rel="noreferrer"
-                           target="_blank">
-                            <span>(fb2) - </span>
-                        </a>
-                        <a th:href="@{http://flibusta.is/b/{bookId}/epub(bookId = ${book.bookId})}" rel="noreferrer"
-                           target="_blank">
-                            <span>(epub) - </span>
-                        </a>
-                        <a th:href="@{http://flibusta.is/b/{bookId}/mobi(bookId = ${book.bookId})}" rel="noreferrer"
-                           target="_blank">
-                            <span>(mobi)</span>
-                        </a>
-                    </li>
                 </div>
-            </ol>
-        </div>
-    </div>
-
-    <div class="col-md-12 panel panel-success" style="margin-top: 30px">
-        <div class="panel-heading">Похожие</div>
-        <div class="panel-body">
-
-        </div>
-    </div>
-    <div class="col-md-12" style="margin-top: 30px">
-        <th:block th:each="comment : ${flibustaComments}">
-            <div class="row">
-                <div class="col-md-1">
-                    <div class="thumbnail">
-                        <img class="img-responsive user-photo" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png"/>
+                <ol>
+                    <div th:each="book : ${col.value}">
+                        <li th:attr="data-book-li=${book.bookId}">
+                            <a th:href="@{/book/{bookId}(bookId = ${book.bookId})}" th:if="${book != null}"
+                               th:attr="data-book-tooltip=${book.bookId},data-book-title=${book.title}">
+                                <span th:text="${book.title}"></span>
+                            </a>
+                            <span th:text="${book.chars/1000} +'k, '+ ${book.pages} + ' с. Скачать : '"></span>
+                            <a th:href="@{http://flibusta.is/b/{bookId}/fb2(bookId = ${book.bookId})}" rel="noreferrer"
+                               target="_blank">
+                                <span>(fb2) - </span>
+                            </a>
+                            <a th:href="@{http://flibusta.is/b/{bookId}/epub(bookId = ${book.bookId})}" rel="noreferrer"
+                               target="_blank">
+                                <span>(epub) - </span>
+                            </a>
+                            <a th:href="@{http://flibusta.is/b/{bookId}/mobi(bookId = ${book.bookId})}" rel="noreferrer"
+                               target="_blank">
+                                <span>(mobi)</span>
+                            </a>
+                        </li>
                     </div>
-                </div>
+                </ol>
+            </div>
+        </div>
 
-                <div class="col-md-11">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <strong th:text="${comment.name}"></strong>
-                            <span class="text-muted" th:text="${comment.time}"></span>
-                        </div>
-                        <div class="panel-body">
-                            <span th:text="${comment.text}"> </span>
+        <div class="col-md-12 panel panel-success" style="margin-top: 30px">
+            <div th:replace="../fragments/author-reco :: reco">...</div>
+        </div>
+        <div class="col-md-12" style="margin-top: 30px">
+            <th:block th:each="comment : ${flibustaComments}">
+                <div class="row">
+                    <div class="col-md-1">
+                        <div class="thumbnail">
+                            <img class="img-responsive user-photo"
+                                 src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png"/>
                         </div>
                     </div>
+
+                    <div class="col-md-11">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <strong th:text="${comment.name}"></strong>
+                                <span class="text-muted" th:text="${comment.time}"></span>
+                            </div>
+                            <div class="panel-body">
+                                <span th:text="${comment.text}"> </span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </th:block>
+            </th:block>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div th:replace="../fragments/right-bar :: right-bar">...</div>
     </div>
 </div>
 </body>

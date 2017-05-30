@@ -1,5 +1,6 @@
 package com.liberty.service.impl;
 
+import com.liberty.model.AuthorEntity;
 import com.liberty.model.GenreEntity;
 import com.liberty.repository.GenreRepository;
 import com.liberty.service.GenreService;
@@ -21,5 +22,10 @@ public class GenreServiceImpl implements GenreService{
     @Override
     public List<GenreEntity> getGenre(Long bookId) {
         return genreRepository.getAllGenres(bookId);
+    }
+
+    @Override
+    public List<AuthorEntity> getTopAuthors(Integer genreId, int limit) {
+        return null;
     }
 }

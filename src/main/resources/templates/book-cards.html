@@ -4,17 +4,20 @@
 
 <body>
 <div th:replace="../fragments/navbar::navbar"></div>
-<div class="container content">
+<div class="container-fluid content">
 
-    <div class="col-md-6">
+    <div class="col-md-5">
         <th:block th:each="book : ${left}">
             <div th:replace="../fragments/book-card :: card">...</div>
         </th:block>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-5">
         <th:block th:each="book : ${right}">
             <div th:replace="../fragments/book-card :: card">...</div>
         </th:block>
+    </div>
+    <div class="col-md-2">
+        <div th:replace="../fragments/right-bar :: right-bar">...</div>
     </div>
 </div>
 </body>

@@ -5,7 +5,7 @@
 
 <body>
 <nav class="nav-wrapper navbar-fixed" th:fragment="navbar">
-    <a href="#" class="brand-logo">Neurolib</a>
+    <a href="/"  class="brand-logo">Neurolib</a>
     <ul class="right hide-on-med-and-down">
         <li th:classappend="${module == 'books' ? 'active' : ''}">
             <a href="#" th:href="@{/book/random}">Книги</a>

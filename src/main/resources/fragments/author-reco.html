@@ -1,0 +1,30 @@
+<div class="col-md-12 panel panel-success" style="margin-top: 30px" xmlns:th="http://www.w3.org/1999/xhtml"
+     th:fragment="reco">
+    <div class="panel-heading">Похожие</div>
+    <div class="panel-body">
+        <th:block th:each="reco : ${similar}">
+            <div class="card small col-md-2" style="height: 130px">
+                <table>
+                    <tr>
+                        <td>
+                            <a th:href="@{/author/{id}(id = ${reco.authorId})}">
+                                <img style="height: 50px;" th:src="@{/api/images/author/{id}(id = ${reco.authorId})}"/>
+                            </a>
+                        </td>
+                        <td>
+                            <b th:text="${reco.firstName} + ' ' + ${reco.lastName}"></b>
+                        </td>
+
+                    </tr>
+                </table>
+
+                <div class="card-action">
+                    <a th:href="@{/author/{id}(id = ${reco.authorId})}">
+                        Подробнее
+                    </a>
+                </div>
+
+            </div>
+        </th:block>
+    </div>
+</div>

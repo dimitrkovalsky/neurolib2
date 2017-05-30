@@ -5,12 +5,14 @@ import com.liberty.dto.RecommendationDto;
 import com.liberty.model.*;
 import com.liberty.repository.*;
 import com.liberty.service.DataMinerService;
+import com.liberty.service.GenreService;
 import com.liberty.service.RecommendationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,8 +26,18 @@ import static java.util.Collections.emptyList;
 @Component
 @Slf4j
 public class RecommendationFacade {
+    public static final int RECOMMENDATION_LIMIT = 10;
     @Autowired
     private RecommendationService recommendationService;
+
+    @Autowired
+    private AuthorFacade authorFacade;
+
+    @Autowired
+    private GenreService genreService;
+
+    @Autowired
+    private AuthorRecommendationRepository authorRecommendationRepository;
 
     @Autowired
     private SimpleBookRepository simpleBookRepository;
@@ -54,7 +66,7 @@ public class RecommendationFacade {
     @Autowired
     private DataMinerService dataMinerService;
 
-    List<Long> cachedBookIds;
+    private List<Long> cachedBookIds;
 
     public List<RecommendationDto> getRecommendations(Long bookId) {
         List<RecommendationEntity> recommendations = recommendationRepository.findAllByBookId(bookId);
@@ -136,5 +148,62 @@ public class RecommendationFacade {
         if (commentEntities == null)
             return emptyList();
         return commentEntities;
+    }
+
+    public List<AuthorEntity> getSimilarAuthors(AuthorEntity author) {
+        int authorId = author.getAuthorId();
+        List<AuthorEntity> stored = findSimilar(authorId);
+        if (stored != null) {
+            log.info("Used {} stored similar authors for author with id {}", stored.size(), authorId);
+            return stored;
+        }
+        List<SimpleBookEntity> byAuthor = simpleBookRepository.findAllByAuthor(authorId);
+        List<Long> ids = byAuthor.stream().map(SimpleBookEntity::getBookId).collect(Collectors.toList());
+        List<GenreEntity> genres = genreRepository.getAllGenres(ids);
+        if (CollectionUtils.isEmpty(genres)) {
+            log.warn("Author has not any genres: {}", authorId);
+            return emptyList();
+        }
+        final List<AuthorEntity> similar = new ArrayList<>();
+        if (genres.size() == 1) {
+            List<AuthorEntity> byGenre = authorRepository.getByGenre(genres.get(0).getGenreId(), authorId, 6);
+            if (!CollectionUtils.isEmpty(byGenre))
+                similar.addAll(byGenre);
+        } else if (genres.size() == 2) {
+            fetchGenres(genres, similar, authorId, 3);
+        } else {
+            fetchGenres(genres, similar, authorId, 2);
+        }
+        saveSimilar(similar, author);
+        log.info("Fetched {} similar authors for author with id {}", similar.size(), authorId);
+        return similar;
+    }
+
+    private List<AuthorEntity> findSimilar(int authorId) {
+        List<AuthorRecommendationEntity> similar = authorRecommendationRepository.findAllByAuthorId(authorId);
+        if (CollectionUtils.isEmpty(similar))
+            return null;
+        List<Integer> ids = similar.stream().map(AuthorRecommendationEntity::getSimilarId).collect(Collectors.toList());
+        return authorRepository.findAll(ids);
+    }
+
+    private void saveSimilar(List<AuthorEntity> similar, AuthorEntity author) {
+        if (CollectionUtils.isEmpty(similar))
+            return;
+        List<AuthorRecommendationEntity> collected = similar.stream().map(s -> {
+            AuthorRecommendationEntity entity = new AuthorRecommendationEntity();
+            entity.setAuthorId(author.getAuthorId());
+            entity.setSimilarId(s.getAuthorId());
+            return entity;
+        }).collect(Collectors.toList());
+        authorRecommendationRepository.save(collected);
+    }
+
+    private void fetchGenres(List<GenreEntity> genres, List<AuthorEntity> similar, int authorId, int limit) {
+        genres.forEach(g -> {
+            List<AuthorEntity> retrieved = authorRepository.getByGenre(g.getGenreId(), authorId, limit);
+            if (!CollectionUtils.isEmpty(retrieved) && similar.size() <= RECOMMENDATION_LIMIT)
+                similar.addAll(retrieved);
+        });
     }
 }

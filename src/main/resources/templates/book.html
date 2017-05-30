@@ -4,61 +4,68 @@
 
 <body>
 <div th:replace="../fragments/navbar::navbar"></div>
-<div class="container content" style="margin-top: 65px">
-
-    <div class="col-md-12">
-        <img class="col-md-3" th:src="@{/api/images/book/{id}(id = ${book.bookId})}"/>
-        <div class="col-md-9">
-            <h2 th:text="${book.title}" style="margin: 0px;"/>
-            <th:block th:each="author : ${authors}">
-                <div th:inline="text">
-                    <a th:href="@{/author/{authorId}/(authorId = ${author.authorId})}">
-                        <span th:text="${author.firstName}"></span>
-                        <span th:text="${author.LastName}"></span>
+<div class="container-fluid content" style="margin-top: 65px">
+    <div class="col-md-10">
+        <div class="col-md-12">
+            <img class="col-md-3" th:src="@{/api/images/book/{id}(id = ${book.bookId})}"/>
+            <div class="col-md-9">
+                <h2 th:text="${book.title}" style="margin: 0px;"/>
+                <th:block th:each="author : ${authors}">
+                    <div th:inline="text">
+                        <a th:href="@{/author/{authorId}/(authorId = ${author.authorId})}">
+                            <span th:text="${author.firstName}"></span>
+                            <span th:text="${author.LastName}"></span>
+                        </a>
+                    </div>
+                </th:block>
+                <th:block th:each="genre : ${bookGenres}">
+                    <a th:href="@{/genre/{genreId}(genreId = ${genre.genreId})}">
+                        <span th:text="${genre.genreDesc}"></span>
                     </a>
+                </th:block>
+            </div>
+            <div style="margin-top: 115px" th:utext="${description}"></div>
+            <a th:href="@{http://flibusta.is/b/{bookId}/fb2(bookId = ${book.bookId})}" rel="noreferrer" target="_blank">
+                <span>fb2</span>
+            </a>
+            <a th:href="@{http://flibusta.is/b/{bookId}/epub(bookId = ${book.bookId})}" rel="noreferrer"
+               target="_blank">
+                <span>epub</span>
+            </a>
+            <a th:href="@{http://flibusta.is/b/{bookId}/mobi(bookId = ${book.bookId})}" rel="noreferrer"
+               target="_blank">
+                <span>mobi</span>
+            </a>
+        </div>
+
+        <div th:replace="../fragments/recommendations :: reco">...</div>
+        <div class="col-md-12" style="margin-top: 30px">
+            <th:block th:each="comment : ${flibustaComments}">
+                <div class="row">
+                    <div class="col-md-1">
+                        <div class="thumbnail">
+                            <img class="img-responsive user-photo"
+                                 src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png"/>
+                        </div>
+                    </div>
+
+                    <div class="col-md-11">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <strong th:text="${comment.name}"></strong>
+                                <span class="text-muted" th:text="${comment.time}"></span>
+                            </div>
+                            <div class="panel-body">
+                                <span th:text="${comment.text}"> </span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </th:block>
-            <th:block th:each="genre : ${genres}">
-                <a th:href="@{/genre/{genreId}(genreId = ${genre.genreId})}">
-                    <span th:text="${genre.genreDesc}"></span>
-                </a>
             </th:block>
         </div>
-        <div style="margin-top: 115px" th:utext="${description}"></div>
-        <a th:href="@{http://flibusta.is/b/{bookId}/fb2(bookId = ${book.bookId})}" rel="noreferrer" target="_blank">
-            <span>fb2</span>
-        </a>
-        <a th:href="@{http://flibusta.is/b/{bookId}/epub(bookId = ${book.bookId})}" rel="noreferrer" target="_blank">
-            <span>epub</span>
-        </a>
-        <a th:href="@{http://flibusta.is/b/{bookId}/mobi(bookId = ${book.bookId})}" rel="noreferrer" target="_blank">
-            <span>mobi</span>
-        </a>
     </div>
-
-    <div th:replace="../fragments/recommendations :: reco">...</div>
-    <div class="col-md-12" style="margin-top: 30px">
-        <th:block th:each="comment : ${flibustaComments}">
-            <div class="row">
-                <div class="col-md-1">
-                    <div class="thumbnail">
-                        <img class="img-responsive user-photo" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png"/>
-                    </div>
-                </div>
-
-                <div class="col-md-11">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <strong th:text="${comment.name}"></strong>
-                            <span class="text-muted" th:text="${comment.time}"></span>
-                        </div>
-                        <div class="panel-body">
-                            <span th:text="${comment.text}"> </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </th:block>
+    <div class="col-md-2">
+        <div th:replace="../fragments/right-bar :: right-bar">...</div>
     </div>
 </div>
 </body>

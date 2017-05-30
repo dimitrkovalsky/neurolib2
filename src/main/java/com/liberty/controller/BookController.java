@@ -2,9 +2,11 @@ package com.liberty.controller;
 
 import com.liberty.common.CollectionDivider;
 import com.liberty.dto.TwoColumnDto;
+import com.liberty.facade.GenreFacade;
 import com.liberty.facade.RecommendationFacade;
 import com.liberty.model.BookCardEntity;
 import com.liberty.model.BookDescriptionEntity;
+import com.liberty.model.GenreEntity;
 import com.liberty.model.SimpleBookEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by user on 09.05.2017.
@@ -22,6 +25,8 @@ public class BookController {
 
     @Autowired
     private RecommendationFacade facade;
+    @Autowired
+    private GenreFacade genreFacade;
 
     @RequestMapping("/book/{bookId}")
     public String book(@PathVariable Long bookId, Model model) {
@@ -32,8 +37,9 @@ public class BookController {
         model.addAttribute("description", description);
         model.addAttribute("recommendations", facade.getRecommendations(bookId));
         model.addAttribute("authors", facade.getAuthor(bookId));
-        model.addAttribute("genres", facade.getGenres(bookId));
+        model.addAttribute("bookGenres", facade.getGenres(bookId));
         model.addAttribute("flibustaComments", facade.getComments(bookId));
+        setGenreSideBar(model);
         return "book";
     }
 
@@ -43,7 +49,7 @@ public class BookController {
         TwoColumnDto<BookCardEntity> divided = CollectionDivider.divide(books);
         model.addAttribute("left", divided.getLeftColumn());
         model.addAttribute("right", divided.getRightColumn());
-
+        setGenreSideBar(model);
         return "book-cards";
     }
 
@@ -51,9 +57,12 @@ public class BookController {
     public String authorBooks(@PathVariable(name = "authorId") Integer authorId, Model model) {
         List<SimpleBookEntity> books = facade.getByAuthor(authorId);
         model.addAttribute("books", books);
-
+        setGenreSideBar(model);
         return "book-list";
     }
 
-
+    private void setGenreSideBar(Model model) {
+        Map<String, List<GenreEntity>> genresMap = genreFacade.getAllGenresGrouped();
+        model.addAttribute("genres", genresMap);
+    }
 }

@@ -1,5 +1,6 @@
 package com.liberty.service;
 
+import com.liberty.model.AuthorEntity;
 import com.liberty.model.GenreEntity;
 
 import java.util.List;
@@ -11,4 +12,6 @@ import java.util.List;
  */
 public interface GenreService {
     List<GenreEntity> getGenre(Long bookId);
+
+    List<AuthorEntity> getTopAuthors(Integer genreId, int limit);
 }

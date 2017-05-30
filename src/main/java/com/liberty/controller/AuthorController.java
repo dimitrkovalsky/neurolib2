@@ -2,6 +2,7 @@ package com.liberty.controller;
 
 import com.liberty.facade.AuthorFacade;
 import com.liberty.facade.GenreFacade;
+import com.liberty.facade.RecommendationFacade;
 import com.liberty.model.AuthorEntity;
 import com.liberty.model.GenreEntity;
 import com.liberty.repository.BookAuthorRepository;
@@ -28,16 +29,21 @@ public class AuthorController {
 
     @Autowired
     private AuthorFacade authorFacade;
+    @Autowired
+    private RecommendationFacade recoFacade;
 
     @Autowired
     private GenreFacade genreFacade;
 
     @RequestMapping(path = "/author/{authorId}", method = RequestMethod.GET)
     public String getOne(@PathVariable Integer authorId, Model model) {
-        model.addAttribute("author", authorFacade.getAuthor(authorId));
+        AuthorEntity author = authorFacade.getAuthor(authorId);
+        model.addAttribute("author", author);
         model.addAttribute("biography", authorFacade.getBiography(authorId));
         model.addAttribute("collections", authorFacade.getAllBooksGrouped(authorId));
         setGenreSideBar(model);
+        List<AuthorEntity> similarAuthors = recoFacade.getSimilarAuthors(author);
+        model.addAttribute("similar", similarAuthors);
         return "author";
     }
 

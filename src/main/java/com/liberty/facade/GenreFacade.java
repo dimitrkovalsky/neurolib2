@@ -26,7 +26,7 @@ public class GenreFacade {
     @Autowired
     private GenreRepository genreRepository;
 
-    private NavigableMap<String, List<GenreEntity>> genresCache = null;
+    private static NavigableMap<String, List<GenreEntity>> genresCache = null;
 
     public List<BookCardEntity> getByGenre(Integer genreId) {
         return bookCardRepository.findAllByGenre(genreId, 20);
