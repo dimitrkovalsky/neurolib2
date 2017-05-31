@@ -15,8 +15,8 @@ public class BookRateEntity {
     @Id
     @Column(name = "BookId")
     private Long bookId;
-
+    
     @Column(name = "Rate")
-    private Long rate;
+    private Integer rate;
     
 }

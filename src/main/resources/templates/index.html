@@ -7,11 +7,26 @@
 <div class="container-fluid content">
 
     <div class="col-md-10">
-        <h1>Neurolib</h1>
+        <h2 class="text-center">Самые популярные</h2>
+        <div class="carousel" data-indicators="true" style="margin-top: -80px;">
+            <th:block th:each="book : ${topReadable}">
+                <div class="carousel-item">
+
+                    <img style="width: 150px; height: 200px"
+                         th:src="@{/api/images/book/{id}(id = ${book.bookId})}"/>
+                    <a th:href="@{/book/{id}(id = ${book.bookId})}" class="btn waves-effect waves-light"
+                       style="width: 150px; margin-top: 5px;">
+                        Подробнее
+                    </a>
+                </div>
+            </th:block>
+
+        </div>
     </div>
     <div class="col-md-2">
         <div th:replace="../fragments/right-bar :: right-bar">...</div>
     </div>
 </div>
+<div th:replace="../fragments/footer :: footer"></div>
 </body>
 </html>

@@ -2,6 +2,7 @@ package com.liberty.controller;
 
 import com.liberty.facade.GenreFacade;
 import com.liberty.model.GenreEntity;
+import com.liberty.service.RatingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,9 +18,13 @@ public class IndexController {
     @Autowired
     private GenreFacade genreFacade;
 
+    @Autowired
+    private RatingService ratingService;
+
     @RequestMapping(path = "/", method = RequestMethod.GET)
-    public String getOne(Model model) {
+    public String index(Model model) {
         setGenreSideBar(model);
+        model.addAttribute("topReadable", ratingService.getMostReadable());
         return "index";
     }
 

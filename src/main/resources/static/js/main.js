@@ -4,6 +4,7 @@ window.onload = function () {
 
 $(document).ready(function () {
     addTitles();
+    initCarousel();
     var books = new Bloodhound({
         datumTokenizer: Bloodhound.tokenizers.obj.whitespace('title'),
         queryTokenizer: Bloodhound.tokenizers.whitespace,
@@ -56,6 +57,12 @@ $(document).ready(function () {
     rating.bind_star();
 
 });
+
+function initCarousel() {
+    $(document).ready(function(){
+        $('.carousel').carousel();
+    });
+}
 
 var book = {
     'add': function (bookId) {
@@ -110,20 +117,21 @@ var book = {
         });
     },
     'changeState': function (bookId, state) {
+        var selector = '#shelf-control-' + bookId + ' .book-operation-link';
         if (state == "add") {
-            $('#shelf-control-' + bookId + ' .book-operation-link').html("<i class=\"material-icons left\">add</i> Добавить ");
-            $('#shelf-control-' + bookId + ' .book-operation-link').removeClass("red");
-            $('#shelf-control-' + bookId + ' .book-operation-link').addClass("green");
-            $('#shelf-control-' + bookId + ' .book-operation-link').attr("onClick", "book.add(" + bookId + ");");
+            $(selector).html("<i class=\"material-icons left\">add</i> Добавить ");
+            $(selector).removeClass("red");
+            $(selector).addClass("green");
+            $(selector).attr("onClick", "book.add(" + bookId + ");");
         }
         if (state == "delete") {
-            $('#shelf-control-' + bookId + ' .book-operation-link').html("<i class=\"material-icons left \">delete</i> Удалить");
-            $('#shelf-control-' + bookId + ' .book-operation-link').removeClass("green");
-            $('#shelf-control-' + bookId + ' .book-operation-link').addClass("red");
-            $('#shelf-control-' + bookId + ' .book-operation-link').attr("onClick", "book.delete(" + bookId + ");");
+            $(selector).html("<i class=\"material-icons left \">delete</i> Удалить");
+            $(selector).removeClass("green");
+            $(selector).addClass("red");
+            $(selector).attr("onClick", "book.delete(" + bookId + ");");
         }
         if (state == "error") {
-            $('#shelf-control-' + bookId + ' .book-operation-link').toggleClass("orange");
+            $(selector).toggleClass("orange");
             setTimeout(function () {
                 $('#shelf-control-' + bookId + ' .book-operation-link').toggleClass("orange");
             }, 1000);
