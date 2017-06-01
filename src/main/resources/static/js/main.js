@@ -56,6 +56,8 @@ $(document).ready(function () {
 
     rating.bind_star();
 
+});
+
 $('#comment-module').ready(function () {
     if($('#comment-module').length) {
         comment.initComments();
