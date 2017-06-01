@@ -1,11 +1,18 @@
 package com.liberty.config;
 
+import com.liberty.error.ApplicationException;
+import org.owasp.validator.html.AntiSamy;
+import org.owasp.validator.html.Policy;
+import org.owasp.validator.html.PolicyException;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+
+import java.io.InputStream;
 
 /**
  * Created by user on 01.05.2017.
@@ -41,5 +48,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/**/*.css", "/**/*.png", "/**/*.gif", "/**/*.jpg", "/**/*.js");
     }
 
+    @Bean
+    public AntiSamy antiSamy(){
+        return new AntiSamy();
+    }
+
+    @Bean
+    public Policy policy(){
+        try{
+            //Allow i,em,a,b,blockquote,br tags only
+            InputStream policy = SecurityConfig.class.getResourceAsStream("/antisamy-slashdot.xml");
+            return  Policy.getInstance(policy);
+        }catch (PolicyException e){
+            throw new ApplicationException(e.getMessage());
+        }
+
+    }
 }
 

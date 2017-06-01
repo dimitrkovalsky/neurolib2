@@ -39,6 +39,7 @@
         </div>
 
         <div th:replace="../fragments/recommendations :: reco">...</div>
+        <th:block th:replace="../fragments/comment-module :: comment-module">...</th:block>
         <div class="col-md-12" style="margin-top: 30px">
             <th:block th:each="comment : ${flibustaComments}">
                 <div class="row">

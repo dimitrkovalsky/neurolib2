@@ -10,5 +10,6 @@
     <include file="db/changelog/v0.0.1/04-05-2017-user-and-profile-create.xml" />
     <include file="db/changelog/v0.0.1/05-05-2017-user-social-connection-create.xml"/>
     <include file="db/changelog/v0.0.1/18-05-2017-user-bookshelf-create.xml"/>
-
+    <include file="db/changelog/v0.0.1/26-05-2017-user-bookreview-create.xml"/>
+    <include file="db/changelog/v0.0.1/01-06-2017-user-aurhorreview-create.xml"/>
 </databaseChangeLog>
