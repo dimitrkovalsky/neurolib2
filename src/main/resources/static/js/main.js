@@ -56,6 +56,10 @@ $(document).ready(function () {
 
     rating.bind_star();
 
+$('#comment-module').ready(function () {
+    if($('#comment-module').length) {
+        comment.initComments();
+    }
 });
 
 function initCarousel() {
@@ -111,8 +115,8 @@ var book = {
             success: function (json) {
                 book.changeState(bookId, "delete")
             },
-            error: function (xhr, ajaxOptions, thrownError) {
-                alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+            error: function(xhr, ajaxOptions, thrownError) {
+                console.log(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
             }
         });
     },
@@ -154,6 +158,200 @@ var rating = {
         })
     }
 };
+    var comment = {
+        lastCommentTime : 0,
+        'loadComments': function(afterTime) {
+            $.ajax({
+                url: utils.getPageUrl()+'/comments',
+                type: 'get',
+                data: {
+                    'after': afterTime,
+                    '_csrf': _csrf
+                },
+                dataType: 'json',
+                success: function (json) {
+                    var formattedMessage =  comment.formatComments(json);
+                    comment.prependComments(formattedMessage);
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.log(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+                }
+            });
+        },
+
+        'doComment': function(commentText) {
+            $.ajax({
+                url: utils.getPageUrl()+'/comments',
+                type: 'post',
+                data: {
+                    'comment': commentText,
+                    '_csrf': _csrf
+                },
+                dataType: 'html',
+                success: function (json) {
+                    comment.loadComments(comment.lastCommentTime);
+                    comment.clearCommentInput();
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.log(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+                }
+            });
+        },
+        'delete': function(commentId) {
+            $.ajax({
+                url: utils.getPageUrl()+'/comments/'+commentId,
+                type: 'delete',
+                beforeSend: function(xhr){
+                    xhr.setRequestHeader(_csrf_header, _csrf);
+                },
+                dataType: 'html',
+                success: function (json) {
+                    comment.markAsDeleted(commentId);
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.log(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+                }
+            });
+        },
+        'restore': function(commentId) {
+            $.ajax({
+                url: utils.getPageUrl()+'/comments/'+commentId,
+                type: 'put',
+                beforeSend: function(xhr){
+                    xhr.setRequestHeader(_csrf_header, _csrf);
+                },
+                dataType: 'json',
+                success: function (json) {
+                    comment.doRestore(commentId,json);
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.log(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+                }
+            });
+        },
+
+        'markAsDeleted':function (commentId) {
+            var deletedTemplate = '<blockquote><p>Комментарий удален. <a  href="#!" onclick="comment.restore('+commentId+')">Восстановить</a></p></blockquote>';
+            var comment = $('#comment-'+commentId);
+            var animationEvent = 'webkitAnimationEnd oanimationend msAnimationEnd animationend';
+            comment.children().addClass('removed-item').one(animationEvent, function(e) {
+                $(this).remove();
+            });
+            comment.addClass('restored-item').one(animationEvent, function(e) {
+                $(this).html(deletedTemplate);
+                $(this).removeClass('restored-item');
+
+                setTimeout(function(){
+                    comment.addClass('removed-item').one(animationEvent, function(e) {
+                        $(this).remove();
+                    });
+                },120000);
+            });
+        },
+
+        'doRestore':function (commentId,json) {
+            var commentObj = $('#comment-'+commentId);
+            var restoredMessage = comment.formatComment(json);
+            var animationEvent = 'webkitAnimationEnd oanimationend msAnimationEnd animationend';
+            commentObj.children().addClass('removed-item').one(animationEvent, function(e) {
+                $(this).remove();
+            });
+
+            commentObj.addClass('restored-item').one(animationEvent, function(e) {
+                $(this).html($(restoredMessage).children());
+            });
+        },
+
+
+        'formatComment':function (commentObj) {
+            var postDate = utils.dateFromUnix(commentObj.createTime);
+
+            var deleteTemplate = '<a href="#!" onclick="comment.delete('+commentObj.id+');"> <i style="float:right" class="material-icons">close</i> </a>';
+            var noActionTemplate ='';
+
+            if(commentObj.isOwner){
+                var action = deleteTemplate;
+            }else{
+                var action = noActionTemplate;
+            }
+
+            var messageTemplate =
+                '<div class="row" id="comment-'+commentObj.id+'">'+
+                '<div class="col-md-1">'+
+                '<div class="thumbnail">'+
+                '<img class="img-responsive user-photo" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">'+
+                '</div>'+
+                '</div>'+
+                '<div class="col-md-11">'+
+                '<div class="panel panel-default">'+
+                '<div class="panel-heading">'+
+                '<strong>'+commentObj.userName+' </strong>'+
+                '<span class="text-muted">'+postDate+'</span>'+
+                action+
+                '</div>'+
+                '<div class="panel-body">'+
+                '<span style="word-wrap: break-word">'+commentObj.comment+'</span>'+
+                '</div>'+
+                '</div>'+
+                '</div>'+
+                '</div>';
+            return messageTemplate;
+        },
+        'formatComments':function (jsonArray) {
+            var resultString = "";
+            $.each(jsonArray,function () {
+                resultString=comment.formatComment(this) + resultString;
+                comment.lastCommentTime = this.createTime;
+            });
+            return resultString;
+        },
+
+
+        'prependComments':function (html) {
+            $('#comments-block').prepend(html);
+        },
+
+        'clearCommentInput':function () {
+            var commentInput = $('#comment-input');
+            commentInput.val("");
+            commentInput.removeAttr('style');
+        },
+
+        'initComments':function () {
+
+            comment.loadComments( comment.lastCommentTime);
+
+            setInterval(function () {
+                comment.loadComments(comment.lastCommentTime);
+            }, 15000);
+
+
+            $('#send-comment-btn').click(function () {
+                var textArea = $('#comment-input');
+                if(textArea.val().length>2&&textArea.val().length<=512){
+                    comment.doComment(textArea.val());
+                }else{
+                    textArea.toggleClass('invalid valid');
+                    setTimeout(function(){
+                        textArea.toggleClass('invalid valid');
+                    },3000);
+                }
+
+            });
+        }
+
+    };
+
+    var utils = {
+        'dateFromUnix':function (timestamp) {
+            var date = new Date(timestamp);
+            return date.toUTCString();
+        },
+        'getPageUrl':function () {
+            var fullUrl = $(document)[0].URL;
+            return fullUrl.split("#")[0].split("!")[0].split("?")[0];
+        }
+    };
 
 function addTitles() {
     $("a[data-book-tooltip]").each(function () {

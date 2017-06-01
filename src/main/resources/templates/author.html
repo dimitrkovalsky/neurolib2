@@ -51,15 +51,17 @@
         <div class="col-md-12 panel panel-success" style="margin-top: 30px">
             <div th:replace="../fragments/author-reco :: reco">...</div>
         </div>
-        <div class="col-md-12" style="margin-top: 30px">
-            <th:block th:each="comment : ${flibustaComments}">
-                <div class="row">
-                    <div class="col-md-1">
-                        <div class="thumbnail">
-                            <img class="img-responsive user-photo"
-                                 src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png"/>
-                        </div>
+    </div>
+    <th:block th:replace="../fragments/comment-module :: comment-module">...</th:block>
+    <div class="col-md-12" style="margin-top: 30px">
+        <th:block th:each="comment : ${flibustaComments}">
+            <div class="row">
+                <div class="col-md-1">
+                    <div class="thumbnail">
+                        <img class="img-responsive user-photo"
+                             src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png"/>
                     </div>
+                </div>
 
                     <div class="col-md-11">
                         <div class="panel panel-default">

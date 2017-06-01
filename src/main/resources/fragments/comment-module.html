@@ -1,0 +1,15 @@
+
+<div id="comment-module" class="row" xmlns:th="http://www.w3.org/1999/xhtml" th:fragment="comment-module">
+    <div id = "comment-input-block" class="col-md-12">
+        <div class="input-field col s12">
+            <textarea id="comment-input" class="materialize-textarea validate" maxlength="512"></textarea>
+            <label for="comment-input" data-error="Сообщение должно состоять из 2-512 символов" class="active">Коментарий</label>
+        </div>
+        <div class="col s12 input-field valign-wrapper ">
+            <button id="send-comment-btn" class="waves-effect waves-light btn" >Отправить!</button>
+        </div>
+    </div>
+    <div class="col-md-12" id="comments-block" style="margin-top: 30px" >
+
+    </div>
+</div>
