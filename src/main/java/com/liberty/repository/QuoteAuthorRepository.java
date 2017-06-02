@@ -1,15 +1,15 @@
 package com.liberty.repository;
 
-import com.liberty.model.AuthorBiographyEntity;
+import com.liberty.model.QuoteAuthorEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 /**
  * User: Dimitr
- * Date: 15.05.2017
+ * Date: 24.04.2017
  * Time: 21:38
  */
 @Repository
-public interface AuthorBiographyRepository extends JpaRepository<AuthorBiographyEntity, Integer> {
+public interface QuoteAuthorRepository extends JpaRepository<QuoteAuthorEntity, Integer> {
 
 }

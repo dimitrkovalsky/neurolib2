@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Entity(name = "libaannotations")
 @Table(name = "libaannotations", schema = "neurolib")
 @Data
-public class AuthorBiography {
+public class AuthorBiographyEntity {
     @Id
     @Column(name = "AvtorId")
     private Integer authorId;

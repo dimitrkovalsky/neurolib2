@@ -133,6 +133,13 @@
             <optional>true</optional>
         </dependency>
 
+        <dependency>
+            <groupId>org.owasp</groupId>
+            <artifactId>antisamy</artifactId>
+            <version>1.4</version>
+        </dependency>
+
+
         <!--<dependency>-->
             <!--<groupId>org.apache.mahout</groupId>-->
             <!--<artifactId>mahout-math</artifactId>-->

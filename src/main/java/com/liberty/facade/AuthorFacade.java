@@ -47,7 +47,7 @@ public class AuthorFacade {
     }
 
     public String getBiography(Integer authorId) {
-        AuthorBiography biography = authorBiographyRepository.findOne(authorId);
+        AuthorBiographyEntity biography = authorBiographyRepository.findOne(authorId);
         if (biography == null || biography.getBody() == null)
             return "";
         return biography.getBody();
