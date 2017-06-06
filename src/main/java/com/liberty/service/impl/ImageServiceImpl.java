@@ -20,7 +20,7 @@ import java.util.Optional;
 public class ImageServiceImpl implements ImageService {
     // TODO: move to properties
     // TODO: use separate service to serve images as static resources
-    private String IMAGE_BASE_PATH = "D:\\dump\\img";
+    private String IMAGE_BASE_PATH = "D:\\flibusta\\img";
     private String AUTHOR_IMAGE_PATH = IMAGE_BASE_PATH + "\\ia";
     private String BOOK_IMAGE_PATH = IMAGE_BASE_PATH + "\\i";
 
