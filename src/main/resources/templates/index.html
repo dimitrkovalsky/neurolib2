@@ -7,7 +7,14 @@
 <div class="container-fluid content">
 
     <div class="col-md-10">
-        <h2 class="text-center">Самые популярные</h2>
+        <div>
+            <h4>Цитата дня</h4>
+            <blockquote th:inline="text">
+                [[${dayQuote.text}]]
+                <footer><a th:href="@{/author/{id}(id = ${dayQuote.flibustaAuthorId})}"><span th:text="${dayQuote.quoteAuthorName}"></span></a></footer>
+            </blockquote>
+        </div>
+        <h3 class="text-center">Самые популярные</h3>
         <div class="carousel" data-indicators="true" style="margin-top: -80px;">
             <th:block th:each="book : ${topReadable}">
                 <div class="carousel-item">
@@ -20,7 +27,7 @@
                     </a>
                 </div>
             </th:block>
-                                              
+
         </div>
     </div>
     <div class="col-md-2">

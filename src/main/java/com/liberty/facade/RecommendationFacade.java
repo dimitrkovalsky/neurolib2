@@ -159,6 +159,8 @@ public class RecommendationFacade {
         }
         List<SimpleBookEntity> byAuthor = simpleBookRepository.findAllByAuthor(authorId);
         List<Long> ids = byAuthor.stream().map(SimpleBookEntity::getBookId).collect(Collectors.toList());
+        if (CollectionUtils.isEmpty(ids))
+            return emptyList();
         List<GenreEntity> genres = genreRepository.getAllGenres(ids);
         if (CollectionUtils.isEmpty(genres)) {
             log.warn("Author has not any genres: {}", authorId);

@@ -2,6 +2,7 @@ package com.liberty.controller;
 
 import com.liberty.facade.GenreFacade;
 import com.liberty.model.GenreEntity;
+import com.liberty.service.QuoteService;
 import com.liberty.service.RatingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,10 +22,14 @@ public class IndexController {
     @Autowired
     private RatingService ratingService;
 
+    @Autowired
+    private QuoteService quoteService;
+
     @RequestMapping(path = "/", method = RequestMethod.GET)
     public String index(Model model) {
         setGenreSideBar(model);
         model.addAttribute("topReadable", ratingService.getMostReadable());
+        model.addAttribute("dayQuote", quoteService.getQuoteOfTheDay());
         return "index";
     }
 
