@@ -3,6 +3,7 @@ window.onload = function () {
 };
 
 $(document).ready(function () {
+    calendar.init_authorborn("#authorborn-calendar","#authorborn-panel");
     addTitles();
     initCarousel();
     var books = new Bloodhound({
@@ -159,6 +160,62 @@ var rating = {
             })
         })
     }
+};
+
+var calendar = {
+    'init':function (selector) {
+        $(selector).datetimepicker({
+            inline: true,
+            format: 'YYYY-MM-DD'
+        });
+    },
+    "add_authorborn_change_event":function (calendar_selector,panel_selector) {
+        $(calendar_selector).on('dp.change', function (date,oldDate) {
+
+            var time = moment(date.date);
+            calendar.load_author_date(panel_selector,time.format('YYYY-MM-DD'),0);
+    });
+    },
+    'init_authorborn_panel':function (selector) {
+        var current_date = moment().format('YYYY-MM-DD');
+        calendar.load_author_date(selector,current_date,0);
+    },
+    'init_authorborn':function (calendar_selector,panel_selector) {
+        calendar.init(calendar_selector);
+        calendar.add_authorborn_change_event(calendar_selector,panel_selector);
+        calendar.init_authorborn_panel(panel_selector);
+    },
+    'load_author_date':function (selector,date,page) {
+        $.ajax({
+            url: utils.getPageUrl()+'/authorborn',
+            type: 'post',
+            data: {
+                'date': date,
+                '_csrf': _csrf,
+                'page': page
+            },
+            dataType: 'json',
+            success: function (json) {
+               // var formattedMessage =  comment.formatComments(json);
+                calendar.apply_to_panel(selector,date,page,"date ="+json.date+", page ="+json.page);
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                console.log(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+            }
+        });
+    },
+    'apply_to_panel':function (selector,date,page,data) {
+        calendar.page=page;
+        if(calendar.date===undefined||calendar.date!=date){
+            calendar.date = date;
+            calendar.page = 0;
+            $(selector).html("");
+        }else {
+            calendar.date = date;
+            calendar.page = page;
+        }
+        $(selector).append(data);
+    },
 };
     var comment = {
         lastCommentTime : 0,
