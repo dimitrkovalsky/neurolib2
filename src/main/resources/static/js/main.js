@@ -166,6 +166,7 @@ var calendar = {
     'init':function (selector) {
         $(selector).datetimepicker({
             inline: true,
+            locale: "ru",
             format: 'YYYY-MM-DD'
         });
     },
@@ -179,6 +180,10 @@ var calendar = {
     'init_authorborn_panel':function (selector) {
         var current_date = moment().format('YYYY-MM-DD');
         calendar.load_author_date(selector,current_date,0);
+
+        $("#load-link a").click(function () {
+            calendar.load_author_date(selector,calendar.date,calendar.page+1);
+        });
     },
     'init_authorborn':function (calendar_selector,panel_selector) {
         calendar.init(calendar_selector);
@@ -196,13 +201,33 @@ var calendar = {
             },
             dataType: 'json',
             success: function (json) {
-               // var formattedMessage =  comment.formatComments(json);
-                calendar.apply_to_panel(selector,date,page,"date ="+json.date+", page ="+json.page);
+                calendar.update_load_button(json);
+                var formattedAuthors =  calendar.formatAuthors(json.data);
+                calendar.apply_to_panel(selector+' .collection',date,page,formattedAuthors);
             },
             error: function (xhr, ajaxOptions, thrownError) {
                 console.log(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
             }
         });
+    },
+    'formatAuthor':function (authorObj) {
+        var messageTemplate =
+            '<li class="collection-item avatar col-md-3">'+
+                '<img class="circle" width="50px" src="/api/images/author/'+authorObj.id+'"/>'+
+                '<span class="title">'+
+                    '<a style="font-size: larger" href="/author/'+authorObj.id+'">'+
+                        '<span class="media-heading">'+authorObj.authorName+'</span>'+
+                    '</a>'+
+                '</span>'+
+            '</li>';
+        return messageTemplate;
+    },
+    'formatAuthors':function (jsonArray) {
+        var resultString = '';
+        $.each(jsonArray,function () {
+            resultString=resultString+calendar.formatAuthor(this) ;
+        });
+        return resultString;
     },
     'apply_to_panel':function (selector,date,page,data) {
         calendar.page=page;
@@ -216,6 +241,14 @@ var calendar = {
         }
         $(selector).append(data);
     },
+
+    'update_load_button':function (json) {
+        if(json.available==false){
+            $("#load-link a").attr("style", "visibility: hidden");
+        }else{
+            $("#load-link a").attr("style", "visibility: visible");
+        }
+    }
 };
     var comment = {
         lastCommentTime : 0,
