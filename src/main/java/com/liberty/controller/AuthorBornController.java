@@ -19,7 +19,7 @@ import java.util.List;
 public class AuthorBornController {
 
     @Autowired
-    AuthorBornService service;
+    private AuthorBornService service;
 
     @RequestMapping(path = "/authorborn", method = RequestMethod.POST)
     public LoaderDto<List> get(@RequestParam(value = "page",required = false) Integer page,

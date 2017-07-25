@@ -203,7 +203,7 @@ var calendar = {
             success: function (json) {
                 calendar.update_load_button(json);
                 var formattedAuthors =  calendar.formatAuthors(json.data);
-                calendar.apply_to_panel(selector+' .collection',date,page,formattedAuthors);
+                calendar.apply_to_panel(selector+' .author-list',date,page,formattedAuthors);
             },
             error: function (xhr, ajaxOptions, thrownError) {
                 console.log(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
@@ -212,14 +212,17 @@ var calendar = {
     },
     'formatAuthor':function (authorObj) {
         var messageTemplate =
-            '<li class="collection-item avatar col-md-3">'+
-                '<img class="circle" width="50px" src="/api/images/author/'+authorObj.id+'"/>'+
-                '<span class="title">'+
-                    '<a style="font-size: larger" href="/author/'+authorObj.id+'">'+
-                        '<span class="media-heading">'+authorObj.authorName+'</span>'+
-                    '</a>'+
-                '</span>'+
-            '</li>';
+        '<div class="xl-col-16 x-col-20 m-col-25 s-col-50">'+
+            '<div class="card">'+
+                '<div class="card-image">'+
+                    '<img src="/api/images/author/'+authorObj.id+'" class="circle responsive-img">'+
+                    '<b class="text-center btn-floating halfway-fab red">'+authorObj.age+'</b>'+
+                '</div>'+
+                '<div class="card-content" style="padding:24px 12px 24px 12px">'+
+                    '<a href="/author/'+authorObj.id+'"><p class="text-center" style="word-wrap: break-word">'+authorObj.authorName+'</p></a>'+
+                '</div>'+
+            '</div>'+
+        '</div>';
         return messageTemplate;
     },
     'formatAuthors':function (jsonArray) {

@@ -139,3 +139,172 @@ div.restored-item {
     width: 100px;
     height: 150px;
 }
+
+.grid {
+    font-size: 0;
+    margin: 0 -15px;
+}
+
+.grid::after {
+    clear: both;
+    content: "";
+    display: table;
+}
+
+.grid [class*="m-col-"] {
+    font-size: 1rem;
+    padding: 0 15px;
+    vertical-align: top;
+    display: inline-block;
+}
+
+.grid [class*="x-col-"] {
+    font-size: 1rem;
+    padding: 0 15px;
+    vertical-align: top;
+    display: inline-block;
+}
+
+.grid [class*="s-col-"] {
+    font-size: 1rem;
+    padding: 0 15px;
+    vertical-align: top;
+    display: inline-block;
+}
+
+.grid [class*="xl-col-"] {
+    font-size: 1rem;
+    padding: 0 15px;
+    vertical-align: top;
+    display: inline-block;
+}
+
+.grid .s-col-25 {
+    width: 25%;
+}
+
+.grid .s-col-20 {
+    width: 20%;
+}
+
+.grid .s-col-22 {
+    width: 22%;
+}
+
+.grid .s-col-26 {
+    width: 26%;
+}
+
+.grid .s-col-33 {
+    width: 33.33333%;
+}
+
+.grid .s-col-50 {
+    width: 50%;
+}
+
+.grid .s-col-74 {
+    width: 74%;
+}
+
+@media only screen and (min-width: 601px){
+    .grid .m-col-25 {
+        width: 25%;
+    }
+
+    .grid .m-col-20 {
+        width: 20%;
+    }
+
+    .grid .m-col-22 {
+        width: 22%;
+    }
+
+    .grid .m-col-26 {
+        width: 26%;
+    }
+
+    .grid .m-col-33 {
+        width: 33.33333%;
+    }
+
+    .grid .m-col-50 {
+        width: 50%;
+    }
+
+    .grid .m-col-74 {
+        width: 74%;
+    }
+}
+
+@media only screen and (min-width: 1201px){
+    .grid .x-col-25 {
+        width: 25%;
+    }
+
+    .grid .x-col-20 {
+        width: 20%;
+    }
+
+    .grid .x-col-22 {
+        width: 22%;
+    }
+
+    .grid .x-col-26 {
+        width: 26%;
+    }
+
+    .grid .x-col-33 {
+        width: 33.33333%;
+    }
+
+    .grid .x-col-50 {
+        width: 50%;
+    }
+
+    .grid .x-col-74 {
+        width: 74%;
+    }
+}
+
+@media only screen and (min-width: 1601px){
+
+    .grid .xl-col-12 {
+        width: 12.5%;
+    }
+
+    .grid .xl-col-16 {
+        width: 16.66666%;
+    }
+
+    .grid .xl-col-25 {
+        width: 25%;
+    }
+
+    .grid .xl-col-20 {
+        width: 20%;
+    }
+
+    .grid .xl-col-22 {
+        width: 22%;
+    }
+
+    .grid .xl-col-26 {
+        width: 26%;
+    }
+
+    .grid .xl-col-33 {
+        width: 33.33333%;
+    }
+
+    .grid .xl-col-50 {
+        width: 50%;
+    }
+
+    .grid .xl-col-74 {
+        width: 74%;
+    }
+}
+
+
+
