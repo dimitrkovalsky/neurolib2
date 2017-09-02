@@ -212,6 +212,10 @@ div.restored-item {
         width: 25%;
     }
 
+    .grid .m-col-16 {
+        width: 16.66666%;
+    }
+
     .grid .m-col-20 {
         width: 20%;
     }
@@ -242,6 +246,9 @@ div.restored-item {
         width: 25%;
     }
 
+    .grid .x-col-16 {
+        width: 16.66666%;
+    }
     .grid .x-col-20 {
         width: 20%;
     }

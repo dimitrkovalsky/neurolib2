@@ -192,7 +192,7 @@ var calendar = {
     },
     'load_author_date':function (selector,date,page) {
         $.ajax({
-            url: utils.getPageUrl()+'/authorborn',
+            url: utils.getPageUrl()+'/api/authorborn',
             type: 'post',
             data: {
                 'date': date,
@@ -211,12 +211,18 @@ var calendar = {
         });
     },
     'formatAuthor':function (authorObj) {
+        if(authorObj.age!==null) {
+             var age = '<b class="text-center btn-floating halfway-fab red">' + authorObj.age + '</b>';
+        }
+        else {
+            var age = "";
+        }
         var messageTemplate =
-        '<div class="xl-col-16 x-col-20 m-col-25 s-col-50">'+
-            '<div class="card">'+
+        '<div class="xl-col-12 x-col-16 m-col-25 s-col-50">'+
+            '<div class="card hoverable">'+
                 '<div class="card-image">'+
                     '<img src="/api/images/author/'+authorObj.id+'" class="circle responsive-img">'+
-                    '<b class="text-center btn-floating halfway-fab red">'+authorObj.age+'</b>'+
+                    age+
                 '</div>'+
                 '<div class="card-content" style="padding:24px 12px 24px 12px">'+
                     '<a href="/author/'+authorObj.id+'"><p class="text-center" style="word-wrap: break-word">'+authorObj.authorName+'</p></a>'+

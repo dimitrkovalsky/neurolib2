@@ -21,8 +21,8 @@ public class AuthorBornController {
     @Autowired
     private AuthorBornService service;
 
-    @RequestMapping(path = "/authorborn", method = RequestMethod.POST)
-    public LoaderDto<List> get(@RequestParam(value = "page",required = false) Integer page,
+    @RequestMapping(path = "/api/authorborn", method = RequestMethod.POST)
+    public LoaderDto<List> get(@RequestParam(value = "page",required = false,defaultValue = "0") Integer page,
                          @RequestParam(value = "date",required = false) String date) {
 
         return service.loadAuthorsBornAt( date,  page);
