@@ -217,11 +217,13 @@ var calendar = {
         else {
             var age = "";
         }
+
+        var img_link_style = "background-image: url('/api/images/author/"+authorObj.id+"');";
         var messageTemplate =
         '<div class="xl-col-12 x-col-16 m-col-25 s-col-50">'+
             '<div class="card hoverable">'+
                 '<div class="card-image">'+
-                    '<img src="/api/images/author/'+authorObj.id+'" class="circle responsive-img">'+
+                    '<div style="'+img_link_style+'" class="box-img"></div>'+
                     age+
                 '</div>'+
                 '<div class="card-content" style="padding:24px 12px 24px 12px">'+
