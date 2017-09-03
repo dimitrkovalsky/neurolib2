@@ -43,7 +43,7 @@ public class AuthorSitemapHandler extends AbstractIdSitemapHandler<AuthorEntity>
 
     @Override
     public Page<AuthorEntity> getPageWithData(Integer page, Integer size) {
-        return authorRepository.findAll(new PageRequest(page,50000));
+        return authorRepository.findAll(new PageRequest(page,size));
     }
 
     @Override

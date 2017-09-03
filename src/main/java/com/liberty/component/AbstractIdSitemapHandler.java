@@ -40,7 +40,7 @@ public abstract class AbstractIdSitemapHandler<T> implements SitemapHandler  {
 
     @Override
     public List<SitemapLink> getSitemapLinks() {
-        Page<T> page =  getPageWithData(0,50000);
+        Page<T> page =  getPageWithData(0,5000);
         List<SitemapLink> links = new ArrayList<>();
         Integer totalPages = page.getTotalPages();
         for (int i = 0; i <totalPages; i++) {
@@ -53,7 +53,7 @@ public abstract class AbstractIdSitemapHandler<T> implements SitemapHandler  {
 
     @Override
     public SitemapUrlList getLinksAtPage(Integer page) {
-        Page<T> simpleBookEntities =  getPageWithData(page,50000);
+        Page<T> simpleBookEntities =  getPageWithData(page,5000);
         SitemapUrlList sitemapUrlList = new SitemapUrlList();
         simpleBookEntities.forEach(source -> {
             SitemapUrl sitemapUrl = new SitemapUrl();

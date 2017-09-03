@@ -44,7 +44,7 @@ public class BookSitemapHandler extends AbstractIdSitemapHandler<SimpleBookEntit
 
     @Override
     public Page<SimpleBookEntity> getPageWithData(Integer page, Integer size) {
-        return bookRepository.findAllByDeletedIsFalse(new PageRequest(page,50000));
+        return bookRepository.findAllByDeletedIsFalse(new PageRequest(page,size));
     }
 
     @Override
