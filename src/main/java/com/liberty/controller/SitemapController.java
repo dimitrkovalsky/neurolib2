@@ -1,5 +1,7 @@
 package com.liberty.controller;
 
+import com.liberty.component.SitemapHandler;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,10 +14,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class SitemapController {
 
+    @Autowired
+    private SitemapHandler handler;
+
     @RequestMapping("/sitemap.xml")
     @ResponseBody
     public String getSitemapIndex() {
-        return "sitemapindex";
+        System.out.println(handler.getSitemapLinks().toString());
+        return null;
     }
 
     @RequestMapping("/sitemaps/{type}-{page}.xml")
