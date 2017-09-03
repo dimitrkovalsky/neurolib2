@@ -14,17 +14,29 @@ import java.util.List;
  */
 public abstract class AbstractIdSitemapHandler<T> implements SitemapHandler  {
 
-    abstract Float getPriority();
+    public abstract Float getPriority();
 
-    abstract String getChangeFrequency();
+    public abstract String getChangeFrequency();
 
-    abstract String formatSitemapLinks(Integer page);
+    public String getDomainName(){
+        return "http://192.168.1.2:7777";
+    }
 
-    abstract String formatUrl(Long id) ;
+    public String formatSitemapLinks(Integer page){
+        return new StringBuilder()
+                .append(getDomainName())
+                .append("/sitemaps/")
+                .append(getSitemapType())
+                .append("-").append(page)
+                .append(".xml")
+                .toString();
+    }
 
-    abstract Page<T> getPageWithData(Integer page, Integer size );
+    public abstract String formatUrl(Long id) ;
 
-    abstract Long getEntryId(T t);
+    public abstract Page<T> getPageWithData(Integer page, Integer size);
+
+    public abstract Long getEntryId(T t);
 
     @Override
     public List<SitemapLink> getSitemapLinks() {

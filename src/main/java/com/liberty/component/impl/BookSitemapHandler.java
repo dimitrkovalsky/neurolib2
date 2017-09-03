@@ -1,5 +1,6 @@
-package com.liberty.component;
+package com.liberty.component.impl;
 
+import com.liberty.component.AbstractIdSitemapHandler;
 import com.liberty.model.SimpleBookEntity;
 import com.liberty.repository.SimpleBookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,7 @@ import org.springframework.stereotype.Component;
  * Created by user on 03.09.2017.
  */
 @Component
-public class BookSitemapHandler extends AbstractIdSitemapHandler<SimpleBookEntity>{
+public class BookSitemapHandler extends AbstractIdSitemapHandler<SimpleBookEntity> {
 
     @Autowired
     private SimpleBookRepository bookRepository;
@@ -22,33 +23,18 @@ public class BookSitemapHandler extends AbstractIdSitemapHandler<SimpleBookEntit
         return "books";
     }
 
-    private String getDomainName(){
-        return "http://192.168.1.2:7777";
-    }
-
     @Override
-    Float getPriority(){
+    public Float getPriority(){
         return 0.2f;
     }
 
     @Override
-    String getChangeFrequency(){
+    public String getChangeFrequency(){
         return "weekly";
     }
 
     @Override
-    String formatSitemapLinks(Integer page){
-       return new StringBuilder()
-               .append(getDomainName())
-               .append("/sitemaps/")
-               .append(getSitemapType())
-               .append("-").append(page)
-               .append(".xml")
-               .toString();
-    }
-
-    @Override
-    String formatUrl(Long id){
+    public String formatUrl(Long id){
         return new StringBuilder()
                 .append(getDomainName())
                 .append("/book/")
@@ -57,12 +43,12 @@ public class BookSitemapHandler extends AbstractIdSitemapHandler<SimpleBookEntit
     }
 
     @Override
-    Page<SimpleBookEntity> getPageWithData(Integer page, Integer size) {
-        return bookRepository.findAllByDeletedIsFalse(new PageRequest(0,50000));
+    public Page<SimpleBookEntity> getPageWithData(Integer page, Integer size) {
+        return bookRepository.findAllByDeletedIsFalse(new PageRequest(page,50000));
     }
 
     @Override
-    Long getEntryId(SimpleBookEntity entity) {
+    public Long getEntryId(SimpleBookEntity entity) {
         return entity.getBookId();
     }
 

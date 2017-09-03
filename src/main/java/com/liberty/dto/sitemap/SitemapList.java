@@ -5,6 +5,7 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -23,4 +24,7 @@ public class SitemapList<T> {
         sitemapList.add(entry);
     }
 
+    public void addAll(Collection<T> collection){
+        sitemapList.addAll(collection);
+    }
 }
