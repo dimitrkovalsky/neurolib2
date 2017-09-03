@@ -10,7 +10,7 @@ import java.io.Serializable;
  */
 @Data
 @XStreamAlias("sitemap")
-public class Sitemap implements Serializable{
+public class SitemapLink implements Serializable{
 
     @XStreamAlias("loc")
     private String location ;

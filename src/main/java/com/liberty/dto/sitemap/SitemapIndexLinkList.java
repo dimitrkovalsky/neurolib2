@@ -8,7 +8,7 @@ import java.io.Serializable;
  * Created by user on 03.09.2017.
  */
 @XStreamAlias("sitemapindex")
-public class SitemapIndex extends SitemapList<Sitemap> implements Serializable {
+public class SitemapIndexLinkList extends SitemapList<SitemapLink> implements Serializable {
 
     private static final long serialVersionUID = -6641748820414216379L;
 }
