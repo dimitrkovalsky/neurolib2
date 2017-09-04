@@ -3,8 +3,9 @@ package com.liberty.component;
 import com.liberty.dto.sitemap.SitemapLink;
 import com.liberty.dto.sitemap.SitemapUrl;
 import com.liberty.dto.sitemap.SitemapUrlList;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,12 +15,15 @@ import java.util.List;
  */
 public abstract class AbstractIdSitemapHandler<T> implements SitemapHandler  {
 
+    @Autowired
+    private Environment environment;
+
     public abstract Float getPriority();
 
     public abstract String getChangeFrequency();
 
     public String getDomainName(){
-        return "http://192.168.1.2:7777";
+        return environment.getProperty("server.domain.name");
     }
 
     public String formatSitemapLinks(Integer page){
