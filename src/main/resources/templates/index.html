@@ -29,7 +29,37 @@
             </th:block>
 
         </div>
+        <div class="divider"></div>
+        <div style="overflow:hidden;">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h4>В этот день родились</h4>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <div id="authorborn-calendar" class="z-depth-2"></div>
+                    </div>
+                    <div class="col-md-9"></div>
+
+                    <div class="col-md-12">
+                        <div id="authorborn-panel">
+                            <div class="grid author-list">
+
+                            </div>
+                        </div>
+                        <div id="load-link">
+                            <a href="#!" >Еще писатели</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+
+
     <div class="col-md-2">
         <div th:replace="../fragments/right-bar :: right-bar">...</div>
     </div>

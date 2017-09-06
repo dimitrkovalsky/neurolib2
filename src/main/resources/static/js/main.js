@@ -3,6 +3,7 @@ window.onload = function () {
 };
 
 $(document).ready(function () {
+    calendar.init_authorborn("#authorborn-calendar","#authorborn-panel");
     addTitles();
     initCarousel();
     var books = new Bloodhound({
@@ -158,6 +159,106 @@ var rating = {
                 book.rate(bookId, rating);
             })
         })
+    }
+};
+
+var calendar = {
+    'init':function (selector) {
+        $(selector).datetimepicker({
+            inline: true,
+            locale: "ru",
+            format: 'YYYY-MM-DD'
+        });
+    },
+    "add_authorborn_change_event":function (calendar_selector,panel_selector) {
+        $(calendar_selector).on('dp.change', function (date,oldDate) {
+
+            var time = moment(date.date);
+            calendar.load_author_date(panel_selector,time.format('YYYY-MM-DD'),0);
+    });
+    },
+    'init_authorborn_panel':function (selector) {
+        var current_date = moment().format('YYYY-MM-DD');
+        calendar.load_author_date(selector,current_date,0);
+
+        $("#load-link a").click(function () {
+            calendar.load_author_date(selector,calendar.date,calendar.page+1);
+        });
+    },
+    'init_authorborn':function (calendar_selector,panel_selector) {
+        calendar.init(calendar_selector);
+        calendar.add_authorborn_change_event(calendar_selector,panel_selector);
+        calendar.init_authorborn_panel(panel_selector);
+    },
+    'load_author_date':function (selector,date,page) {
+        $.ajax({
+            url: utils.getPageUrl()+'/api/authorborn',
+            type: 'post',
+            data: {
+                'date': date,
+                '_csrf': _csrf,
+                'page': page
+            },
+            dataType: 'json',
+            success: function (json) {
+                calendar.update_load_button(json);
+                var formattedAuthors =  calendar.formatAuthors(json.data);
+                calendar.apply_to_panel(selector+' .author-list',date,page,formattedAuthors);
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                console.log(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+            }
+        });
+    },
+    'formatAuthor':function (authorObj) {
+        if(authorObj.age!==null) {
+             var age = '<b class="text-center btn-floating halfway-fab red">' + authorObj.age + '</b>';
+        }
+        else {
+            var age = "";
+        }
+
+        var img_link_style = "background-image: url('/api/images/author/"+authorObj.id+"');";
+        var messageTemplate =
+        '<div class="xl-col-12 x-col-16 m-col-25 s-col-50">'+
+            '<div class="card hoverable">'+
+                '<div class="card-image">'+
+                    '<div style="'+img_link_style+'" class="box-img"></div>'+
+                    age+
+                '</div>'+
+                '<div class="card-content" style="padding:24px 12px 24px 12px">'+
+                    '<a href="/author/'+authorObj.id+'"><p class="text-center" style="word-wrap: break-word">'+authorObj.authorName+'</p></a>'+
+                '</div>'+
+            '</div>'+
+        '</div>';
+        return messageTemplate;
+    },
+    'formatAuthors':function (jsonArray) {
+        var resultString = '';
+        $.each(jsonArray,function () {
+            resultString=resultString+calendar.formatAuthor(this) ;
+        });
+        return resultString;
+    },
+    'apply_to_panel':function (selector,date,page,data) {
+        calendar.page=page;
+        if(calendar.date===undefined||calendar.date!=date){
+            calendar.date = date;
+            calendar.page = 0;
+            $(selector).html("");
+        }else {
+            calendar.date = date;
+            calendar.page = page;
+        }
+        $(selector).append(data);
+    },
+
+    'update_load_button':function (json) {
+        if(json.available==false){
+            $("#load-link a").attr("style", "visibility: hidden");
+        }else{
+            $("#load-link a").attr("style", "visibility: visible");
+        }
     }
 };
     var comment = {
