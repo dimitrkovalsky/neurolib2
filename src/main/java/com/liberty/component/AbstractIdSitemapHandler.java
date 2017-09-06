@@ -15,6 +15,8 @@ import java.util.List;
  */
 public abstract class AbstractIdSitemapHandler<T> implements SitemapHandler  {
 
+    private static final Integer PAGE_SIZE = 5000;
+
     @Autowired
     private Environment environment;
 
@@ -44,7 +46,7 @@ public abstract class AbstractIdSitemapHandler<T> implements SitemapHandler  {
 
     @Override
     public List<SitemapLink> getSitemapLinks() {
-        Page<T> page =  getPageWithData(0,5000);
+        Page<T> page =  getPageWithData(0,PAGE_SIZE);
         List<SitemapLink> links = new ArrayList<>();
         Integer totalPages = page.getTotalPages();
         for (int i = 0; i <totalPages; i++) {
@@ -57,7 +59,7 @@ public abstract class AbstractIdSitemapHandler<T> implements SitemapHandler  {
 
     @Override
     public SitemapUrlList getLinksAtPage(Integer page) {
-        Page<T> simpleBookEntities =  getPageWithData(page,5000);
+        Page<T> simpleBookEntities =  getPageWithData(page,PAGE_SIZE);
         SitemapUrlList sitemapUrlList = new SitemapUrlList();
         simpleBookEntities.forEach(source -> {
             SitemapUrl sitemapUrl = new SitemapUrl();
@@ -69,4 +71,7 @@ public abstract class AbstractIdSitemapHandler<T> implements SitemapHandler  {
         return sitemapUrlList;
     }
 
+    public Integer getPagesCount(){
+        return getPageWithData(0,PAGE_SIZE).getTotalPages();
+    }
 }

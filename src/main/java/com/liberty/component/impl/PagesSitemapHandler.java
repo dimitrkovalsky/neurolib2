@@ -58,6 +58,11 @@ public class PagesSitemapHandler implements SitemapHandler {
         return sitemapUrlList;
     }
 
+    @Override
+    public Integer getPagesCount() {
+        return 1;
+    }
+
     private SitemapUrl generateUrl(String path){
         SitemapUrl url = new SitemapUrl();
         url.setLocation(getDomainName()+path);

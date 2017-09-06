@@ -15,4 +15,6 @@ public interface SitemapHandler {
     List<SitemapLink> getSitemapLinks();
 
     SitemapUrlList getLinksAtPage(Integer page);
+
+    Integer getPagesCount();
 }
