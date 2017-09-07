@@ -4,6 +4,7 @@ import com.liberty.dto.sitemap.SitemapLink;
 import com.liberty.dto.sitemap.SitemapUrl;
 import com.liberty.dto.sitemap.SitemapUrlList;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Page;
 
@@ -15,7 +16,11 @@ import java.util.List;
  */
 public abstract class AbstractIdSitemapHandler<T> implements SitemapHandler  {
 
-    private static final Integer PAGE_SIZE = 5000;
+    @Value("${sitemap.pageSize}")
+    private Integer PAGE_SIZE;
+
+    @Value("${server.domain.name}")
+    private String DOMAIN_NAME;
 
     @Autowired
     private Environment environment;
@@ -25,7 +30,7 @@ public abstract class AbstractIdSitemapHandler<T> implements SitemapHandler  {
     public abstract String getChangeFrequency();
 
     public String getDomainName(){
-        return environment.getProperty("server.domain.name");
+        return DOMAIN_NAME;
     }
 
     public String formatSitemapLinks(Integer page){

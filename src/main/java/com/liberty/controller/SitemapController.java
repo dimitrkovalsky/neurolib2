@@ -1,7 +1,6 @@
 package com.liberty.controller;
 
-import com.liberty.component.SitemapHandler;
-import com.liberty.service.impl.SitemapService;
+import com.liberty.service.SitemapService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.stereotype.Controller;

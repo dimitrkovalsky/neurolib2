@@ -2,15 +2,12 @@ package com.liberty.service.impl;
 
 import com.liberty.component.SitemapHandler;
 import com.liberty.dto.sitemap.SitemapIndexLinkList;
-import com.liberty.dto.sitemap.SitemapLink;
-import com.liberty.dto.sitemap.SitemapUrl;
 import com.liberty.dto.sitemap.SitemapUrlList;
+import com.liberty.service.SitemapService;
 import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.annotations.Annotations;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +23,7 @@ import java.util.*;
  * Created by user on 03.09.2017.
  */
 @Service
-public class SitemapService {
+public class SitemapServiceImpl implements SitemapService {
 
     @Value("${sitemap.previouslyGenerated}")
     private Boolean usePreviouslyGeneratedSitemap ;
