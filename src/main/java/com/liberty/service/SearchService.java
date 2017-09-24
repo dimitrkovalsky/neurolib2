@@ -17,7 +17,7 @@ public interface SearchService {
 
     List<SearchBookTypeaheadDto> searchBookTypeahead(Integer size, String query);
 
-    Page<SearchBookPageResultDto> searchBookAll(Pageable pageRequest, String query, Authentication auth);
+    Page<SearchBookPageResultDto> searchBookAll(Pageable pageRequest, String query);
 
     List<SearchAuthorTypeaheadDto> searchAuthorTypeahead(Integer size, String query);
 

@@ -41,4 +41,9 @@ public interface SimpleBookRepository extends JpaRepository<SimpleBookEntity, Lo
 
     Page<SimpleBookEntity> findAllByDeletedIsFalse(Pageable pageable);
 
+
+    @Query(nativeQuery = true,
+            value = "SELECT * FROM libbook WHERE BookId in (SELECT neurolib_book_id FROM selection_books WHERE selection_id = :selectionId) \n#pageable\n",
+            countQuery = "SELECT COUNT(*) FROM selection_books sb  WHERE sb.selection_id = :selectionId AND sb.neurolib_book_id IS NOT NULL")
+    Page<SimpleBookEntity> findAllBySelectionId(@Param("selectionId") Long selectionId, Pageable pageable);
 }

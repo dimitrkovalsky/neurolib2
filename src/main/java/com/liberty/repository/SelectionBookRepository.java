@@ -1,6 +1,8 @@
 package com.liberty.repository;
 
 import com.liberty.model.SelectionBooksEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -14,9 +16,9 @@ public interface SelectionBookRepository extends JpaRepository<SelectionBooksEnt
 
     List<SelectionBooksEntity>findAllByLivelibBookId(Long livelibBookId);
 
-    List<SelectionBooksEntity>findAllBySelectionId(Long selectionId);
+    Page<SelectionBooksEntity> findAllBySelectionIdAndNeurolibBookIdIsNotNull(Long selectionId, Pageable pageable);
 
-    List<SelectionBooksEntity>findAllByNeurolibId(Long neurolibId);
+    List<SelectionBooksEntity>findAllByNeurolibBookId(Long neurolibId);
 
 }
 

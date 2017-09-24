@@ -1,5 +1,6 @@
 package com.liberty.config;
 
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
@@ -12,6 +13,7 @@ import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurerAdapt
  * Time: 21:35
  */
 @Configuration
+@EnableCaching
 public class DbConfig {
     @Bean
     public RepositoryRestConfigurer repositoryRestConfigurer() {

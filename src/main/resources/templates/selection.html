@@ -1,0 +1,80 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<div th:replace="../fragments/head::head (${selectionInfo.title})"></div>
+
+<body>
+<div th:replace="../fragments/navbar::navbar"></div>
+<div class="container-fluid content" style="margin-top: 65px">
+    <div class="col-md-10">
+        <div class="divider"></div>
+        <div class="row section">
+            <div class="col s12">
+                <a th:href="@{/selection/{id}(id = ${selectionInfo.selectionId})}" >
+                    <h5 th:text="${selectionInfo.title}"/>
+                </a>
+                <div class="col">Автор:</div>
+                <p th:text="${selectionInfo.userMade}"></p>
+                <p th:utext="${selectionInfo.description}"></p>
+                <div class="col">Книги в подборке:</div>
+                <div class="col">
+
+                </div>
+                <br/>
+
+            </div>
+        </div>
+        <br/>
+        <th:block th:each="selectionBooks : ${page.content}">
+            <div class="divider"></div>
+            <div class="row section">
+                <div class="col s2">
+                    <a th:href="@{/book/{id}(id = ${selectionBooks.book.bookId})}" >
+                        <img class="responsive-img" th:src="@{/api/images/book/{id}(id = ${selectionBooks.book.bookId})}"/>
+                    </a>
+                </div>
+                <div class="col s7">
+                    <a th:href="@{/book/{id}(id = ${selectionBooks.book.bookId})}" >
+                        <h5 th:text="${selectionBooks.book.title}"/>
+                    </a>
+                    <div class="col">Авторы:</div>
+                    <th:block th:each="author : ${selectionBooks.authors}">
+                        <div th:inline="text">
+                            <a th:href="@{/author/{authorId}/book(authorId = ${author.authorId})}">
+                                <span th:text="${author.firstName}"></span>
+                                <span th:text="${author.LastName}"></span>
+                            </a>
+                        </div>
+                    </th:block>
+                    <div class="col">Жанр:</div>
+                    <div class="col">
+                        <th:block th:each="genre : ${selectionBooks.genres}">
+                            <a th:href="@{/genre/{genreId}(genreId = ${genre.genreId})}">
+                                <span th:text="${genre.genreDesc}"></span>
+                            </a>
+                        </th:block>
+                    </div>
+                    <div class="col" th:utext="${selectionBooks.selectionBooksEntity.description}"></div>
+                    <br/>
+                </div>
+                <div  class=" col s3">
+                    <div sec:authorize="isAuthenticated()" th:id="'shelf-control-'+${selectionBooks.book.bookId}"  class="center-align">
+                        <a th:if="${selectionBooks.isInShelf==false}" class="waves-effect waves-light btn green book-operation-link"  th:onclick="'book.add('+${selectionBooks.book.bookId}+');'" >
+                            <i class="material-icons left">add</i>Добавить
+                        </a>
+                        <a th:if="${selectionBooks.isInShelf==true}" class="waves-effect waves-light btn red book-operation-link"  th:onclick="'book.delete('+${selectionBooks.book.bookId}+');'" >
+                            <i class="material-icons left">delete</i>Удалить
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <br/>
+        </th:block>
+        <div  th:replace="../fragments/paginationbar::paginationbar"></div>
+    </div>
+    <div class="col-md-2">
+        <div th:replace="../fragments/right-bar :: right-bar">...</div>
+    </div>
+</div>
+</body>
+</html>

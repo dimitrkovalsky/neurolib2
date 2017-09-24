@@ -1,0 +1,58 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:replace="../fragments/head::head ('Топ подборок')"></div>
+
+<body>
+<div th:replace="../fragments/navbar::navbar"></div>
+<div class="container-fluid content" style="margin-top: 65px">
+    <div class="col-md-10">
+        <th:block th:each="selectionInfo : ${page.content}">
+            <div class="divider"></div>
+            <div class="row section">
+                <div class="col s12">
+                    <a th:href="@{/selection/{id}(id = ${selectionInfo.selection.selectionId})}" >
+                        <h5 th:text="${selectionInfo.selection.title}"/>
+                    </a>
+                    <div class="col">Автор:</div>
+                    <p th:text="${selectionInfo.selection.userMade}"></p>
+                    <p th:utext="${selectionInfo.selection.description}"></p>
+                    <div class="col">Книги в подборке:</div>
+                    <div class="col">
+
+                    </div>
+                    <br/>
+                    <div class="swiper-container" th:id="@{swiper-{id}(id = ${selectionInfo.selection.selectionId})}">
+                        <div class="swiper-wrapper">
+                            <th:block th:each="book : ${selectionInfo.books}">
+                                <div class="swiper-slide" style="max-width: 145px; padding: 10px;">
+                                    <div class="card hoverable">
+                                        <div class="card-image">
+                                            <div th:style="@{background-image: url('/api/images/book/{bookId}');(bookId = ${book.bookId})}" class="box-img">
+                                            </div>
+                                        </div>
+                                        <div class="card-content" style="padding:24px 12px 24px 12px">
+                                            <a th:href="@{/book/{bookId}(bookId = ${book.bookId})}">
+                                                <p class="text-center truncate" th:text="${book.title}"></p>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </th:block>
+                        </div>
+                        <!-- Add Arrows -->
+                        <div class="swiper-button-next"></div>
+                        <div class="swiper-button-prev"></div>
+                    </div>
+
+                </div>
+            </div>
+            <br/>
+        </th:block>
+        <div  th:replace="../fragments/paginationbar::paginationbar"></div>
+    </div>
+    <div class="col-md-2">
+        <div th:replace="../fragments/right-bar :: right-bar">...</div>
+    </div>
+</div>
+</body>
+</html>

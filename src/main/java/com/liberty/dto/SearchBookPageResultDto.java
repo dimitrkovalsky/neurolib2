@@ -6,8 +6,6 @@ import lombok.Data;
  * Created by user on 14.05.2017.
  */
 @Data
-public class SearchBookPageResultDto extends BaseBookDto {
-    private Boolean isInShelf;
+public class SearchBookPageResultDto extends SocialBookDto {
 
-    private Float commonRate;
 }

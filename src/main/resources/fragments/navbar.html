@@ -16,6 +16,9 @@
         <li th:classappend="${module == 'authors' ? 'active' : ''}">
             <a href="#" th:href="@{/author/random}">Авторы</a>
         </li>
+        <li th:classappend="${module == 'selections' ? 'active' : ''}">
+            <a href="#" th:href="@{/selections/top?sort=votes,desc}">Подборки</a>
+        </li>
         <li th:classappend="${module == 'reco' ? 'active' : ''}">
             <a href="#" th:href="@{/reco}">Рекомендации</a>
         </li>
@@ -32,21 +35,24 @@
                 <button type="submit" class="btn btn-primary" style="display: none"/>
             </form>
         </li>
-        <li sec:authorize="isAuthenticated()">
-            <img th:src="${#authentication.credentials.avatar}" width="50px" class="circle"/>
-        </li>
-        <li sec:authorize="isAuthenticated()">
-            <a th:href="@{/profile}">
-                <span sec:authentication="credentials.firstName">User Name</span>
-            </a>
-        </li>
-        <li sec:authorize="isAuthenticated()">
-            <a href="#" onclick="document.getElementById('signout').submit();">
-                <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>&nbsp;Sign Out
-            </a>
-            <form method="POST" th:action="@{/signout}" id="signout">
-            </form>
-        </li>
+        <th:block sec:authorize="isAuthenticated()">
+            <li>
+                <img th:src="${#authentication.credentials.avatar}" width="50px" class="circle"/>
+            </li>
+            <li>
+                <a th:href="@{/profile}">
+                    <span sec:authentication="credentials.firstName">User Name</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" onclick="document.getElementById('signout').submit();">
+                    <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>&nbsp;Sign Out
+                </a>
+                <form method="POST" th:action="@{/signout}" id="signout">
+                </form>
+            </li>
+        </th:block>
+
 
         <li sec:authorize="isAnonymous()">
             <a href="/signin" th:href="@{/signin}">
