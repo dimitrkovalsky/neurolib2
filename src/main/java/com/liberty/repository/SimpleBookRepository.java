@@ -39,4 +39,6 @@ public interface SimpleBookRepository extends JpaRepository<SimpleBookEntity, Lo
             countQuery = "SELECT COUNT(*) FROM libbook b  WHERE b.Title LIKE %:title% AND b.Deleted = FALSE")
     Page<SimpleBookEntity> findAllByTitleContaining(@Param("title") String title, Pageable pageable);
 
+    Page<SimpleBookEntity> findAllByDeletedIsFalse(Pageable pageable);
+
 }

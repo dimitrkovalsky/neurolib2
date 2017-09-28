@@ -12,7 +12,6 @@ import org.springframework.social.config.annotation.SocialConfigurerAdapter;
 import org.springframework.social.connect.*;
 import org.springframework.social.connect.jdbc.JdbcUsersConnectionRepository;
 import org.springframework.social.connect.web.SignInAdapter;
-import org.springframework.social.vkontakte.api.VKontakte;
 import org.springframework.social.vkontakte.connect.VKontakteConnectionFactory;
 
 import javax.sql.DataSource;

@@ -26,6 +26,7 @@ public interface AuthorRepository extends JpaRepository<AuthorEntity, Integer> {
 
     Page<AuthorEntity> getAllByFirstNameOrMiddleNameOrLastNameContainingOrderByLastName(Pageable pageable, String firstName, String middleName, String lastName);
 
+    Page<AuthorEntity> findAll(Pageable pageable);
 
     @Query(nativeQuery = true, value = "SELECT * FROM libavtorname WHERE LOWER(LastName) LIKE '%:name%'")
     List<AuthorEntity> getByLastName(@Param("name") String name);
