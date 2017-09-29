@@ -3,7 +3,15 @@ window.onload = function () {
 };
 
 $(document).ready(function () {
-    calendar.init_authorborn("#authorborn-calendar","#authorborn-panel");
+
+    if($('#authorborn-calendar').length) {
+        calendar.init_authorborn("#authorborn-calendar","#authorborn-panel");
+    }
+
+    if($('.swiper-container').length) {
+        initSwiper();
+    }
+
     addTitles();
     initCarousel();
     var books = new Bloodhound({
@@ -65,11 +73,123 @@ $('#comment-module').ready(function () {
     }
 });
 
+function initSwiper() {
+    $('.swiper-slide').removeAttr("style");
+
+    var swiper = new Swiper('.swiper-container', {
+        nextButton: '.swiper-button-next',
+        prevButton: '.swiper-button-prev',
+        slidesPerView: 9,
+        slidesPerGroup:4,
+        centeredSlides: false,
+        spaceBetween: 30,
+        breakpoints: {
+            1600: {
+                slidesPerView: 8,
+                spaceBetween: 31
+            },
+            1400: {
+                slidesPerView: 7,
+                spaceBetween: 27
+            },
+            1200: {
+                slidesPerView: 6,
+                spaceBetween: 26
+            },
+            1024: {
+                slidesPerView: 5,
+                spaceBetween: 25
+            },
+            768: {
+                slidesPerView: 5,
+                spaceBetween: 20
+            },
+            640: {
+                slidesPerView: 4,
+                slidesPerGroup:2,
+                spaceBetween: 10
+            },
+            320: {
+                slidesPerView: 2,
+                slidesPerGroup:1,
+                spaceBetween: 10
+            },
+        },
+    });
+
+    $.each(swiper,function () {
+        this.noPagesAvilable=false;
+        this.page=0;
+        this.pageSize=15;
+        this.on('slideChangeStart', function (_swiper) {
+            if(_swiper.progress>0.5&&_swiper.noPagesAvilable===false){
+                selection.loadBooks(_swiper.container[0].id.split('-')[1],_swiper);
+            }
+            console.log();
+        });
+    });
+
+}
+
 function initCarousel() {
     $(document).ready(function(){
         $('.carousel').carousel();
     });
 }
+
+var selection = {
+    'loadBooks': function (selectionId,swiper) {
+        console.log("load page: "+swiper.page+" and size: "+swiper.pageSize);
+        $.ajax({
+            url: '/selection/'+selectionId,
+            type: 'post',
+            data: {
+                '_csrf': _csrf,
+                'size': swiper.pageSize,
+                'page':swiper.page
+            },
+            dataType: 'json',
+            success: function (json) {
+                swiper.appendSlide(selection.formatSwiper(json));
+                swiper.page++;
+                if(json.length===0){
+                    swiper.noPagesAvilable=true;
+                }
+                console.log(json);
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+
+            }
+        });
+    },
+    'formatSwiper': function (json) {
+        var swiperData="";
+
+        $.each(json,function () {
+            swiperData+= selection.formatBook(this);
+        });
+
+        return swiperData;
+    },
+    'formatBook': function (bookObj) {
+        var template =
+            '<div class="swiper-slide">'+
+                '<div class="card hoverable">'+
+                    '<div class="card-image">'+
+                        '<div style="background-image: url(\'/api/images/book/'+bookObj.bookId+'\');" class="box-img">'+
+                        '</div>'+
+                    '</div>'+
+                    '<div class="card-content" style="padding:24px 12px 24px 12px">'+
+                        '<a href="/book/'+bookObj.bookId+'">'+
+                            '<p class="text-center truncate">'+bookObj.title+'</p>'+
+                        '</a>'+
+                    '</div>'+
+                '</div>'+
+            '</div>';
+        return template;
+    }
+}
+
 
 var book = {
     'add': function (bookId) {
