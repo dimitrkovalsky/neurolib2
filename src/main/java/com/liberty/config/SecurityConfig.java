@@ -35,7 +35,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/connect/**").denyAll()
-                .antMatchers( "/favicon.ico", "/resources/**", "/api/images/**", "/signin/**", "/book/**", "author/**","/searchbook","/searchbooktypeahead").permitAll()
+                .antMatchers( "/favicon.ico", "/resources/**", "/api/images/**", "/signin/**", "/book/*", "/author/*","/genre/*","/selection/*").permitAll()
+                .antMatchers("/genres","/selections/*","/reco","/").permitAll()
+                .antMatchers("/searchbook","/searchbooktypeahead","/searchauthor","/searchauthortypeahead", "/api/authorborn").permitAll()
                 .antMatchers("/**").authenticated();
 
     }
@@ -44,8 +46,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         web
-                .ignoring().antMatchers("seured/")
-                .antMatchers("/**/*.css", "/**/*.png", "/**/*.gif", "/**/*.jpg", "/**/*.js");
+                .ignoring().antMatchers("secured/")
+                .antMatchers("/**/*.css", "/**/*.png", "/**/*.gif", "/**/*.jpg", "/**/*.js","/sitemap.xml","/sitemaps/*.xml");
     }
 
     @Bean
