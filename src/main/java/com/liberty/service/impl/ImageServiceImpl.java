@@ -20,7 +20,7 @@ import java.util.Optional;
 public class ImageServiceImpl implements ImageService {
     // TODO: move to properties
     // TODO: use separate service to serve images as static resources
-    private String IMAGE_BASE_PATH = "D:\\dump\\img";
+    private String IMAGE_BASE_PATH = "F:\\dump\\img";
     private String AUTHOR_IMAGE_PATH = IMAGE_BASE_PATH + "\\ia";
     private String BOOK_IMAGE_PATH = IMAGE_BASE_PATH + "\\i";
 
@@ -64,6 +64,16 @@ public class ImageServiceImpl implements ImageService {
         String path = getBookPath(imageEntity.getFile());
 
         return getImageFile(path);
+    }
+
+    @Override
+    public String getBookImagePath(Long id) {
+        BookImageEntity imageEntity = bookImageRepository.findOne(id);
+        if (imageEntity == null)
+            return "http://localhost:7788/book-placeholder.jpg";
+        String path = "http://localhost:7788/i/" + imageEntity.getFile();
+
+        return path;
     }
 
     @Override

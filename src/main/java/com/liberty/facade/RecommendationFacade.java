@@ -6,6 +6,7 @@ import com.liberty.model.*;
 import com.liberty.repository.*;
 import com.liberty.service.DataMinerService;
 import com.liberty.service.GenreService;
+import com.liberty.service.ImageService;
 import com.liberty.service.RecommendationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static java.util.Collections.emptyList;
@@ -66,6 +68,9 @@ public class RecommendationFacade {
     @Autowired
     private DataMinerService dataMinerService;
 
+    @Autowired
+    private ImageService imageService;
+
     private List<Long> cachedBookIds;
 
     public List<RecommendationDto> getRecommendations(Long bookId) {
@@ -86,8 +91,7 @@ public class RecommendationFacade {
         if (CollectionUtils.isEmpty(recommendations)) {
             return emptyList();
         }
-        List<Long> ids = recommendations.stream()
-                .map(RecommendationEntity::getRecommendationId)
+        List<Long> ids = recommendations.stream().map(RecommendationEntity::getRecommendationId)
                 .collect(Collectors.toList());
 
         return simpleBookRepository.findAll(ids).stream().map(b -> {
@@ -105,8 +109,13 @@ public class RecommendationFacade {
         }).collect(Collectors.toList());
     }
 
-    public SimpleBookEntity getBook(Long bookId) {
-        return simpleBookRepository.findOne(bookId);
+    public SimpleBookEntity getBook(Long bookId) {//todo: book image
+        String imagePath = imageService.getBookImagePath(bookId);
+        SimpleBookEntity bookEntity = simpleBookRepository.findOne(bookId);
+        if (bookEntity != null) {
+            bookEntity.setImagePath(imagePath);
+        }
+        return bookEntity;
     }
 
     public List<AuthorEntity> getAuthor(Long bookId) {
@@ -171,9 +180,11 @@ public class RecommendationFacade {
             List<AuthorEntity> byGenre = authorRepository.getByGenre(genres.get(0).getGenreId(), authorId, 6);
             if (!CollectionUtils.isEmpty(byGenre))
                 similar.addAll(byGenre);
-        } else if (genres.size() == 2) {
+        }
+        else if (genres.size() == 2) {
             fetchGenres(genres, similar, authorId, 3);
-        } else {
+        }
+        else {
             fetchGenres(genres, similar, authorId, 2);
         }
         saveSimilar(similar, author);

@@ -5,6 +5,7 @@ import com.liberty.repository.*;
 import com.liberty.service.RecommendationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,8 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 import static java.util.Collections.emptyList;
@@ -134,16 +137,15 @@ public class RecommendationServiceImpl implements RecommendationService {
 
     private List<Long> safeMapToIds(List<SimpleBookEntity> books) {
         if (books != null) {
-            return books.stream()
-                    .map(SimpleBookEntity::getBookId)
-                    .collect(Collectors.toList());
+            return books.stream().map(SimpleBookEntity::getBookId).collect(Collectors.toList());
         }
         return emptyList();
     }
 
     private List<FullBookEntity> getIdentical(FullBookEntity book) {
-        return fullBookRepository.findAllByAuthorIdAndGenreIdAndTagIdOrderByRate(book.getAuthorId(),
-                book.getGenreId(), book.getTagId(), top(5));
+        return fullBookRepository
+                .findAllByAuthorIdAndGenreIdAndTagIdOrderByRate(book.getAuthorId(), book.getGenreId(), book.getTagId(),
+                        top(5));
     }
 
     private Pageable top(int limit) {
@@ -151,8 +153,24 @@ public class RecommendationServiceImpl implements RecommendationService {
     }
 
     @Override
-    public void evaluate() {
-        fullBookRepository.findAll(new PageRequest(0, 10))
-                .forEach(x -> recommend(x.getBookId()));
+    public void preProcess() {// todo: Preprocessed 18000/153294 books
+        boolean shouldStop = false;
+        AtomicInteger counter = new AtomicInteger(0);
+        int page = 0;
+        long size = fullBookRepository.count();
+        int pageSize = 1000;
+        System.out.println("Trying to cache recommendations for " + size + " books. Starting from : " + page * size);
+        while (!shouldStop) {
+            Page<FullBookEntity> all = fullBookRepository.findAll(new PageRequest(page, pageSize));
+            if (CollectionUtils.isEmpty(all.getContent()) || all.getContent().size() < pageSize) {
+                shouldStop = true;
+            }
+            all.getContent().parallelStream().forEach(x -> {
+                recommend(x.getBookId());
+                counter.incrementAndGet();
+            });
+            page++;
+            System.out.println("Preprocessed " + counter.get() + "/" + size + " books : ");
+        }
     }
 }

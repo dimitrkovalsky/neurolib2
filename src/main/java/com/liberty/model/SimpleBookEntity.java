@@ -36,6 +36,8 @@ public class SimpleBookEntity {
     private byte errorCode;
     private int pages;
     private int chars;
+    @Transient
+    private String imagePath;
 
     @Id
     @Column(name = "BookId")
@@ -245,6 +247,15 @@ public class SimpleBookEntity {
 
     public void setChars(int chars) {
         this.chars = chars;
+    }
+
+    @Transient
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 
     @Override

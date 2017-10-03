@@ -10,5 +10,5 @@ import java.util.List;
 public interface RecommendationService {
     List<Long> recommend(Long bookId);
 
-    void evaluate();
+    void preProcess();
 }

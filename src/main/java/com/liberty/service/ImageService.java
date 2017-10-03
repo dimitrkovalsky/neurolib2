@@ -13,5 +13,7 @@ public interface ImageService {
 
     Optional<File> getBookImage(Long id);
 
+    String getBookImagePath(Long id);
+
     Optional<File> getBookImage(String rootDir, String dir, String file);
 }
