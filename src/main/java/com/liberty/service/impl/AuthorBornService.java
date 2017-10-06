@@ -45,7 +45,7 @@ public class AuthorBornService {
         Page<AuthorBorndateEntity> authors = authorBorndateRepository.findAllByBornMonthEqualsAndBornDayEqualsAndNeurolibAuthorIdNotNull(month+1,day,new PageRequest(page,8));
         List<AuthorBornDto> authorBornDtos = authors.getContent().stream().map(authorBorndateEntity -> {
             Long authorId = authorBorndateEntity.getNeurolibAuthorId();
-            AuthorEntity authorEntity = authorRepository.getOne((int)(long)authorId);
+            AuthorEntity authorEntity = authorRepository.getOne((long)authorId);
             AuthorBornDto authorBorn = new AuthorBornDto();
             Integer bornYear = authorBorndateEntity.getBornYear();
             if(bornYear!=null) {

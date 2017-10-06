@@ -26,7 +26,7 @@ public class ReviewAuthorService extends BaseReviewBookService<UserAuthorReviewE
 
     @Override
     Boolean objectVerification(Long objectId) {
-        AuthorEntity authorEntity = repository.getOne( (int) (long) objectId);
+        AuthorEntity authorEntity = repository.getOne(objectId);
         if(authorEntity==null){
             return false;
         }else return true;

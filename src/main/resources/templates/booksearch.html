@@ -29,8 +29,8 @@
         <div class="divider"></div>
         <div class="row section">
             <div class="col s2">
-                <a th:href="@{/book/{id}(id = ${bookInfo.book.bookId})}" >
-                    <img class="responsive-img" th:src="@{/api/images/book/{id}(id = ${bookInfo.book.bookId})}"/>
+                <a th:href="@{/book/{id}(id = ${bookInfo.book.bookId})}" >${book.imagePath}
+                    <img class="responsive-img" th:src="${bookInfo.book.imagePath}"/>
                 </a>
             </div>
             <div class="col s7">

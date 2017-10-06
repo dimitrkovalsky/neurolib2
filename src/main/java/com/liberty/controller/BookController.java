@@ -54,7 +54,7 @@ public class BookController {
     }
 
     @RequestMapping("/author/{authorId}/book")
-    public String authorBooks(@PathVariable(name = "authorId") Integer authorId, Model model) {
+    public String authorBooks(@PathVariable(name = "authorId") Long authorId, Model model) {
         List<SimpleBookEntity> books = facade.getByAuthor(authorId);
         model.addAttribute("books", books);
         setGenreSideBar(model);

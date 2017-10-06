@@ -55,14 +55,14 @@ public class SelectionServiceImpl {
     public Page<SimpleBookEntity> loadBooksInSelection(Pageable pageable, Long selectionId){
         return simpleBookRepository.findAllBySelectionId(selectionId,pageable);
     }
-
+// todo: use batch
     public Page<SelectionBookAdditionInfoDto> loadSelectionBooksInfo(Long selectionId, Pageable pageable){
          Page<SelectionBooksEntity> selectionBooksEntities = selectionBookRepository.findAllBySelectionIdAndNeurolibBookIdIsNotNull(selectionId, pageable);
          return selectionBooksEntities.map(book -> {
              SelectionBookAdditionInfoDto selectionBookAdditionInfoDto = new SelectionBookAdditionInfoDto();
              selectionBookAdditionInfoDto.setSelectionBooksEntity(book);
              selectionBookAdditionInfoDto.setAuthors(facade.getAuthor(book.getNeurolibBookId()));
-             selectionBookAdditionInfoDto.setBook(simpleBookRepository.findOne(book.getNeurolibBookId()));
+             selectionBookAdditionInfoDto.setBook(facade.getBook(book.getNeurolibBookId()));
              selectionBookAdditionInfoDto.setGenres(facade.getGenres(book.getNeurolibBookId()));
              Authentication auth = SecurityContextHolder.getContext().getAuthentication();
              if(!"anonymousUser".equals(auth.getPrincipal())) {

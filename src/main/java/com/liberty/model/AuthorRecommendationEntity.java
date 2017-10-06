@@ -21,15 +21,15 @@ import java.io.Serializable;
 public class AuthorRecommendationEntity {
     @Id
     @Column(name = "author_id")
-    private Integer authorId;
+    private Long authorId;
 
     @Id
     @Column(name = "similar_id")
-    private Integer similarId;
+    private Long similarId;
 
     @Data
     public static class RecoPK implements Serializable {
-        private Integer authorId;
+        private Long authorId;
         private Integer similarId;
     }
 }

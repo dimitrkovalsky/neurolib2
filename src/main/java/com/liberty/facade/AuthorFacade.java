@@ -4,6 +4,7 @@ import com.liberty.error.NotFoundException;
 import com.liberty.model.*;
 import com.liberty.repository.*;
 import com.liberty.service.GenreService;
+import com.liberty.service.ImageService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.core.util.Function;
@@ -33,8 +34,10 @@ public class AuthorFacade {
     private AuthorBiographyRepository authorBiographyRepository;
     @Autowired
     private GenreService genreService;
+    @Autowired
+    private ImageService imageService;
 
-    public AuthorEntity getAuthor(Integer authorId) {
+    public AuthorEntity getAuthor(Long authorId) {
         AuthorEntity one = authorRepository.findOne(authorId);
         if (one == null) {
             throw new NotFoundException("Can not find author with id : " + authorId);
@@ -43,10 +46,10 @@ public class AuthorFacade {
     }
 
     public List<AuthorEntity> getRandomAuthors() {
-        return authorRepository.getRandomAuthors(20);
+        return imageService.addAuthorImages(authorRepository.getRandomAuthors(20));
     }
 
-    public String getBiography(Integer authorId) {
+    public String getBiography(Long authorId) {
         AuthorBiographyEntity biography = authorBiographyRepository.findOne(authorId);
         if (biography == null || biography.getBody() == null)
             return "";
@@ -54,7 +57,7 @@ public class AuthorFacade {
     }
 
     //TODO: optimize queries. Use view to fetch data.
-    public Map<BookCollectionDescriptionEntity, Collection<SimpleBookEntity>> getAllBooksGrouped(Integer authorId) {
+    public Map<BookCollectionDescriptionEntity, Collection<SimpleBookEntity>> getAllBooksGrouped(Long authorId) {
         List<BookCollectionEntity> collections = bookCollectionRepository.findAllByAuthor(authorId);
         if (CollectionUtils.isEmpty(collections)) {
             // get no collection books
@@ -82,6 +85,7 @@ public class AuthorFacade {
             if (!v.isEmpty()) {
                 List<GenreEntity> genres = genreService.getGenre(v.iterator().next().getBookId());
                 k.setGenres(genres);
+                imageService.addSimpleBookImages(v);
             }
         });
         return map;

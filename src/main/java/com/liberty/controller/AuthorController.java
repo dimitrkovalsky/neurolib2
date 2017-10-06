@@ -36,7 +36,7 @@ public class AuthorController {
     private GenreFacade genreFacade;
 
     @RequestMapping(path = "/author/{authorId}", method = RequestMethod.GET)
-    public String getOne(@PathVariable Integer authorId, Model model) {
+    public String getOne(@PathVariable Long authorId, Model model) {
         AuthorEntity author = authorFacade.getAuthor(authorId);
         model.addAttribute("author", author);
         model.addAttribute("biography", authorFacade.getBiography(authorId));

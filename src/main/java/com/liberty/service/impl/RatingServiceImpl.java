@@ -4,6 +4,7 @@ import com.liberty.model.BookRateEntity;
 import com.liberty.model.SimpleBookEntity;
 import com.liberty.repository.BookRateRepository;
 import com.liberty.repository.SimpleBookRepository;
+import com.liberty.service.ImageService;
 import com.liberty.service.RatingService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,9 @@ public class RatingServiceImpl implements RatingService {
     @Autowired
     private SimpleBookRepository simpleBookRepository;
 
+    @Autowired
+    private ImageService imageService;
+
     private static List<SimpleBookEntity> mostReadable = null;
 
     @Override
@@ -36,7 +40,7 @@ public class RatingServiceImpl implements RatingService {
         List<BookRateEntity> top = bookRateRepository.findAllByRate(5, 10);
         log.info("Found {} book for top", top.size());
         mostReadable = toSimpleBook(top);
-        return mostReadable;
+        return imageService.addSimpleBookImages(mostReadable);
     }
 
     private List<SimpleBookEntity> toSimpleBook(List<BookRateEntity> list) {

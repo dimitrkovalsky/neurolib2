@@ -7,7 +7,7 @@
 <div class="container-fluid content" style="margin-top: 65px">
     <div class="col-md-10">
         <div class="col-md-12">
-            <img class="col-md-3" th:src="@{/api/images/author/{id}(id = ${author.authorId})}"/>
+            <img class="col-md-3" th:src="${author.imagePath}"/>
             <div class="col-md-9">
                 <h1 th:text="${author.firstName} + ' ' +${author.middleName} + ' ' + ${author.lastName}"/>
             </div>

@@ -19,6 +19,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static java.util.Collections.emptyList;
+import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 
 /**
  * User: Dimitr
@@ -110,9 +111,9 @@ public class RecommendationFacade {
     }
 
     public SimpleBookEntity getBook(Long bookId) {//todo: book image
-        String imagePath = imageService.getBookImagePath(bookId);
         SimpleBookEntity bookEntity = simpleBookRepository.findOne(bookId);
         if (bookEntity != null) {
+            String imagePath = imageService.getBookImagePath(bookId);
             bookEntity.setImagePath(imagePath);
         }
         return bookEntity;
@@ -120,10 +121,11 @@ public class RecommendationFacade {
 
     public List<AuthorEntity> getAuthor(Long bookId) {
         List<BookAuthorEntity> authors = bookAuthorRepository.findAllByBookId(bookId);
-        if (CollectionUtils.isEmpty(authors))
+        if (isEmpty(authors))
             return emptyList();
-        List<Integer> authorIds = authors.stream().map(BookAuthorEntity::getAuthorId).collect(Collectors.toList());
-        return authorRepository.findAll(authorIds);
+        List<Long> authorIds = authors.stream().map(BookAuthorEntity::getAuthorId).collect(Collectors.toList());
+        List<AuthorEntity> writers = authorRepository.findAll(authorIds);
+        return imageService.addAuthorImages(writers);
     }
 
     // TODO: replace to more optimal method
@@ -131,7 +133,7 @@ public class RecommendationFacade {
         if (cachedBookIds == null)
             initCache();
         List<Long> ids = RandomPicker.pickNRandomElements(cachedBookIds, size);
-        return bookCardRepository.findAllByIds(ids);
+        return imageService.addBookCardImages(bookCardRepository.findAllByIds(ids));
     }
 
     private void initCache() {
@@ -140,11 +142,11 @@ public class RecommendationFacade {
         log.info("Cache initialized");
     }
 
-    public List<SimpleBookEntity> getByAuthor(Integer authorId) {
+    public List<SimpleBookEntity> getByAuthor(Long authorId) {
         List<SimpleBookEntity> byAuthor = simpleBookRepository.findAllByAuthor(authorId);
         if (CollectionUtils.isEmpty(byAuthor))
             return emptyList();
-        return byAuthor;
+        return imageService.addSimpleBookImages(byAuthor);
     }
 
     public List<GenreEntity> getGenres(Long bookId) {
@@ -160,7 +162,7 @@ public class RecommendationFacade {
     }
 
     public List<AuthorEntity> getSimilarAuthors(AuthorEntity author) {
-        int authorId = author.getAuthorId();
+        long authorId = author.getAuthorId();
         List<AuthorEntity> stored = findSimilar(authorId);
         if (stored != null) {
             log.info("Used {} stored similar authors for author with id {}", stored.size(), authorId);
@@ -192,11 +194,11 @@ public class RecommendationFacade {
         return similar;
     }
 
-    private List<AuthorEntity> findSimilar(int authorId) {
+    private List<AuthorEntity> findSimilar(long authorId) {
         List<AuthorRecommendationEntity> similar = authorRecommendationRepository.findAllByAuthorId(authorId);
         if (CollectionUtils.isEmpty(similar))
             return null;
-        List<Integer> ids = similar.stream().map(AuthorRecommendationEntity::getSimilarId).collect(Collectors.toList());
+        List<Long> ids = similar.stream().map(AuthorRecommendationEntity::getSimilarId).collect(Collectors.toList());
         return authorRepository.findAll(ids);
     }
 
@@ -212,7 +214,7 @@ public class RecommendationFacade {
         authorRecommendationRepository.save(collected);
     }
 
-    private void fetchGenres(List<GenreEntity> genres, List<AuthorEntity> similar, int authorId, int limit) {
+    private void fetchGenres(List<GenreEntity> genres, List<AuthorEntity> similar, long authorId, int limit) {
         genres.forEach(g -> {
             List<AuthorEntity> retrieved = authorRepository.getByGenre(g.getGenreId(), authorId, limit);
             if (!CollectionUtils.isEmpty(retrieved) && similar.size() <= RECOMMENDATION_LIMIT)
