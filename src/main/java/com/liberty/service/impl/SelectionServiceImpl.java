@@ -10,6 +10,7 @@ import com.liberty.repository.SelectionBookRepository;
 import com.liberty.repository.SelectionRepository;
 import com.liberty.repository.SimpleBookRepository;
 import com.liberty.repository.UserBookshelfRepository;
+import com.liberty.service.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -41,6 +42,9 @@ public class SelectionServiceImpl {
     @Autowired
     private SelectionBookRepository selectionBookRepository;
 
+    @Autowired
+    private ImageService imageService;
+
     public Page<SelectionBookListDto> loadSelectionsList(Pageable pageable){
         Page<SelectionEntity> selectionEntities = selectionRepository.findAll(pageable);
         return selectionEntities.map(source -> {
@@ -48,21 +52,25 @@ public class SelectionServiceImpl {
             bookListDto.setSelection(source);
             Page<SimpleBookEntity> simpleBookEntities  = loadBooksInSelection(new PageRequest(0,15),source.getSelectionId());
 
-            bookListDto.setBooks(simpleBookEntities.getContent());
+            bookListDto.setBooks(imageService.addSimpleBookImages(simpleBookEntities.getContent()));
             return bookListDto;
         });
     }
+
     public Page<SimpleBookEntity> loadBooksInSelection(Pageable pageable, Long selectionId){
-        return simpleBookRepository.findAllBySelectionId(selectionId,pageable);
+        Page<SimpleBookEntity> allBySelectionId = simpleBookRepository.findAllBySelectionId(selectionId, pageable);
+        imageService.addSimpleBookImages(allBySelectionId.getContent());
+        return allBySelectionId;
     }
 
+// todo: use batch
     public Page<SelectionBookAdditionInfoDto> loadSelectionBooksInfo(Long selectionId, Pageable pageable){
          Page<SelectionBooksEntity> selectionBooksEntities = selectionBookRepository.findAllBySelectionIdAndNeurolibBookIdIsNotNull(selectionId, pageable);
          return selectionBooksEntities.map(book -> {
              SelectionBookAdditionInfoDto selectionBookAdditionInfoDto = new SelectionBookAdditionInfoDto();
              selectionBookAdditionInfoDto.setSelectionBooksEntity(book);
              selectionBookAdditionInfoDto.setAuthors(facade.getAuthor(book.getNeurolibBookId()));
-             selectionBookAdditionInfoDto.setBook(simpleBookRepository.findOne(book.getNeurolibBookId()));
+             selectionBookAdditionInfoDto.setBook(facade.getBook(book.getNeurolibBookId()));
              selectionBookAdditionInfoDto.setGenres(facade.getGenres(book.getNeurolibBookId()));
              Authentication auth = SecurityContextHolder.getContext().getAuthentication();
              if(!"anonymousUser".equals(auth.getPrincipal())) {

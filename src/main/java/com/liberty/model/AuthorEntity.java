@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "libavtorname", schema = "neurolib")
 public class AuthorEntity {
-    private int authorId;
+    private Long authorId;
     private String firstName;
     private String middleName;
     private String lastName;
@@ -20,14 +20,24 @@ public class AuthorEntity {
     private String homepage;
     private String gender;
     private int masterId;
+    private String imagePath;
+
+    @Transient
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
 
     @Id
     @Column(name = "AvtorId")
-    public int getAuthorId() {
+    public Long getAuthorId() {
         return authorId;
     }
 
-    public void setAuthorId(int avtorId) {
+    public void setAuthorId(Long avtorId) {
         this.authorId = avtorId;
     }
 
@@ -144,7 +154,7 @@ public class AuthorEntity {
 
     @Override
     public int hashCode() {
-        int result = authorId;
+        int result = authorId.intValue();
         result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
         result = 31 * result + (middleName != null ? middleName.hashCode() : 0);
         result = 31 * result + (lastName != null ? lastName.hashCode() : 0);

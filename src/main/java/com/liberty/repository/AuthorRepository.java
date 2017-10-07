@@ -16,13 +16,13 @@ import java.util.List;
  * Time: 21:38
  */
 @Repository
-public interface AuthorRepository extends JpaRepository<AuthorEntity, Integer> {
+public interface AuthorRepository extends JpaRepository<AuthorEntity, Long> {
 
     @Query(nativeQuery = true, value = "SELECT * FROM libavtorname ORDER BY RAND() LIMIT :size")
     List<AuthorEntity> getRandomAuthors(@Param("size") int size);
 
-    @Query(nativeQuery = true, value = "SELECT *  FROM libavtorname WHERE AvtorId IN (SELECT DISTINCT(AuthorId) AS a FROM neurolib.book_card WHERE GenreId = :genreId ORDER BY Rate DESC) AND AvtorId != :except LIMIT :size")
-    List<AuthorEntity> getByGenre(@Param("genreId") Integer genreId, @Param("except") int except, @Param("size") int size);
+    @Query(nativeQuery = true, value = "SELECT *  FROM libavtorname WHERE AvtorId IN (SELECT DISTINCT(AuthorId) AS a FROM neurolib.book_card WHERE GenreId = :genreId ORDER BY Rate DESC) AND AvtorId != :authorId LIMIT :size")
+    List<AuthorEntity> getByGenre(@Param("genreId") Integer genreId, @Param("authorId") long authorId, @Param("size") int size);
 
     Page<AuthorEntity> getAllByFirstNameOrMiddleNameOrLastNameContainingOrderByLastName(Pageable pageable, String firstName, String middleName, String lastName);
 

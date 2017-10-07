@@ -95,7 +95,7 @@ public class BookShelfServiceImpl implements BookShelfService {
         }
     }
 
-    private UserBookshelfEntity addBookToShelfUnsafe(Long userId, Long bookId,Integer rate){
+    private UserBookshelfEntity addBookToShelfUnsafe(Long userId, Long bookId, Integer rate){
         UserBookshelfEntity bookshelfEntity = new UserBookshelfEntity();
         bookshelfEntity.setBookId(bookId);
         bookshelfEntity.setUserId(userId);

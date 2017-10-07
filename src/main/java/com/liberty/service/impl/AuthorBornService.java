@@ -7,6 +7,7 @@ import com.liberty.model.AuthorBorndateEntity;
 import com.liberty.model.AuthorEntity;
 import com.liberty.repository.AuthorBorndateRepository;
 import com.liberty.repository.AuthorRepository;
+import com.liberty.service.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -29,8 +30,10 @@ public class AuthorBornService {
     private AuthorBorndateRepository authorBorndateRepository;
     @Autowired
     private AuthorRepository authorRepository;
+    @Autowired
+    private ImageService imageService;
 
-    public LoaderDto<List> loadAuthorsBornAt(String time, Integer page){
+    public LoaderDto<List<AuthorBornDto>> loadAuthorsBornAt(String time, Integer page){
         SimpleDateFormat parser = new SimpleDateFormat("yyyy-MM-dd");
         Date date;
         try {
@@ -45,7 +48,7 @@ public class AuthorBornService {
         Page<AuthorBorndateEntity> authors = authorBorndateRepository.findAllByBornMonthEqualsAndBornDayEqualsAndNeurolibAuthorIdNotNull(month+1,day,new PageRequest(page,8));
         List<AuthorBornDto> authorBornDtos = authors.getContent().stream().map(authorBorndateEntity -> {
             Long authorId = authorBorndateEntity.getNeurolibAuthorId();
-            AuthorEntity authorEntity = authorRepository.getOne((int)(long)authorId);
+            AuthorEntity authorEntity = authorRepository.getOne((long)authorId);
             AuthorBornDto authorBorn = new AuthorBornDto();
             Integer bornYear = authorBorndateEntity.getBornYear();
             if(bornYear!=null) {
@@ -55,7 +58,8 @@ public class AuthorBornService {
             authorBorn.setAuthorName(generateFullName(authorEntity));
             return authorBorn;
         }).collect(Collectors.toList());
-        LoaderDto<List> listLoaderDto = new LoaderDto<>();
+        imageService.addAuthorSimpleImages(authorBornDtos);
+        LoaderDto<List<AuthorBornDto>> listLoaderDto = new LoaderDto<>();
         listLoaderDto.setData(authorBornDtos);
         listLoaderDto.setAvailable(authors.hasNext());
         return listLoaderDto;

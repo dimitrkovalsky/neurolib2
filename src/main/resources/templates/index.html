@@ -20,7 +20,7 @@
                 <div class="carousel-item">
 
                     <img style="width: 150px; height: 200px"
-                         th:src="@{/api/images/book/{id}(id = ${book.bookId})}"/>
+                         th:src="${book.imagePath}"/>
                     <a th:href="@{/book/{id}(id = ${book.bookId})}" class="btn waves-effect waves-light"
                        style="width: 150px; margin-top: 5px;">
                         Подробнее

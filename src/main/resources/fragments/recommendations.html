@@ -13,7 +13,7 @@
                     <tr>
                         <td>
                             <a th:href="@{/book/{id}(id = ${reco.bookId})}">
-                                <img style="width: 50px" th:src="@{/api/images/book/{id}(id = ${reco.bookId})}"/>
+                                <img style="width: 50px" th:src="${reco.imagePath}"/>
                             </a>
                         </td>
                         <td style="padding: 0px">

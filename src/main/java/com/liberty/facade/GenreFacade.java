@@ -4,6 +4,7 @@ import com.liberty.model.BookCardEntity;
 import com.liberty.model.GenreEntity;
 import com.liberty.repository.BookCardRepository;
 import com.liberty.repository.GenreRepository;
+import com.liberty.service.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -21,15 +22,18 @@ import java.util.stream.Collectors;
 @Component
 public class GenreFacade {
 
+    public static final int DEFAULT_PAGE_SIZE = 20;
     @Autowired
     private BookCardRepository bookCardRepository;
     @Autowired
     private GenreRepository genreRepository;
+    @Autowired
+    private ImageService imageService;
 
     private static NavigableMap<String, List<GenreEntity>> genresCache = null;
 
     public List<BookCardEntity> getByGenre(Integer genreId) {
-        return bookCardRepository.findAllByGenre(genreId, 20);
+        return imageService.addBookCardImages(bookCardRepository.findAllByGenre(genreId, DEFAULT_PAGE_SIZE));
     }
 
     public List<GenreEntity> getAllGenres() {
@@ -41,8 +45,7 @@ public class GenreFacade {
         if (genresCache != null)
             return genresCache;
         List<GenreEntity> genres = genreRepository.findAll();
-        Map<String, List<GenreEntity>> map = genres.stream()
-                .collect(Collectors.groupingBy(GenreEntity::getGenreMeta));
+        Map<String, List<GenreEntity>> map = genres.stream().collect(Collectors.groupingBy(GenreEntity::getGenreMeta));
         genresCache = new TreeMap<>(map);
         return genresCache;
     }

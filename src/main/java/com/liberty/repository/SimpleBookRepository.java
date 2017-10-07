@@ -23,10 +23,10 @@ public interface SimpleBookRepository extends JpaRepository<SimpleBookEntity, Lo
     List<SimpleBookEntity> findAllRandom(@Param("size") int size);
 
     @Query(nativeQuery = true, value = "SELECT * FROM libbook WHERE BookId IN ( SELECT BookId FROM neurolib.libavtor WHERE AvtorId = :id)")
-    List<SimpleBookEntity> findAllByAuthor(@Param("id") Integer authorId);
+    List<SimpleBookEntity> findAllByAuthor(@Param("id") Long authorId);
 
     @Query(nativeQuery = true, value = "SELECT * FROM libbook WHERE BookId IN ( SELECT BookId FROM neurolib.libavtor WHERE AvtorId = :id) ORDER BY RAND() LIMIT :size")
-    List<SimpleBookEntity> findAllByAuthor(@Param("id") Integer authorId, @Param("size") Integer size);
+    List<SimpleBookEntity> findAllByAuthor(@Param("id") Long authorId, @Param("size") Integer size);
 
     @Query(nativeQuery = true, value = "SELECT * FROM libbook WHERE BookId IN (SELECT BookId FROM libgenre WHERE GenreId = :genreId) ORDER BY RAND() LIMIT :size ")
     List<SimpleBookEntity> findAllByGenre(@Param("genreId") Integer genreId, @Param("size") Integer size);

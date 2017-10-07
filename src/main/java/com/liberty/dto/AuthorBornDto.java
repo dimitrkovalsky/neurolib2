@@ -10,4 +10,5 @@ public class AuthorBornDto {
     private String authorName;
     private Integer age;
     private Long id;
+    private String imagePath;
 }

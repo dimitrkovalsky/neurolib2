@@ -10,6 +10,6 @@ import org.springframework.stereotype.Repository;
  * Time: 21:38
  */
 @Repository
-public interface AuthorBiographyRepository extends JpaRepository<AuthorBiographyEntity, Integer> {
+public interface AuthorBiographyRepository extends JpaRepository<AuthorBiographyEntity, Long> {
 
 }

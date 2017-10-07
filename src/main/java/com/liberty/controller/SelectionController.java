@@ -39,21 +39,22 @@ public class SelectionController {
     private SelectionServiceImpl selectionService;
 
     @RequestMapping("/selection/{selectionId}")
-    public String getSelectionInfo(@PathVariable Long selectionId, Model model, Pageable pageable, HttpServletRequest request) {
+    public String getSelectionInfo(@PathVariable Long selectionId, Model model, Pageable pageable,
+            HttpServletRequest request) {
         SelectionEntity selectionEntity = selectionService.loadSelectionInfo(selectionId);
-        model.addAttribute("selectionInfo",selectionEntity);
+        model.addAttribute("selectionInfo", selectionEntity);
 
         Map<String, List<GenreEntity>> genresMap = genreFacade.getAllGenresGrouped();
         model.addAttribute("genres", genresMap);
 
         Page<SelectionBookAdditionInfoDto> page = selectionService.loadSelectionBooksInfo(selectionId, pageable);
-        PageWrapper<SelectionBookAdditionInfoDto> pageWrapper = new PageWrapper<>(page,request);
-        model.addAttribute("page",pageWrapper);
+        PageWrapper<SelectionBookAdditionInfoDto> pageWrapper = new PageWrapper<>(page, request);
+        model.addAttribute("page", pageWrapper);
 
         return "selection";
     }
 
-    @RequestMapping(value = "/selection/{selectionId}",method = RequestMethod.POST)
+    @RequestMapping(value = "/selection/{selectionId}", method = RequestMethod.POST)
     @ResponseBody
     public List getSelectionBooks(@PathVariable Long selectionId, Pageable pageable) {
         List<SimpleBookEntity> bookEntities = selectionService.loadBooksInSelection(pageable, selectionId).getContent();
@@ -66,10 +67,10 @@ public class SelectionController {
     }
 
     @RequestMapping("/selections/top")
-    public String getSelectionTop(Model model , Pageable pageable, HttpServletRequest request) {
+    public String getSelectionTop(Model model, Pageable pageable, HttpServletRequest request) {
         Page<SelectionBookListDto> page = selectionService.loadSelectionsList(pageable);
-        PageWrapper<SelectionBookListDto> pageWrapper = new PageWrapper<>(page,request);
-        model.addAttribute("page",pageWrapper);
+        PageWrapper<SelectionBookListDto> pageWrapper = new PageWrapper<>(page, request);
+        model.addAttribute("page", pageWrapper);
         Map<String, List<GenreEntity>> genresMap = genreFacade.getAllGenresGrouped();
         model.addAttribute("genres", genresMap);
         return "selection-list";

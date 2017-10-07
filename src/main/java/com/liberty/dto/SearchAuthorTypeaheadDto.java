@@ -11,7 +11,7 @@ import java.io.Serializable;
 public class SearchAuthorTypeaheadDto implements Serializable {
     private static final long serialVersionUID = 6831511361010861532L;
 
-    private Integer authorId;
+    private Long authorId;
 
     private String authorName;
 }

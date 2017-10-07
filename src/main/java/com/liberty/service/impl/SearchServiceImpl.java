@@ -10,6 +10,7 @@ import com.liberty.model.SimpleBookEntity;
 import com.liberty.repository.AuthorRepository;
 import com.liberty.repository.SimpleBookRepository;
 import com.liberty.repository.UserBookshelfRepository;
+import com.liberty.service.ImageService;
 import com.liberty.service.SearchService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,9 @@ public class SearchServiceImpl implements SearchService{
 
     @Autowired
     private AuthorRepository authorRepository;
+
+    @Autowired
+    private ImageService imageService;
 
     @Cacheable("searchBookTypeahead")
     public List<SearchBookTypeaheadDto> searchBookTypeahead(Integer size, String query){
@@ -105,6 +109,7 @@ public class SearchServiceImpl implements SearchService{
     private Page<SimpleBookEntity> searchBooks(Pageable paginationRequest, String query){
         Page<SimpleBookEntity> pages = simpleBookRepository.findAllByTitleContaining(query, paginationRequest);
         log.info("{} books finded ",pages.getNumberOfElements());
+        imageService.addSimpleBookImages(pages.getContent());
         return pages;
     }
 
@@ -112,6 +117,7 @@ public class SearchServiceImpl implements SearchService{
     private Page<AuthorEntity> searchAuthors(Pageable paginationRequest, String query){
         Page<AuthorEntity> pages = authorRepository.getAllByFirstNameOrMiddleNameOrLastNameContainingOrderByLastName(paginationRequest,query,query,query);
         log.info("{} authors finded ",pages.getNumberOfElements());
+        imageService.addAuthorImages(pages.getContent());
         return pages;
     }
 

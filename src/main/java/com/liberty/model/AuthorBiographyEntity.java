@@ -15,7 +15,7 @@ import javax.persistence.*;
 public class AuthorBiographyEntity {
     @Id
     @Column(name = "AvtorId")
-    private Integer authorId;
+    private Long authorId;
     @Column(name = "nid")
     private int nid;
     @Column(name = "Title")

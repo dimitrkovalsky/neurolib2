@@ -2,7 +2,7 @@
 
     <div class="card horizontal small" style=" height: 200px !important;">
         <div class="card-image">
-            <img class="book-image" th:src="@{/api/images/book/{id}(id = ${book.bookId})}"/>
+            <img class="book-image" th:src="${book.imagePath}"/>
         </div>
 
         <div class="card-stacked">

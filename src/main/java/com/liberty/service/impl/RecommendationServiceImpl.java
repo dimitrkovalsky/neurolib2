@@ -2,6 +2,7 @@ package com.liberty.service.impl;
 
 import com.liberty.model.*;
 import com.liberty.repository.*;
+import com.liberty.service.ImageService;
 import com.liberty.service.RecommendationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +47,9 @@ public class RecommendationServiceImpl implements RecommendationService {
 
     @Autowired
     private GenreRepository genreRepository;
+
+    @Autowired
+    private ImageService imageService;
 
     @Override
     public List<Long> recommend(Long bookId) {

@@ -16,5 +16,6 @@ public class RecommendationDto {
     private Long bookId;
     private String title;
     private AuthorEntity author;
+    private String imagePath;
     private List<GenreEntity> genre;
 }

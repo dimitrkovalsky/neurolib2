@@ -2,7 +2,7 @@
 
     <div class="card horizontal small" style="height: 200px !important;">
         <div class="card-image">
-            <img class="col-md-3" th:src="@{/api/images/author/{id}(id = ${author.authorId})}"/>
+            <img class="col-md-3" th:src="${author.imagePath}"/>
         </div>
 
 

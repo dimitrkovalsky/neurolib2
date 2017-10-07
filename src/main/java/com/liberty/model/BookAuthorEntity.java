@@ -18,7 +18,7 @@ public class BookAuthorEntity {
     private Long bookId;
 
     @Column(name = "AvtorId")
-    private Integer authorId;
+    private Long authorId;
 
     @Column(name = "Pos")
     private Integer position;

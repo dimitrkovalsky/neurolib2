@@ -338,7 +338,7 @@ var calendar = {
             var age = "";
         }
 
-        var img_link_style = "background-image: url('/api/images/author/"+authorObj.id+"');";
+        var img_link_style = "background-image: url('" + authorObj.imagePath + "');";
         var messageTemplate =
         '<div class="xl-col-12 x-col-16 m-col-25 s-col-50">'+
             '<div class="card hoverable">'+

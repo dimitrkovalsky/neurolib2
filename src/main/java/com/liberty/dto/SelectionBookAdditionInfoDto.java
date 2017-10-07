@@ -8,6 +8,6 @@ import lombok.Data;
  * Created by user on 23.09.2017.
  */
 @Data
-public class SelectionBookAdditionInfoDto extends SocialBookDto{
+public class SelectionBookAdditionInfoDto extends SocialBookDto {
     private SelectionBooksEntity selectionBooksEntity;
 }

@@ -8,7 +8,7 @@ import java.util.List;
 
 
 @Repository
-public interface AuthorRecommendationRepository extends JpaRepository<AuthorRecommendationEntity, Integer> {
+public interface AuthorRecommendationRepository extends JpaRepository<AuthorRecommendationEntity, Long> {
 
-    List<AuthorRecommendationEntity> findAllByAuthorId(Integer authorId);
+    List<AuthorRecommendationEntity> findAllByAuthorId(long authorId);
 }

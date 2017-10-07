@@ -2,10 +2,7 @@ package com.liberty.model;
 
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * User: Dimitr
@@ -46,4 +43,7 @@ public class BookCardEntity {
 
     @Column(name = "Rate")
     private Double rate;
+
+    @Transient
+    private String imagePath;
 }

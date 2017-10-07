@@ -7,6 +7,6 @@ package com.liberty.dto;
 import lombok.Data;
 
 @Data
-public class SearchAuthorPageResultDto extends SearchAuthorTypeaheadDto{
+public class SearchAuthorPageResultDto extends SearchAuthorTypeaheadDto {
     private static final long serialVersionUID = 8658182777622258661L;
 }

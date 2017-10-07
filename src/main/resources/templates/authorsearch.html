@@ -31,7 +31,7 @@
         <div class="row section">
             <div class="col s1">
                 <a th:href="@{/author/{id}(id = ${author.authorId})}" >
-                    <img class="responsive-img" th:src="@{/api/images/author/{id}(id = ${author.authorId})}"/>
+                    <img class="responsive-img" th:src="${author.imagePath}"/>
                 </a>
             </div>
             <div class="col s11">

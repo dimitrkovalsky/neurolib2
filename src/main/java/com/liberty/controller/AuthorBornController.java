@@ -1,5 +1,6 @@
 package com.liberty.controller;
 
+import com.liberty.dto.AuthorBornDto;
 import com.liberty.dto.LoaderDto;
 import com.liberty.service.impl.AuthorBornService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ public class AuthorBornController {
     private AuthorBornService service;
 
     @RequestMapping(path = "/api/authorborn", method = RequestMethod.POST)
-    public LoaderDto<List> get(@RequestParam(value = "page",required = false,defaultValue = "0") Integer page,
+    public LoaderDto<List<AuthorBornDto>> get(@RequestParam(value = "page",required = false,defaultValue = "0") Integer page,
                          @RequestParam(value = "date",required = false) String date) {
 
         return service.loadAuthorsBornAt( date,  page);
