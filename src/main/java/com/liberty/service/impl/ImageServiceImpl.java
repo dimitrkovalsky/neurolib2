@@ -1,5 +1,7 @@
 package com.liberty.service.impl;
 
+import com.liberty.dto.AuthorBornDto;
+import com.liberty.dto.RecommendationDto;
 import com.liberty.model.*;
 import com.liberty.repository.AuthorImageRepository;
 import com.liberty.repository.BookImageRepository;
@@ -24,9 +26,9 @@ public class ImageServiceImpl implements ImageService {
     // TODO: move to properties
     // TODO: use separate service to serve images as static resources
     private String IMAGE_BASE_PATH = "http://localhost:7788/";
-    private String AUTHOR_IMAGE_PATH = IMAGE_BASE_PATH + "ia/";
+    private String AUTHOR_IMAGE_PATH = IMAGE_BASE_PATH + "ia";
     private String NO_IMAGE = IMAGE_BASE_PATH + "book-placeholder.jpg";
-    private String BOOK_IMAGE_PATH = IMAGE_BASE_PATH + "ib/";
+    private String BOOK_IMAGE_PATH = IMAGE_BASE_PATH + "ib";
 
     @Autowired
     private BookImageRepository bookImageRepository;
@@ -162,8 +164,7 @@ public class ImageServiceImpl implements ImageService {
         List<Long> ids = books.stream().map(SimpleBookEntity::getBookId).collect(Collectors.toList());
         Map<Long, String> bookImagePath = getBookImagePath(ids);
 
-        return books.stream().peek(w -> w.setImagePath(bookImagePath.get(w.getBookId())))
-                .collect(Collectors.toList());
+        return books.stream().peek(w -> w.setImagePath(bookImagePath.get(w.getBookId()))).collect(Collectors.toList());
     }
 
     @Override
@@ -173,7 +174,28 @@ public class ImageServiceImpl implements ImageService {
         List<Long> ids = books.stream().map(BookCardEntity::getBookId).collect(Collectors.toList());
         Map<Long, String> bookImagePath = getBookImagePath(ids);
 
-        return books.stream().peek(w -> w.setImagePath(bookImagePath.get(w.getBookId())))
-                .collect(Collectors.toList());
+        return books.stream().peek(w -> w.setImagePath(bookImagePath.get(w.getBookId()))).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<AuthorBornDto> addAuthorSimpleImages(List<AuthorBornDto> authors) {
+        if (isEmpty(authors))
+            return authors;
+
+        List<Long> ids = authors.stream().map(AuthorBornDto::getId).collect(Collectors.toList());
+        Map<Long, String> authorImagePath = getAuthorImagePath(ids);
+
+        return authors.stream().peek(w -> w.setImagePath(authorImagePath.get(w.getId()))).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<RecommendationDto> addRecoBookImages(List<RecommendationDto> collected) {
+        if (isEmpty(collected))
+            return collected;
+
+        List<Long> ids = collected.stream().map(RecommendationDto::getBookId).collect(Collectors.toList());
+        Map<Long, String> bookImages = getBookImagePath(ids);
+
+        return collected.stream().peek(w -> w.setImagePath(bookImages.get(w.getBookId()))).collect(Collectors.toList());
     }
 }

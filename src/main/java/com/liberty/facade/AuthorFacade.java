@@ -42,6 +42,7 @@ public class AuthorFacade {
         if (one == null) {
             throw new NotFoundException("Can not find author with id : " + authorId);
         }
+        one.setImagePath(imageService.getAuthorImagePath(one.getAuthorId()));
         return one;
     }
 

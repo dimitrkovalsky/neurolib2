@@ -95,7 +95,7 @@ public class RecommendationFacade {
         List<Long> ids = recommendations.stream().map(RecommendationEntity::getRecommendationId)
                 .collect(Collectors.toList());
 
-        return simpleBookRepository.findAll(ids).stream().map(b -> {
+        List<RecommendationDto> collected = simpleBookRepository.findAll(ids).stream().map(b -> {
             List<AuthorEntity> authors = getAuthor(b.getBookId());
             List<GenreEntity> genres = getGenres(b.getBookId());
             RecommendationDto dto = new RecommendationDto();
@@ -108,6 +108,7 @@ public class RecommendationFacade {
             }
             return dto;
         }).collect(Collectors.toList());
+        return imageService.addRecoBookImages(collected);
     }
 
     public SimpleBookEntity getBook(Long bookId) {//todo: book image
@@ -166,7 +167,7 @@ public class RecommendationFacade {
         List<AuthorEntity> stored = findSimilar(authorId);
         if (stored != null) {
             log.info("Used {} stored similar authors for author with id {}", stored.size(), authorId);
-            return stored;
+            return imageService.addAuthorImages(stored);
         }
         List<SimpleBookEntity> byAuthor = simpleBookRepository.findAllByAuthor(authorId);
         List<Long> ids = byAuthor.stream().map(SimpleBookEntity::getBookId).collect(Collectors.toList());
@@ -191,7 +192,7 @@ public class RecommendationFacade {
         }
         saveSimilar(similar, author);
         log.info("Fetched {} similar authors for author with id {}", similar.size(), authorId);
-        return similar;
+        return imageService.addAuthorImages(similar);
     }
 
     private List<AuthorEntity> findSimilar(long authorId) {

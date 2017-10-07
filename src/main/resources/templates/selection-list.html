@@ -27,7 +27,7 @@
                                 <div class="swiper-slide" style="max-width: 145px; padding: 10px;">
                                     <div class="card hoverable">
                                         <div class="card-image">
-                                            <div th:style="@{background-image: url('/api/images/book/{bookId}');(bookId = ${book.bookId})}" class="box-img">
+                                            <div th:style="@{background-image: url('{imagePath}');(imagePath = ${book.imagePath})}" class="box-img">
                                             </div>
                                         </div>
                                         <div class="card-content" style="padding:24px 12px 24px 12px">

@@ -5,6 +5,7 @@ import com.liberty.dto.sitemap.SitemapIndexLinkList;
 import com.liberty.dto.sitemap.SitemapUrlList;
 import com.liberty.service.SitemapService;
 import com.thoughtworks.xstream.XStream;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,6 +24,7 @@ import java.util.*;
  * Created by user on 03.09.2017.
  */
 @Service
+@Slf4j
 public class SitemapServiceImpl implements SitemapService {
 
     @Value("${sitemap.previouslyGenerated}")
@@ -51,6 +53,7 @@ public class SitemapServiceImpl implements SitemapService {
 
     @Scheduled(cron="0 0 0 * * ?")
     private void generateAndSaveSitemaps(){
+        log.info("Starting sitemap generation");
         if(usePreviouslyGeneratedSitemap.equals(true)) {
             for (SitemapHandler handler : sitemapHandlers) {
                 String sitemapIndex = generateIndexSitemap();
@@ -61,6 +64,7 @@ public class SitemapServiceImpl implements SitemapService {
                 }
             }
         }
+        log.info("Finished sitemap generation");
     }
 
     public String getIndexSitemap(){

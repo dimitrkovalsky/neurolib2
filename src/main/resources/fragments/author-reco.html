@@ -8,7 +8,7 @@
                     <tr>
                         <td>
                             <a th:href="@{/author/{id}(id = ${reco.authorId})}">
-                                <img style="height: 50px;" th:src="@{/api/images/author/{id}(id = ${reco.authorId})}"/>
+                                <img style="height: 50px;" th:src="${reco.imagePath}"/>
                             </a>
                         </td>
                         <td>

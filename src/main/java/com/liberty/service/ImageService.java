@@ -1,5 +1,7 @@
 package com.liberty.service;
 
+import com.liberty.dto.AuthorBornDto;
+import com.liberty.dto.RecommendationDto;
 import com.liberty.model.AuthorEntity;
 import com.liberty.model.BookCardEntity;
 import com.liberty.model.SimpleBookEntity;
@@ -35,4 +37,8 @@ public interface ImageService {
     List<SimpleBookEntity> addSimpleBookImages(Collection<SimpleBookEntity> books);
 
     List<BookCardEntity> addBookCardImages(List<BookCardEntity> books);
+
+    List<AuthorBornDto> addAuthorSimpleImages(List<AuthorBornDto> authorBornDtos);
+
+    List<RecommendationDto> addRecoBookImages(List<RecommendationDto> collected);
 }

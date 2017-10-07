@@ -30,6 +30,6 @@ public class AuthorRecommendationEntity {
     @Data
     public static class RecoPK implements Serializable {
         private Long authorId;
-        private Integer similarId;
+        private Long similarId;
     }
 }
